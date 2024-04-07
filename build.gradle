@@ -1,0 +1,32 @@
+plugins {
+    id 'java'
+}
+
+group = 'fr.lefisc.pluginmc.pluginmc'
+version = '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+    maven { url 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/' }
+}
+
+dependencies {
+    testImplementation platform('org.junit:junit-bom:5.9.1')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.12.5'
+    implementation 'com.googlecode.json-simple:json-simple:1.1.1'
+    implementation 'org.json:json:20210307'
+    implementation 'org.springframework:spring-context:5.3.10' // Version de Spring Framework
+    implementation 'org.springframework.boot:spring-boot-starter-web:2.5.4' // Starter pour Spring Web
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa:2.5.4' // Starter pour Spring Data JPA
+    implementation 'commons-codec:commons-codec:1.15'
+
+
+    compileOnly 'org.spigotmc:spigot-api:1.20-R0.1-SNAPSHOT'
+}
+
+test {
+    useJUnitPlatform()
+}
+compileJava.options.encoding = 'UTF-8'
+setLibsDirName('../server/plugins')
