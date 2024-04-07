@@ -41,38 +41,32 @@ func displayAndEncode(playerData PlayerData) ([]byte, error) {
 		fmt.Printf("Player ID: %s - Coins: %s\n", achievements.PlayerID, achievements.Achievements)
 	}
 
-	for i, blocks_destroy := range playerData.BlocksDestroy {
-		// Décoder l'image base64
-		imageData, err := base64.StdEncoding.DecodeString(blocks_destroy.ImagePath)
+	for i, blocksDestroy := range playerData.BlocksDestroy {
+		imageData, err := base64.StdEncoding.DecodeString(blocksDestroy.ImagePath)
 		if err != nil {
-			fmt.Printf("Erreur lors du décodage de l'image base64 pour l'élément %s: %s\n", blocks_destroy.BlockName, err)
+			fmt.Printf("Erreur lors du décodage de l'image base64 pour l'élément %s: %s\n", blocksDestroy.BlockName, err)
 			continue
 		}
 
-		// Créer un fichier pour enregistrer l'image
-		imagePath := "blocks_destroy/" + blocks_destroy.NomBlocks + ".png"
+		imagePath := "blocks_destroy/" + blocksDestroy.BlockName + ".png"
 		err = ioutil.WriteFile(imagePath, imageData, 0644)
 		if err != nil {
-			fmt.Printf("Erreur lors de l'enregistrement de l'image pour l'élément %s: %s\n", blocks_destroy.NomBlocks, err)
+			fmt.Printf("Erreur lors de l'enregistrement de l'image pour l'élément %s: %s\n", blocksDestroy.BlockName, err)
 			continue
 		}
 
-		// Mettre à jour le chemin d'accès à l'image dans la structure Inventory
 		playerData.BlocksDestroy[i].ImagePath = imagePath
 
-		// Stocker l'image décodée pour l'affichage dans le template HTML
 		playerData.BlocksDestroy[i].ImageData = base64.StdEncoding.EncodeToString(imageData)
 	}
 
 	for i, inventory := range playerData.Inventory {
-		// Décoder l'image base64
 		imageData, err := base64.StdEncoding.DecodeString(inventory.ImagePath)
 		if err != nil {
 			fmt.Printf("Erreur lors du décodage de l'image base64 pour l'élément %s: %s\n", inventory.NomItem, err)
 			continue
 		}
 
-		// Créer un fichier pour enregistrer l'image
 		imagePath := "images/" + inventory.NomItem + ".png"
 		err = ioutil.WriteFile(imagePath, imageData, 0644)
 		if err != nil {
@@ -80,7 +74,6 @@ func displayAndEncode(playerData PlayerData) ([]byte, error) {
 			continue
 		}
 
-		// Mettre à jour le chemin d'accès à l'image dans la structure Inventory
 		playerData.Inventory[i].ImagePath = imagePath
 
 		// Stocker l'image décodée pour l'affichage dans le template HTML
