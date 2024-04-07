@@ -8,10 +8,7 @@ import (
 )
 
 func main() {
-	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		http.ServeFile(w, r, "template.html")
-	})
-	http.Handle("/templates/", http.StripPrefix("/templates/", http.FileServer(http.Dir("templates/"))))
+	http.Handle("/css/", http.StripPrefix("/css/", http.FileServer(http.Dir("templates/css"))))
 
 	http.HandleFunc("/api", Menu.ApiHandler)
 	http.HandleFunc("/api/user", Menu.UserHandler)
