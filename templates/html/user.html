@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>User Data</title>
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+</head>
+<body>
+<h1>User Data</h1>
+<h2>Coins</h2>
+<ul>
+    {{ range .Coins }}
+    <li>Player ID: {{ .PlayerID }} - Coins: {{ .Coins }}</li>
+    {{ end }}
+</ul>
+<hr>
+<h2>Achievements</h2>
+<ul>
+    {{ range .Achievements }}
+    <li>Player ID: {{ .PlayerID }} - Achievements: {{ .Achievements }}</li>
+    {{ end }}
+</ul>
+<h2>Shop</h2>
+<ul>
+    {{ range .Shop }}
+    <li>Player UUID: {{ .PlayerID }} - Item Data: {{ .ItemName }} - Amount: {{ .Amount }} - Price: {{ .Price }} - PurchaseDate: {{ .PurchaseDate }}</li>
+    {{ end }}
+</ul>
+<h2>Blocks Traveled</h2>
+<ul>
+    {{ range .Blocks }}
+    <li>Player ID: {{ .PlayerID }} - Blocks: {{ .Blocks }}</li>
+    {{ end }}
+</ul>
+<h2>Blocks Destroy</h2>
+<div class="blocks">
+    {{ $count := 0 }}
+    {{ range .BlocksDestroy }}
+    <div class="blocks2">
+        <img src="data:image/png;base64,{{ .ImageData }}">
+        {{ .BlockName }}
+        <p>Blocks Destroy</p>
+        {{ .Amount }}
+        <hr>
+    </div>
+
+    {{ if eq $count 8 }}
+    {{ $count = 0 }}
+    {{ else }}
+    {{ $count = len (printf "%d" $count ) }}
+    {{ end }}
+    {{ end }}
+</div>
+<h2>Inventaire</h2>
+<div class="stat-content">
+    <div id="inventory_container">
+        <div id="inventory_header">
+            <div class="inventory-header-line"></div>
+            <div class="inventory-tabs-container">
+                <button class="inventory-tab active-inventory" data-inventory-type="inventory">
+                    <div class="inventory-tab-icon item-icon custom-icon" style="background-image: url('https://crafatar.com/renders/head/fa7219f87beb47a8bd4881f7d8b25eb5?size=32&amp;overlay')"></div>
+                    <div class="inventory-tab-name">
+                        <abbr title="Inventory">Inv</abbr>
+                    </div>
+                </button>
+            </div>
+        </div>
+        <inventory-view inventory-type="inventory">
+            {{ $count := 0 }}
+            {{ range .Inventory }}
+            <div class="inventory-slot">
+                <img src="data:image/png;base64,{{ .ImageData }}" alt="{{ .NomItem }}">
+            </div>
+            {{ end }}
+        </inventory-view>
+    </div>
+</div>
+</body>
+<script src="../js/user.js"></script>
+</html>
