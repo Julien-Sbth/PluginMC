@@ -36,10 +36,11 @@ public class AchievementListener implements Listener {
     private void insertAchievement(String playerName, String achievementId) {
         if (sqliteManager.isConnected()) {
             Connection connection = sqliteManager.getConnection();
-            String sql = "INSERT INTO player_achievements (player_id, achievements) VALUES (?, ?)";
+            String sql = "INSERT INTO player_achievements (player_id, player_name, achievements) VALUES (?, ?, ?)";
             try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
                 pstmt.setString(1, playerName);
-                pstmt.setString(2, achievementId);
+                pstmt.setString(2, playerName);
+                pstmt.setString(3, achievementId);
                 pstmt.executeUpdate();
             } catch (SQLException e) {
                 sqliteManager.getLogger().log(Level.SEVERE, "Erreur lors de l'insertion du succès dans la base de données", e);
@@ -48,6 +49,7 @@ public class AchievementListener implements Listener {
             Bukkit.getLogger().warning("La connexion à la base de données SQLite est fermée.");
         }
     }
+
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
