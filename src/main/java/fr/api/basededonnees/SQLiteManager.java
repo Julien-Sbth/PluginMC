@@ -42,7 +42,6 @@ public class SQLiteManager {
             logger.log(Level.SEVERE, "Erreur lors de la fermeture de la connexion à la base de données", e);
         }
     }
-
     public boolean isConnected() {
         try {
             return this.connection != null && !this.connection.isClosed();
