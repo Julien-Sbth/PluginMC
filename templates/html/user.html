@@ -13,6 +13,21 @@
     {{ end }}
 </ul>
 <hr>
+<h3>Monster Kills</h3>
+<div class="blocks">
+    {{ $count := 0 }}
+    {{ range .Kills }}
+    <div class="blocks2">
+        <img src="data:image/png;base64,{{ .ImageData }}">
+        {{ .EntityType }}
+    </div>
+    {{ if eq $count 8 }}
+    {{ $count = 0 }}
+    {{ else }}
+    {{ $count = len (printf "%d" $count ) }}
+    {{ end }}
+    {{ end }}
+</div>
 <h2>Achievements</h2>
 <ul>
     {{ range .Achievements }}
@@ -31,6 +46,7 @@
     <li>Player ID: {{ .PlayerID }} - Blocks: {{ .Blocks }}</li>
     {{ end }}
 </ul>
+
 <h2>Blocks Destroy</h2>
 <div class="blocks">
     {{ $count := 0 }}
@@ -75,5 +91,14 @@
     </div>
 </div>
 </body>
-<script src="../js/user.js"></script>
+<script>
+    const images = document.querySelectorAll('.grid-item img, .blocks2 img');
+
+    images.forEach(image => {
+        if (image.naturalWidth < image.parentNode.offsetWidth && image.naturalHeight < image.parentNode.offsetHeight) {
+            image.style.width = '100%';
+            image.style.height = '100%';
+        }
+    });
+</script>
 </html>

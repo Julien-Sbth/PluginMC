@@ -1,3 +1,6 @@
+* {
+    image-rendering: pixelated;
+}
 .item-icon {
     width: 128px;
     height: 128px;
@@ -97,7 +100,9 @@ ul li {
 }
 
 .inventory-slot {
-    cursor: pointer
+    cursor: pointer;
+    image-rendering: pixelated;
+
 }
 
 @media(hover: hover) {
@@ -108,6 +113,7 @@ ul li {
         right: 0;
         top: 0;
         bottom: 0;
+        image-rendering: pixelated;
         z-index: 20;
         transition: background-color .2s;
         border-radius: 5px;
@@ -115,7 +121,9 @@ ul li {
     }
 
     .inventory-slot.sticky-stats::after,.inventory-slot:hover::after {
-        background-color: rgba(255,255,255,.2)
+        background-color: rgba(255,255,255,.2);
+        image-rendering: pixelated;
+
     }
 }
 
@@ -286,7 +294,9 @@ inventory-view .inventory-slot {
     aspect-ratio: 1;
     position: relative;
     background-color: rgba(var(--text-rgb), 0.04);
-    border-radius: 5px
+    border-radius: 5px;
+    image-rendering: pixelated;
+
 }
 
 inventory-view hr {
@@ -346,6 +356,8 @@ h2:nth-of-type(6) ~ .blocks {
 .inventory-slot img {
     width: 100%;
     height: auto;
+    image-rendering: pixelated;
+
 }
 
 .grid-item:hover {
