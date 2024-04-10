@@ -24,7 +24,6 @@ public class APIClient {
     public APIClient(SQLiteManager sqliteManager) {
         this.sqliteManager = sqliteManager;
     }
-
     private JsonArray convertResultSetToJson(ResultSet rs) throws SQLException {
         JsonArray jsonArray = new JsonArray();
         ResultSetMetaData metaData = rs.getMetaData();
