@@ -29,6 +29,7 @@ This communication process facilitates the seamless transfer of data from the Mi
 6. Open IntelliJ IDEA and navigate to Files -> Project Structure.
 7. Under Project Settings, select Modules.
 8. Click the "+" icon and choose Minecraft from the dropdown menu.
+9.Click Apply and then OK. Congratulations! You have successfully added Spigot to your project!
 
 ## Launching Spigot:
 
@@ -38,7 +39,13 @@ This communication process facilitates the seamless transfer of data from the Mi
 4. Specify the path to the Spigot JAR file, typically located in the "server" folder.
 5. Write "-nogui" in the Program Arguments field.
 6. Specify the working directory by providing the path to the "server" folder.
-7. If you launch the program for the first time the program will exit, a file named eula.txt will be create you need to modify this file to replace eula = false to eula = true
+7. To enable automatic building within the server folder, copy and paste the following code into your build.gradle file:
+   ```java
+    compileJava.options.encoding = 'UTF-8'
+    setLibsDirName('../server/plugins')
+   ```
+8. Click on the "Local Graddles Change" icon. If no errors occur, your build.gradle setup is successful. The spigot.version.jar file will now be compiled into the /server/plugins folder.
+9. If you launch the program for the first time the program will exit, a file named eula.txt will be create you need to modify this file to replace eula = false to eula = true
 
    *I recommend using Corretto-17 for optimal performance.*
 
