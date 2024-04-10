@@ -42,7 +42,6 @@ public class BlockDestroyListener implements Listener {
             }
         }
     }
-
     private boolean isNaturalBlock(Material blockType) {
         Material[] naturalBlocks = {
                 Material.ACACIA_LOG,
