@@ -35,6 +35,8 @@ type Kill struct {
 	PlayerID   string `json:"player_id"`
 	EntityType string `json:"entity_type"`
 	Kills      string `json:"kills"`
+	ImagePath  string `json:"kills_monster"`
+	ImageData  string
 }
 
 type Block struct {

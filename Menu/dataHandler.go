@@ -21,9 +21,24 @@ func displayAndEncode(playerData PlayerData) ([]byte, error) {
 		fmt.Printf("Player UUID: %s - Item Data: %s - Amount: %s\n", item.PlayerUUID, item.ItemData, item.Amount)
 	}
 
-	fmt.Println("Kills:")
-	for _, kill := range playerData.Kills {
-		fmt.Printf("Player ID: %s - Entity Type: %s - Kills: %s\n", kill.PlayerID, kill.EntityType, kill.Kills)
+	for i, kills := range playerData.Kills {
+		imageData, err := base64.StdEncoding.DecodeString(kills.ImagePath)
+		if err != nil {
+			fmt.Printf("Erreur lors du décodage de l'image base64 pour l'élément %s: %s\n", kills.Kills, err)
+			continue
+		}
+
+		imagePath := "images/" + kills.Kills + ".png"
+		err = ioutil.WriteFile(imagePath, imageData, 0644)
+		if err != nil {
+			fmt.Printf("Erreur lors de l'enregistrement de l'image pour l'élément %s: %s\n", kills.Kills, err)
+			continue
+		}
+
+		playerData.Kills[i].ImagePath = imagePath
+
+		// Stocker l'image décodée pour l'affichage dans le template HTML
+		playerData.Kills[i].ImageData = base64.StdEncoding.EncodeToString(imageData)
 	}
 
 	fmt.Println("Blocks:")
