@@ -15,9 +15,10 @@ import fr.api.monster.MonsterDeathListener;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.UUID;
 import java.util.logging.Logger;
-
 
 public class Main extends JavaPlugin implements Listener {
     private SQLiteManager sqliteManager;
@@ -57,8 +58,7 @@ public class Main extends JavaPlugin implements Listener {
 
         apiClient.sendPlayerDataToSite();
 
-        monsterDeathListener = new MonsterDeathListener(sqliteManager);
-        getServer().getPluginManager().registerEvents(monsterDeathListener, this);
+        getServer().getPluginManager().registerEvents(new MonsterDeathListener(sqliteManager, getLogger(), List.of("")), this);
         getServer().getPluginManager().registerEvents(new BlockMovementTracker(sqliteManager, this), this);
         getServer().getPluginManager().registerEvents(new AchievementListener(sqliteManager), this);
         playerCoinsManager = new PlayerCoinsManager(this, sqliteManager);
