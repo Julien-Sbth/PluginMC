@@ -18,9 +18,7 @@ public class APIClient {
 
     private final String API_ENDPOINT = "http://localhost:8080/data";
     private SQLiteManager sqliteManager;
-
     private Map<String, String> itemImageMap = new HashMap<>();
-
     public APIClient(SQLiteManager sqliteManager) {
         this.sqliteManager = sqliteManager;
     }

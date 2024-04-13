@@ -7,10 +7,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class SQLiteManager {
-
     private Connection connection;
     private final Logger logger;
-
     public SQLiteManager(String dbPath) {
         this.logger = Logger.getLogger("sqlite");
         try {
@@ -24,7 +22,6 @@ public class SQLiteManager {
             closeConnection();
         }
     }
-
     public Connection getConnection() {
         return this.connection;
     }

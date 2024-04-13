@@ -49,8 +49,6 @@ public class AchievementListener implements Listener {
             Bukkit.getLogger().warning("La connexion à la base de données SQLite est fermée.");
         }
     }
-
-
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();

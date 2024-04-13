@@ -30,7 +30,6 @@ public class BlockMovementTracker implements Listener {
 
         saveTask = Bukkit.getScheduler().runTaskTimer(plugin, this::saveAllMovementsToDatabase, 300, 300);
     }
-
     @EventHandler
     public void onPlayerMove(PlayerMoveEvent event) {
         Player player = event.getPlayer();

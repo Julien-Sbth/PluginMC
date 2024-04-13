@@ -15,9 +15,7 @@ import fr.api.monster.MonsterDeathListener;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.util.Arrays;
 import java.util.List;
-import java.util.UUID;
 import java.util.logging.Logger;
 
 public class Main extends JavaPlugin implements Listener {
@@ -47,7 +45,7 @@ public class Main extends JavaPlugin implements Listener {
         } else {
             getLogger().warning("La connexion à la base de données a échoué !");
         }
-        menu = new Menu(this, sqliteManager);
+        menu = new Menu(this, sqliteManager, logger);
 
         menu.registerEvents();
         Listener inventoryListener = new InventoryListener(sqliteManager, getLogger());

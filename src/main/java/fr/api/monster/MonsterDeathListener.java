@@ -26,7 +26,7 @@ import java.util.logging.Logger;
 
 public class MonsterDeathListener implements Listener {
     private double money = 0;
-    private static SQLiteManager sqliteManager; // Changed to private static
+    private static SQLiteManager sqliteManager;
     private final Logger logger;
     private final List<String> monsterTypes;
 
@@ -67,8 +67,6 @@ public class MonsterDeathListener implements Listener {
 
                 player.sendMessage(entityType + " tué !");
                 if (monsterHead != null) {
-                    // Envoyer la tête du monstre au joueur
-                    // Par exemple, vous pouvez l'ajouter à son inventaire ou laisser tomber l'entité
                 }
             }
         }
@@ -85,7 +83,6 @@ public class MonsterDeathListener implements Listener {
                 Material.CREEPER_HEAD,
                 Material.DRAGON_HEAD,
                 Material.PLAYER_HEAD,
-                // Ajoutez d'autres têtes de monstres selon vos besoins
         };
 
         for (Material head : monsterHeads) {
@@ -104,7 +101,6 @@ public class MonsterDeathListener implements Listener {
                 Material.WITHER_SKELETON_SKULL,
                 Material.DRAGON_HEAD,
                 Material.PIGLIN_HEAD
-                // Ajoutez d'autres têtes de monstres selon vos besoins
         };
 
         for (int i = 0; i < monsterTypes.size(); i++) {

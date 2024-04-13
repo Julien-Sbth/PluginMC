@@ -16,10 +16,10 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.*;
+import java.util.logging.Logger;
 
 import static fr.api.menu.ArtefactItems.createItem;
 import static fr.api.menu.ItemUtils.createArmorItem;
@@ -27,13 +27,14 @@ import static fr.api.menu.ItemUtils.createArmorItem;
 public class Menu implements Listener {
     protected static JavaPlugin plugin;
     private SQLiteManager sqliteManager;
+    private final Logger logger;
     static final Map<Material, Integer> prices = new HashMap<>();
     private final ArtefactItemsListener artefactListener;
 
-    public Menu(JavaPlugin plugin, SQLiteManager sqliteManager) {
+    public Menu(JavaPlugin plugin, SQLiteManager sqliteManager, Logger logger) {
         Menu.plugin = plugin;
         this.sqliteManager = sqliteManager;
-
+        this.logger = logger;
 
         ItemStack customAxeNetherite = customaxenetherite();
         ItemStack customAxeWood = customaxewood();
@@ -365,6 +366,7 @@ public class Menu implements Listener {
                     if (checkPlayerMoney.hasEnoughMoney(player, price)) {
                         player.getInventory().addItem(createItem(itemMaterial, null, "").clone());
                         player.sendMessage("Tu as acheté " + createItem(itemMaterial, null, "").getItemMeta().getDisplayName());
+                        recordPurchase(player.getUniqueId(), createItem(itemMaterial, null, "").getItemMeta().getDisplayName(), 1, price);
 
                     } else {
                         player.sendMessage("Tu n'as pas assez d'argent pour acheter " + createItem(itemMaterial, null, "").getItemMeta().getDisplayName());
@@ -376,10 +378,28 @@ public class Menu implements Listener {
                 event.setCancelled(true);
             }
         }
-
     }
 
+    public void recordPurchase(UUID playerId, String itemName, int quantity, int price) {
+        try {
+            if (!sqliteManager.isConnected()) {
+                throw new SQLException("La connexion à la base de données est fermée.");
+            }
 
+            try (PreparedStatement insertPs = sqliteManager.getConnection().prepareStatement(
+                    "INSERT INTO Player_Shop (player_id, item_name, quantity, price) VALUES (?, ?, ?, ?)")) {
+                insertPs.setString(1, playerId.toString());
+                insertPs.setString(2, itemName);
+                insertPs.setInt(3, quantity);
+                insertPs.setInt(4, price);
+                insertPs.executeUpdate();
+            } catch (SQLException e) {
+                logger.severe("Erreur lors de l'enregistrement de l'achat dans la base de données : " + e.getMessage());
+            }
+        } catch (SQLException e) {
+            logger.severe("Erreur lors de l'enregistrement de l'achat : " + e.getMessage());
+        }
+    }
 
     private boolean isNavigationItem(Material material) {
         List<Material> navigationItems = Arrays.asList(

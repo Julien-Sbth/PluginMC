@@ -12,7 +12,6 @@ public class MoneyCommand implements CommandExecutor {
     public MoneyCommand(MonsterDeathListener monsterDeathListener) {
         this.monsterDeathListener = monsterDeathListener;
     }
-
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (sender instanceof Player) {

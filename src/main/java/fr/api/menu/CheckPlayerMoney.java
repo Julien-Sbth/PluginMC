@@ -19,6 +19,7 @@ public class CheckPlayerMoney {
         double playerCoins = getPlayerCoins(player.getUniqueId());
         return playerCoins >= amount;
     }
+
     private double getPlayerCoins(UUID playerId) {
         return MonsterDeathListener.getPlayerCoins(playerId);
     }

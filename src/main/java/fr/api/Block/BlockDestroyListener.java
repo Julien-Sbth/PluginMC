@@ -23,7 +23,6 @@ public class BlockDestroyListener implements Listener {
     private final SQLiteManager sqliteManager;
     private static final Logger logger = Logger.getLogger(BlockDestroyListener.class.getName());
 
-
     public BlockDestroyListener(SQLiteManager sqliteManager) {
         this.sqliteManager = sqliteManager;
     }
@@ -179,7 +178,6 @@ public class BlockDestroyListener implements Listener {
                 Material.DARK_OAK_WOOD,
                 Material.CRIMSON_HYPHAE,
         };
-
 
         for (Material naturalBlock : naturalBlocks) {
             if (blockType == naturalBlock) {
