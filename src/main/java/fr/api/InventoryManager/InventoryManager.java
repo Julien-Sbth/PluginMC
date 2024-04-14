@@ -27,7 +27,7 @@ public class InventoryManager {
     public static void savePlayerItems(UUID playerId, List<ItemStack> items) {
         try {
             PreparedStatement ps = sqliteManager.getConnection().prepareStatement(
-                    "INSERT INTO player_items (player_uuid, item_data, amount) VALUES (?, ?, ?) " +
+                    "INSERT INTO player_items (player_uuid, item_data, amount, player_name) VALUES (?, ?, ?, ?) " +
                             "ON CONFLICT(player_uuid, item_data) DO UPDATE SET amount = amount + ?");
             ps.setString(1, playerId.toString());
 
