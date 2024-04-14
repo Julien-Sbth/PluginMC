@@ -2,7 +2,7 @@
 <html>
 <head>
     <title>User Data</title>
-    <link rel="stylesheet" type="text/css" href="/css/style.css">
+    <link rel="stylesheet" type="text/css" href="/templates/css/style.css">
 </head>
 <body>
 <h1>User Data</h1>
@@ -85,6 +85,7 @@
             {{ range .Inventory }}
             <div class="inventory-slot">
                 <img src="data:image/png;base64,{{ .ImageData }}" alt="{{ .NomItem }}">
+                {{ .Amount }}
             </div>
             {{ end }}
         </inventory-view>

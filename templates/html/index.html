@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="/templates/css/menu.css">
+    <title>Recherche de joueur</title>
+</head>
+<body>
+<header>
+    <div class="site-info">
+        <a href="/" id="site_name">PluginMC</a>
+        <span class="button-space"></span>
+        <button class="expander" id="info-button" aria-expanded="false">About</button>
+        <span class="button-space"></span>
+        <span class="spacer"></span>
+    </div>
+    <div class="right-buttons">
+        <a href="/login" class="expander" id="button1"><span>Register</span></a>
+        <span class="button-space"></span>
+        <a href="/login" class="expander" id="button2"><span>Login</span></a>
+        <span class="button-space"></span>
+        <a href="/" target="_blank" rel="noreferrer" data-tippy-content="" class="blm-logo" aria-label="Black Lives Matter"></a>
+    </div>
+</header>
+
+
+
+
+
+
+<main class="grid">
+    {{if ne .ErrorMessage ""}}
+    <p style="color: red;">{{.ErrorMessage}}</p>
+    {{end}}
+    <form action="/api/player/search" method="GET" class="lookup-player">
+        <label for="username">
+            <h1>Show Player Stats</h1>
+        </label>
+        <input type="text" id="username" name="username" required placeholder="test">
+        <button type="submit" class="big-green-button">Show me</button>
+    </form>
+</main>
+</body>
+</html>
