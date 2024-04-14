@@ -14,7 +14,7 @@ func main() {
 	http.HandleFunc("/api/user", Menu.UserHandler)
 	http.HandleFunc("/data", Menu.ZombieKillsHandler)
 	http.HandleFunc("/api/player/search", Menu.PlayerInfoHandler)
-	http.HandleFunc("/", Menu.HandleParametre)
+	http.HandleFunc("/", Menu.HandleMenu)
 
 	log.Println("Serveur Go démarré sur le port 8080")
 	if err := http.ListenAndServe(":8080", nil); err != nil {
