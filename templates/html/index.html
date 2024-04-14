@@ -11,12 +11,13 @@
     <div class="site-info">
         <a href="/" id="site_name">PluginMC</a>
         <span class="button-space"></span>
-        <button class="expander" id="info-button" aria-expanded="false">About</button>
+        <a href="/about" class="expander" id="info-button" aria-expanded="false"><span>About</span></a>
+
         <span class="button-space"></span>
         <span class="spacer"></span>
     </div>
     <div class="right-buttons">
-        <a href="/login" class="expander" id="button1"><span>Register</span></a>
+        <a href="/register" class="expander" id="button1"><span>Register</span></a>
         <span class="button-space"></span>
         <a href="/login" class="expander" id="button2"><span>Login</span></a>
         <span class="button-space"></span>
@@ -24,15 +25,8 @@
     </div>
 </header>
 
-
-
-
-
-
 <main class="grid">
-    {{if ne .ErrorMessage ""}}
-    <p style="color: red;">{{.ErrorMessage}}</p>
-    {{end}}
+
     <form action="/api/player/search" method="GET" class="lookup-player">
         <label for="username">
             <h1>Show Player Stats</h1>
@@ -40,6 +34,9 @@
         <input type="text" id="username" name="username" required placeholder="test">
         <button type="submit" class="big-green-button">Show me</button>
     </form>
+    {{if ne .ErrorMessage ""}}
+    <p style="color: red;">{{.ErrorMessage}}</p>
+    {{end}}
 </main>
 </body>
 </html>
