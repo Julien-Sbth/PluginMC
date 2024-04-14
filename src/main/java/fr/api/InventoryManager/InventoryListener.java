@@ -88,7 +88,6 @@ public class InventoryListener implements Listener {
     private void ajouterItem(UUID joueurUUID, String nomItem, int quantite, String imageBase64) {
         try {
             if (connection != null) {
-                // Vérifier si l'élément existe déjà dans l'inventaire du joueur
                 PreparedStatement selectItemStatement = connection.prepareStatement(
                         "SELECT id, quantite FROM player_inventory WHERE player_uuid = ? AND nom_item = ?"
                 );
@@ -97,18 +96,45 @@ public class InventoryListener implements Listener {
                 ResultSet itemResult = selectItemStatement.executeQuery();
 
                 if (itemResult.next()) {
-                    // L'élément existe déjà, donc mettre à jour la quantité
                     int itemId = itemResult.getInt("id");
                     int existingQuantity = itemResult.getInt("quantite");
-                    int updatedQuantity = existingQuantity + quantite;
 
-                    PreparedStatement updateStatement = connection.prepareStatement(
-                            "UPDATE player_inventory SET quantite = ? WHERE id = ?"
-                    );
-                    updateStatement.setInt(1, updatedQuantity);
-                    updateStatement.setInt(2, itemId);
-                    updateStatement.executeUpdate();
-                    updateStatement.close();
+                    // Si la quantité existante + la quantité à ajouter dépasse 64, créer une nouvelle entrée
+                    if (existingQuantity + quantite > 64) {
+                        PreparedStatement selectEmptyStatement = connection.prepareStatement(
+                                "SELECT id FROM player_inventory WHERE nom_item = '' AND quantite = 0 AND position = 0 AND image_base64 = '' OR id = (SELECT MIN(id) FROM player_inventory WHERE id > (SELECT MAX(id) FROM player_inventory WHERE nom_item != '' AND quantite != 0 AND position != 0 AND image_base64 != '')) LIMIT 1"
+                        );
+                        ResultSet emptyResult = selectEmptyStatement.executeQuery();
+
+                        if (emptyResult.next()) {
+                            int idVide = emptyResult.getInt("id");
+                            PreparedStatement updateStatement = connection.prepareStatement(
+                                    "UPDATE player_inventory SET player_uuid = ?, nom_item = ?, quantite = ?, position = ?, image_base64 = ? WHERE id = ?"
+                            );
+                            updateStatement.setString(1, joueurUUID.toString());
+                            updateStatement.setString(2, nomItem);
+                            updateStatement.setInt(3, quantite);
+                            updateStatement.setInt(4, getNextAvailablePosition(joueurUUID));
+                            updateStatement.setString(5, imageBase64);
+                            updateStatement.setInt(6, idVide);
+                            updateStatement.executeUpdate();
+                            updateStatement.close();
+                        } else {
+                            logger.warning("Aucun emplacement vide trouvé dans l'inventaire.");
+                        }
+
+                        selectEmptyStatement.close();
+                    } else {
+                        // La quantité totale est toujours inférieure ou égale à 64, mettre à jour la quantité existante
+                        int updatedQuantity = existingQuantity + quantite;
+                        PreparedStatement updateStatement = connection.prepareStatement(
+                                "UPDATE player_inventory SET quantite = ? WHERE id = ?"
+                        );
+                        updateStatement.setInt(1, updatedQuantity);
+                        updateStatement.setInt(2, itemId);
+                        updateStatement.executeUpdate();
+                        updateStatement.close();
+                    }
                 } else {
                     // L'élément n'existe pas encore, donc l'insérer dans la base de données
                     PreparedStatement selectEmptyStatement = connection.prepareStatement(
@@ -117,7 +143,6 @@ public class InventoryListener implements Listener {
                     ResultSet emptyResult = selectEmptyStatement.executeQuery();
 
                     if (emptyResult.next()) {
-                        // S'il y a une ligne vide ou une ID libre, mettre à jour ses données
                         int idVide = emptyResult.getInt("id");
                         PreparedStatement updateStatement = connection.prepareStatement(
                                 "UPDATE player_inventory SET player_uuid = ?, nom_item = ?, quantite = ?, position = ?, image_base64 = ? WHERE id = ?"
@@ -131,7 +156,6 @@ public class InventoryListener implements Listener {
                         updateStatement.executeUpdate();
                         updateStatement.close();
                     } else {
-                        // Aucun emplacement vide trouvé, utiliser INSERT INTO pour ajouter un nouvel élément
                         logger.warning("Aucun emplacement vide trouvé dans l'inventaire.");
                     }
 
@@ -146,6 +170,7 @@ public class InventoryListener implements Listener {
             logger.severe("Erreur lors de l'ajout d'un nouvel élément à l'inventaire : " + e.getMessage());
         }
     }
+
 
 
 
