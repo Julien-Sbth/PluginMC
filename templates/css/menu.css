@@ -1,0 +1,191 @@
+html {
+    background-color: #121212;
+    background-image: url('../img/fond-ecran-minecraft-steve-champs.jpg');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    color: white;
+    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5);
+    image-rendering: pixelated;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: "Montserrat", sans-serif;
+    color: white;
+    backdrop-filter: blur(1px) brightness(0.5);
+}
+
+.grid {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    height: 100vh;
+}
+
+.lookup-player {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 25px;
+    padding: 25px;
+    border-radius: 10px;
+    background-color: rgba(18, 18, 18, 0.5);
+    backdrop-filter: blur(16px) brightness(0.5);
+    width: 70%;
+    margin: 50px auto 0;
+}
+
+.lookup-player form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.lookup-player p {
+    font-weight: 600;
+    font-size: 1.2rem;
+    text-align: center;
+}
+
+.lookup-player input {
+    width: 100%;
+    max-width: 300px;
+    height: 2.25em;
+    padding: 0.5em;
+    text-align: center;
+    font-size: 1rem;
+    background-color: rgba(255, 255, 255, 0.1);
+    border: none;
+    border-radius: 5px;
+    color: white;
+    outline: none;
+}
+
+.big-green-button {
+    width: 200px;
+    height: 48px;
+    border-radius: 24px;
+    background-color: #0bca51;
+    color: white;
+    font-weight: 700;
+    font-size: 1rem;
+    text-transform: uppercase;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.big-green-button:hover {
+    background-color: #09ef70;
+}
+
+:root {
+    --icon-hex: #0bca51;
+    --icon-rgb: 11, 202, 81;
+    --link-hex: #0bea51;
+    --link-rgb: 11, 234, 81;
+    --hover-hex: #09ef70;
+    --skillbar: #0baa51;
+    --maxedbar: #ce8f12;
+    --maxed-hex: #dd980e;
+    --gold-hex: #fdbb3c;
+    --text-hex: white;
+    --text-rgb: 255, 255, 255;
+    --background-hex: black;
+    --background-rgb: 0, 0, 0;
+    --header-hex: #282828;
+    --header-rgb: 40, 40, 40;
+    --grey_background-hex: #1e1e1e;
+    --grey_background-rgb: 30, 30, 30;
+    --lore_background-hex: #0f0f0fe6;
+    --bg-hex: #121212;
+    color-scheme: dark;
+}
+header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 48px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: env(safe-area-inset-top, 0);
+    padding-left: max(8px, env(safe-area-inset-left));
+    padding-right: max(8px, env(safe-area-inset-right));
+    background-color: var(--header-hex);
+    z-index: 1000;
+    line-height: 48px;
+    overflow: hidden;
+}
+
+#site_name {
+    display: inline-block;
+    vertical-align: top;
+    text-decoration: none;
+    color: var(--text-hex);
+    font-weight: 600;
+}
+
+.expander {
+    text-decoration: none;
+    -webkit-appearance: none;
+    appearance: none;
+    outline: none;
+    color: white;
+    display: inline-block;
+    vertical-align: middle;
+    position: relative;
+    text-transform: uppercase;
+    box-sizing: unset;
+    height: 16px;
+    font-weight: 600;
+    font-size: 13px;
+    background-color: rgba(var(--text-rgb), 0.7);
+    color: rgba(var(--background-rgb), 0.8);
+    padding: 5px 20px; /* Ajuster l'espacement horizontal */
+    border-radius: 9999px;
+    line-height: normal;
+    transition: background-color 0.1s;
+    border: none;
+}
+
+.site-info {
+    display: flex;
+    align-items: center;
+}
+
+.right-buttons {
+    display: flex;
+    align-items: center;
+}
+
+.spacer {
+    flex-grow: 1;
+}
+
+#packs-button, #themes-button  {
+    -webkit-appearance: none;
+    appearance: none;
+    display: flex;
+    height: 36px;
+    line-height: 36px;
+    box-sizing: border-box;
+    text-transform: capitalize;
+    font-weight: 600;
+    font-size: 14px;
+    color: var(--text-hex);
+    padding: 0 6px;
+    border-radius: 9999px;
+    background-color: rgba(var(--background-rgb), 0.2);
+    border: none;
+    align-items: center;
+}
+
+.button-space {
+    margin-right: 20px;
+}

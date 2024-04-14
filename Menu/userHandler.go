@@ -18,6 +18,7 @@ type PlayerData struct {
 	BlocksDestroy []BlocksDestroy `json:"block_name"`
 	Inventory     []Inventory     `json:"nom_item"`
 	Shop          []Shop          `json:"shop"`
+	PlayerName    string          `json:"playerName"`
 }
 
 type Coin struct {
@@ -29,6 +30,7 @@ type Item struct {
 	PlayerUUID string `json:"player_uuid"`
 	ItemData   string `json:"item_data"`
 	Amount     string `json:"amount"`
+	PlayerID   string
 }
 
 type Kill struct {
@@ -90,6 +92,74 @@ type ResponseData struct {
 	Shop          []Shop          `json:"shop"`
 }
 
+func usernameExists(username string) bool {
+	if playerData.PlayerName == username {
+		return true
+	}
+
+	for _, coin := range playerData.Coins {
+		if coin.PlayerID == username {
+			return true
+		}
+	}
+	for _, item := range playerData.Items {
+		if item.PlayerUUID == username {
+			return true
+		}
+	}
+	for _, kill := range playerData.Kills {
+		if kill.PlayerID == username {
+			return true
+		}
+	}
+	for _, block := range playerData.Blocks {
+		if block.PlayerID == username {
+			return true
+		}
+	}
+	for _, achievement := range playerData.Achievements {
+		if achievement.PlayerID == username {
+			return true
+		}
+	}
+	for _, blocksDestroy := range playerData.BlocksDestroy {
+		if blocksDestroy.PlayerID == username {
+			return true
+		}
+	}
+	for _, inventory := range playerData.Inventory {
+		if inventory.PlayerID == username {
+			return true
+		}
+	}
+	for _, shop := range playerData.Shop {
+		if shop.PlayerID == username {
+			return true
+		}
+	}
+
+	return false
+}
+
+func PlayerInfoHandler(w http.ResponseWriter, r *http.Request) {
+	username := r.FormValue("username")
+
+	if !usernameExists(username) {
+		http.Error(w, "Pseudo non trouvé", http.StatusNotFound)
+		return
+	}
+	tmpl, err := template.ParseFiles("templates/html/user.html")
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	err = tmpl.Execute(w, playerData)
+	if err != nil {
+		http.Error(w, "Erreur lors de l'exécution de la template HTML: "+err.Error(), http.StatusInternalServerError)
+		return
+	}
+}
 func UserHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method != "GET" {
 		http.Error(w, "Méthode non autorisée", http.StatusMethodNotAllowed)
