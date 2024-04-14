@@ -45,7 +45,6 @@ body {
 }
 
 .lookup-player p {
-    font-weight: 600;
     font-size: 1.2rem;
     text-align: center;
 }
@@ -104,12 +103,13 @@ body {
     --bg-hex: #121212;
     color-scheme: dark;
 }
+
 header {
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
-    height: 48px;
+    height: 68px;
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -121,6 +121,10 @@ header {
     z-index: 1000;
     line-height: 48px;
     overflow: hidden;
+}
+
+main {
+    padding-top: 68px; /* Utilise padding-top pour compenser la hauteur du header */
 }
 
 #site_name {
@@ -136,14 +140,12 @@ header {
     -webkit-appearance: none;
     appearance: none;
     outline: none;
-    color: white;
     display: inline-block;
     vertical-align: middle;
     position: relative;
     text-transform: uppercase;
     box-sizing: unset;
     height: 16px;
-    font-weight: 600;
     font-size: 13px;
     background-color: rgba(var(--text-rgb), 0.7);
     color: rgba(var(--background-rgb), 0.8);
@@ -163,7 +165,9 @@ header {
     display: flex;
     align-items: center;
 }
-
+#button1 {
+    color: black;
+}
 .spacer {
     flex-grow: 1;
 }
@@ -176,7 +180,6 @@ header {
     line-height: 36px;
     box-sizing: border-box;
     text-transform: capitalize;
-    font-weight: 600;
     font-size: 14px;
     color: var(--text-hex);
     padding: 0 6px;

@@ -6,6 +6,16 @@
     height: 128px;
     background-position: -128px 0;
 }
+.img {
+    background-color: #121212;
+    background-image: url('../img/fond-ecran-minecraft-steve-champs.jpg');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    color: white;
+    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5);
+    image-rendering: pixelated;
+}
 :root {
     --icon-hex: #0bca51;
     --icon-rgb: 11, 202, 81;
