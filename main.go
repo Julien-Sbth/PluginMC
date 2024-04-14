@@ -13,6 +13,8 @@ func main() {
 	http.HandleFunc("/api", Menu.ApiHandler)
 	http.HandleFunc("/api/user", Menu.UserHandler)
 	http.HandleFunc("/data", Menu.ZombieKillsHandler)
+	http.HandleFunc("/login", Menu.HandleLogin)
+	http.HandleFunc("/register", Menu.HandleRegister)
 	http.HandleFunc("/api/player/search", Menu.PlayerInfoHandler)
 	http.HandleFunc("/", Menu.HandleMenu)
 
