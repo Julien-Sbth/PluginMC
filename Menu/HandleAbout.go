@@ -6,7 +6,7 @@ import (
 )
 
 func HandleAbout(w http.ResponseWriter, r *http.Request) {
-	tmpl, err := template.ParseFiles("templates/html/about.html")
+	tmpl, err := template.ParseFiles("templates/html/Menu/about.html")
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return

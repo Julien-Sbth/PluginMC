@@ -56,7 +56,7 @@ func HandleLogin(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, "/", http.StatusFound)
 		return
 	}
-	tmpl, err := template.ParseFiles("templates/html/login.html")
+	tmpl, err := template.ParseFiles("templates/html/Connexion/login.html")
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return

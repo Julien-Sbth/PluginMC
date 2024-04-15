@@ -22,7 +22,7 @@ func HandleMenu(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if username, ok := session.Values["username"].(string); ok {
-		tmpl, err := template.ParseFiles("templates/html/index.html")
+		tmpl, err := template.ParseFiles("templates/html/Menu/index.html")
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return

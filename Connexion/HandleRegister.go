@@ -61,7 +61,7 @@ func HandleRegister(w http.ResponseWriter, r *http.Request) {
 				ErrorEmail:       "L'email est déjà pris",
 			}
 
-			tmpl, err := template.ParseFiles("templates/html/register.html")
+			tmpl, err := template.ParseFiles("templates/html/Connexion/register.html")
 			if err != nil {
 				http.Error(w, err.Error(), http.StatusInternalServerError)
 				return
@@ -86,7 +86,7 @@ func HandleRegister(w http.ResponseWriter, r *http.Request) {
 			data := RegisterData{
 				ErrorMessage: "L'email est déjà utilisé",
 			}
-			tmpl, err := template.ParseFiles("templates/html/Erreur/error.html")
+			tmpl, err := template.ParseFiles("templates/html/Connexion/register.html")
 			if err != nil {
 				http.Error(w, err.Error(), http.StatusInternalServerError)
 				return
@@ -126,7 +126,7 @@ func HandleRegister(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	tmpl, err := template.ParseFiles("templates/html/register.html")
+	tmpl, err := template.ParseFiles("templates/html/Connexion/register.html")
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return

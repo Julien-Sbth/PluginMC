@@ -166,7 +166,7 @@ func UserHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	tmpl, err := template.ParseFiles("templates/html/user.html")
+	tmpl, err := template.ParseFiles("templates/html/User/user.html")
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
