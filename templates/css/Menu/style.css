@@ -8,7 +8,7 @@
 }
 .img {
     background-color: #121212;
-    background-image: url('../img/fond-ecran-minecraft-steve-champs.jpg');
+    background-image: url('../../img/fond-ecran-minecraft-steve-champs.jpg');
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
@@ -94,8 +94,6 @@ ul li {
     height: 8px;
     top: calc(100% - 3px)
 }
-
-
 
 .info-container-wrapper~.stat-misc {
     margin-top: 35px !important
@@ -306,7 +304,6 @@ inventory-view .inventory-slot {
     background-color: rgba(var(--text-rgb), 0.04);
     border-radius: 5px;
     image-rendering: pixelated;
-
 }
 
 inventory-view hr {
@@ -373,27 +370,3 @@ h2:nth-of-type(6) ~ .blocks {
 .grid-item:hover {
     opacity: 1;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

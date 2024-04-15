@@ -1,6 +1,6 @@
 @font-face {
     font-family: SilkscreenNormal;
-    src: url(Connexion/slkscr.ttf), url(Connexion/slkscr.eot);
+    src: url(../../poilce/slkscr.ttf), url(../../poilce/slkscr.eot);
     font-weight: 400;
     font-style: normal;
 }
@@ -11,13 +11,13 @@
 }
 .login-content {
     display: flex;
-    justify-content: center; /* Centrer horizontalement */
-    align-items: center; /* Centrer verticalement */
+    justify-content: center;
+    align-items: center;
     text-align: center;
-    height: 100vh; /* Pour occuper toute la hauteur de l'écran */
-    background-image: url('background.jpg'); /* Remplacez 'chemin/vers/votre/image.jpg' par le chemin de votre image */
-    background-size: cover; /* Redimensionne l'image pour couvrir toute la zone */
-    background-position: center; /* Centre l'image */
+    height: 100vh;
+    background-image: url('../../img/background.jpg');
+    background-size: cover;
+    background-position: center;
 }
 
 .title {
@@ -31,13 +31,13 @@
     width: 405px;
     text-align: center;
     color: white;
-    background: url("Connexion/btn1.png") no-repeat;
+    background: url("../../img/btn1.png") no-repeat;
     font-family: SilkscreenNormal, serif;
     border: none;
     outline: none;
     font-weight: bold;
     font-size: 16px;
-    line-height: 40px; /* Ajustement pour centrer verticalement */
+    line-height: 40px;
     margin-bottom: 10px;
 }
 .minecraft-input::placeholder {
@@ -45,7 +45,7 @@
     opacity: 0.7;
 }
 .minecraft-input:hover {
-    background: url("Connexion/btn2.png") no-repeat;
+    background: url("../../img/btn2.png") no-repeat;
 }
 .div {
     margin-bottom: 10px;
@@ -68,19 +68,16 @@
 .btn:hover {
     background-color: #45a049;
 }
-/* Nouvelle règle CSS pour placer les boutons en colonne */
-/* Nouvelle règle CSS pour placer les boutons en colonne */
+
 .button-group {
     display: flex;
     flex-direction: column;
-    align-items: center; /* Centrer horizontalement */
-    margin-top: auto; /* Déplace le bouton "Log in" en bas */
+    align-items: center;
+    margin-top: auto;
 }
 
 
 .test {
     margin-top: 10px;
-    align-self: flex-end; /* Place le bouton "Log in" en bas */
+    align-self: flex-end;
 }
-
-
