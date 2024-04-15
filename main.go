@@ -15,6 +15,8 @@ func main() {
 	http.HandleFunc("/data", Menu.ZombieKillsHandler)
 	http.HandleFunc("/login", Menu.HandleLogin)
 	http.HandleFunc("/register", Menu.HandleRegister)
+	http.HandleFunc("/logout", Menu.HandleLogout)
+	http.HandleFunc("/shop", Menu.HandleShop)
 	http.HandleFunc("/api/player/search", Menu.PlayerInfoHandler)
 	http.HandleFunc("/", Menu.HandleMenu)
 
