@@ -1,30 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <meta charset="UTF-8">
+    <script src="https://kit.fontawesome.com/c3e7b9f4c8.js" crossorigin="anonymous"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="/templates/css/menu.css">
-    <title>Recherche de joueur</title>
+    <title>Home</title>
 </head>
 <body>
 <header>
+
     <div class="site-info">
         <a href="/" id="site_name">PluginMC</a>
         <span class="button-space"></span>
         <a href="/about" class="expander" id="info-button" aria-expanded="false"><span>About</span></a>
-
         <span class="button-space"></span>
+        <a href="/shop" class="expander" id="shop" aria-expanded="false"><span>Shop</span></a>
+
         <span class="spacer"></span>
     </div>
     <div class="right-buttons">
+        {{ if .IsLoggedIn }}
+        <a href="/logout" class="expander">Déconnexion</a>
+        {{ else }}
         <a href="/register" class="expander" id="button1"><span>Register</span></a>
         <span class="button-space"></span>
         <a href="/login" class="expander" id="button2"><span>Login</span></a>
         <span class="button-space"></span>
-        <a href="/" target="_blank" rel="noreferrer" data-tippy-content="" class="blm-logo" aria-label="Black Lives Matter"></a>
+        {{ end }}
     </div>
 </header>
-
 <main class="grid">
 
     <form action="/api/player/search" method="GET" class="lookup-player">
@@ -34,9 +40,13 @@
         <input type="text" id="username" name="username" required placeholder="test">
         <button type="submit" class="big-green-button">Show me</button>
     </form>
+    <!--
     {{if ne .ErrorMessage ""}}
     <p style="color: red;">{{.ErrorMessage}}</p>
     {{end}}
+    -->
+    <h1>Bienvenue {{ .Username }}!</h1>
+
 </main>
 </body>
 </html>
