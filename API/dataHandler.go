@@ -1,4 +1,4 @@
-package Menu
+package API
 
 import (
 	"encoding/base64"

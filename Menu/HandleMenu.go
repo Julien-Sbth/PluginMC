@@ -1,6 +1,7 @@
 package Menu
 
 import (
+	"APIMC/Connexion"
 	"database/sql"
 	"html/template"
 	"net/http"
@@ -14,7 +15,7 @@ func HandleMenu(w http.ResponseWriter, r *http.Request) {
 	}
 	defer db.Close()
 
-	session, err := Store.Get(r, SessionName)
+	session, err := Connexion.Store.Get(r, Connexion.SessionName)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return

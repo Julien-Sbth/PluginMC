@@ -1,4 +1,4 @@
-package Menu
+package API
 
 import (
 	"html/template"
