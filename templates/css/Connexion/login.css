@@ -1,0 +1,86 @@
+@font-face {
+    font-family: SilkscreenNormal;
+    src: url(Connexion/slkscr.ttf), url(Connexion/slkscr.eot);
+    font-weight: 400;
+    font-style: normal;
+}
+* {
+    margin: 0;
+    top: 0;
+    left: 0;
+}
+.login-content {
+    display: flex;
+    justify-content: center; /* Centrer horizontalement */
+    align-items: center; /* Centrer verticalement */
+    text-align: center;
+    height: 100vh; /* Pour occuper toute la hauteur de l'écran */
+    background-image: url('background.jpg'); /* Remplacez 'chemin/vers/votre/image.jpg' par le chemin de votre image */
+    background-size: cover; /* Redimensionne l'image pour couvrir toute la zone */
+    background-position: center; /* Centre l'image */
+}
+
+.title {
+    font-family: SilkscreenNormal, serif;
+}
+.i {
+    margin-bottom: 10px;
+}
+.minecraft-input {
+    height: 40px;
+    width: 405px;
+    text-align: center;
+    color: white;
+    background: url("Connexion/btn1.png") no-repeat;
+    font-family: SilkscreenNormal, serif;
+    border: none;
+    outline: none;
+    font-weight: bold;
+    font-size: 16px;
+    line-height: 40px; /* Ajustement pour centrer verticalement */
+    margin-bottom: 10px;
+}
+.minecraft-input::placeholder {
+    color: white;
+    opacity: 0.7;
+}
+.minecraft-input:hover {
+    background: url("Connexion/btn2.png") no-repeat;
+}
+.div {
+    margin-bottom: 10px;
+}
+.error-password {
+    color: red;
+}
+#log-in {
+    margin-top: 10px;
+}
+.btn {
+    background-color: #4CAF50;
+    color: white;
+    padding: 15px 20px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    text-decoration: none;
+}
+.btn:hover {
+    background-color: #45a049;
+}
+/* Nouvelle règle CSS pour placer les boutons en colonne */
+/* Nouvelle règle CSS pour placer les boutons en colonne */
+.button-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centrer horizontalement */
+    margin-top: auto; /* Déplace le bouton "Log in" en bas */
+}
+
+
+.test {
+    margin-top: 10px;
+    align-self: flex-end; /* Place le bouton "Log in" en bas */
+}
+
+
