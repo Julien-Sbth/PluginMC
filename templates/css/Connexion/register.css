@@ -1,6 +1,6 @@
 @font-face {
     font-family: SilkscreenNormal;
-    src: url(../../poilce/slkscr.ttf), url(../../poilce/slkscr.eot);
+    src: url(../../police/slkscr.ttf), url(../../police/slkscr.eot);
     font-weight: 400;
     font-style: normal;
 }
@@ -15,7 +15,7 @@
     align-items: center;
     text-align: center;
     height: 100vh;
-    background-image: url('../../img/background.jpg');
+    background-image: url('../../img/steve-champs.jpg');
     background-size: cover;
     background-position: center;
 }
@@ -79,4 +79,10 @@
 .test {
     margin-top: 10px;
     align-self: flex-end;
+}
+.sign-in-form {
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Ajoute une ombre avec un flou de 10px */
+    border-radius: 10px; /* Ajoute des coins arrondis */
+    padding: 20px; /* Ajoute un peu d'espace à l'intérieur du formulaire pour laisser de la place à l'ombre */
+    background-color: rgba(255, 255, 255, 0.9); /* Ajoute un fond semi-transparent pour atténuer l'effet de l'ombre */
 }

@@ -16,9 +16,9 @@
         </div>
         <div class="button-group">
             <label for="username"></label>
-            <input type="text" class="minecraft-input"  name="username" id="username" placeholder="Entrez votre texte ici">
+            <input type="text" class="minecraft-input"  name="username" id="username" placeholder="Entrez votre Username ici">
             <label for="password"></label>
-            <input type="password" name="password" id="password" class="minecraft-input" placeholder="Entrez votre texte ici">
+            <input type="password" name="password" id="password" class="minecraft-input" placeholder="Entrez votre Mot De Passe ici">
         </div>
         <div class="div">
             <label for="username"></label>
@@ -27,11 +27,12 @@
         {{ if .Password }}
         <p class="error-password">{{ .ErrorPassw0rd }}</p>
         {{ end }}
-        <a href="/register" id="">Doesnt have an account ?</a>
-        <a href="/password" id="forgotPws">Forgot Password?</a>
-        <div class="test">
-        <button id="log-in" class="btn" type="submit">Log in</button>
+        <div class="button-group">
+            <button class="minecraft-button" type="submit">Log in</button>
+            <a href="/register" class="minecraft-button">Doesn't have an account ?</a>
+            <a href="/password" class="minecraft-button">Forgot Password?</a>
         </div>
+
     </form>
 </div>
 </body>
