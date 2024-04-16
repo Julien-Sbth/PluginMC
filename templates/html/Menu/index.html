@@ -21,6 +21,9 @@
     </div>
     <div class="right-buttons">
         {{ if .IsLoggedIn }}
+        <a href="/settings" id="gearButton" class="expander"><span>Settings</span>
+            <i class="fas fa-cog"></i>
+        </a>
         <a href="/logout" class="expander">Déconnexion</a>
         {{ else }}
         <a href="/register" class="expander" id="button1"><span>Register</span></a>
@@ -44,7 +47,10 @@
     <p style="color: red;">{{.ErrorMessage}}</p>
     {{end}}
     -->
+    {{ if .IsLoggedIn }}
     <h1>Bienvenue {{ .Username }} !</h1>
+    {{ else }}
+    {{ end }}
 
 </main>
 </body>
