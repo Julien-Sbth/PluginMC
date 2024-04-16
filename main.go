@@ -18,8 +18,9 @@ func main() {
 	http.HandleFunc("/login", Connexion.HandleLogin)
 	http.HandleFunc("/register", Connexion.HandleRegister)
 	http.HandleFunc("/about", Menu.HandleAbout)
-
+	http.HandleFunc("/delete-account", Connexion.HandleDeleteAccount)
 	http.HandleFunc("/logout", Connexion.HandleLogout)
+	http.HandleFunc("/settings", Connexion.HandleProfile)
 	http.HandleFunc("/shop", Menu.HandleShop)
 	http.HandleFunc("/api/player/search", API.PlayerInfoHandler)
 	http.HandleFunc("/", Menu.HandleMenu)
