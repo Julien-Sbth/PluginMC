@@ -31,10 +31,15 @@
         <a href="/login" class="expander" id="button2"><span>Login</span></a>
         <span class="button-space"></span>
         {{ end }}
+
+        {{ if .IsAdmin }}
+        <a href="/panel" class="expander" id=""><span>Panneau de Configuration</span></a>
+        {{ else }}
+        <p>fils de pute</p>
+        {{ end }}
     </div>
 </header>
 <main class="grid">
-
     <form action="/api/player/search" method="GET" class="lookup-player">
         <label for="username">
             <h1>Show Player Stats</h1>
@@ -51,7 +56,6 @@
     <h1>Bienvenue {{ .Username }} !</h1>
     {{ else }}
     {{ end }}
-
 </main>
 </body>
 </html>

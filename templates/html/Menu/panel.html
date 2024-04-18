@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Panel</title>
+</head>
+<body>
+<h1>Admin Panel</h1>
+
+<form id="createPlayerForm">
+  <label for="name">Name:</label><br>
+  <input type="text" id="name" name="name" required><br>
+
+  <label for="score">Score:</label><br>
+  <input type="number" id="score" name="score" required><br>
+
+  <label for="coins">Coins:</label><br>
+  <input type="number" id="coins" name="coins" required><br>
+
+  <label for="kills">Kills:</label><br>
+  <input type="number" id="kills" name="kills" required><br>
+
+  <label for="entity_type">Entity Type:</label><br>
+  <input type="number" id="entity_type" name="entity_type" required><br>
+
+  <label for="blocks">Blocks Moved:</label><br>
+  <input type="text" id="blocks" name="blocks" required><br>
+
+  <label for="achievements">Achievements:</label><br>
+  <input type="number" id="achievements" name="achievements" required><br>
+
+  <label for="itemName">Item Name:</label><br>
+  <input type="text" id="itemName" name="item_name" required><br>
+
+  <label for="quantity">Quantity:</label><br>
+  <input type="number" id="quantity" name="quantity" required><br>
+
+  <label for="price">Price:</label><br>
+  <input type="number" id="price" name="price" required><br>
+
+  <label for="purchase_date">Purchase Date:</label><br>
+  <input type="text" id="purchase_date" name="purchase_date" required><br>
+
+  <label for="blockName">Block Name:</label><br>
+  <input type="text" id="blockName" name="block_name" required><br>
+
+  <label for="position">Position:</label><br>
+  <input type="number" id="position" name="position" required><br>
+
+  <label for="nomItem">Nom Item:</label><br>
+  <input type="text" id="nomItem" name="nom_item" required><br>
+
+  <br><br>
+  <button type="button" onclick="createPlayer()">Create Player</button>
+</form>
+
+
+
+
+<h2>All Players</h2>
+<ul id="playerList">
+</ul>
+
+<h2>Update Player</h2>
+<form id="updatePlayerForm">
+  <label for="updateId">Player ID to Update:</label><br>
+  <input type="number" id="updateId" name="id" required><br>
+  <label for="updateName">New Name:</label><br>
+  <input type="text" id="updateName" name="name" required><br>
+  <label for="updateScore">New Score:</label><br>
+  <input type="number" id="updateScore" name="score" required><br><br>
+  <button type="submit" onclick="updatePlayer()">Update Player</button>
+</form>
+
+<h2>Delete Player</h2>
+<form id="deletePlayerForm">
+  <label for="deleteId">Player ID to Delete:</label><br>
+  <input type="number" id="deleteId" name="id" required><br><br>
+  <button type="submit">Delete Player</button>
+</form>
+
+<script>
+  function fetchPlayers() {
+    const playerList = document.getElementById("playerList");
+    if (!playerList) return;
+
+    fetch("/read")
+            .then(response => response.json())
+            .then(data => {
+              playerList.innerHTML = "";
+
+              if (data) {
+                data.forEach(player => {
+                  const listItem = document.createElement("li");
+                  listItem.textContent = `ID: ${player.id}, Name: ${player.name}, Score: ${player.score}, Coins: ${player.coins}, Kills: ${player.kills}, EntityType: ${player.entityType}, Blocks: ${player.blocks}, Achievements: ${player.achievements}, ItemName: ${player.itemName}, Quantity: ${player.quantity}, Price: ${player.price}, PurchaseDate: ${player.purchaseDate}, BlockName: ${player.blockName}, NomBlocks: ${player.nomBlocks}, Position: ${player.position}, NomItem: ${player.nomItem}`;
+                  playerList.appendChild(listItem);
+                });
+              } else {
+                console.error('No player data received.');
+              }
+            })
+            .catch(error => console.error('Error fetching players:', error));
+  }
+
+  // Variable globale pour stocker l'ID actuel
+  let currentId = 0;
+
+  function createPlayer() {
+    // Incrémente l'ID actuel
+    currentId++;
+
+    // Récupère les données du formulaire
+    const name = document.getElementById("name").value;
+    const score = document.getElementById("score").value;
+    const coins = document.getElementById("coins").value;
+    const kills = document.getElementById("kills").value;
+    const entityType = document.getElementById("entity_type").value;
+    const blocks = document.getElementById("blocks").value;
+    const achievements = document.getElementById("achievements").value;
+    const itemName = document.getElementById("itemName").value;
+    const quantity = document.getElementById("quantity").value;
+    const price = document.getElementById("price").value;
+    const purchaseDate = document.getElementById("purchase_date").value;
+    const blockName = document.getElementById("blockName").value;
+    const position = document.getElementById("position").value;
+    const nomItem = document.getElementById("nomItem").value;
+
+    // Crée un objet avec les données du joueur
+    const data = {
+      id: currentId, // Utilise l'ID actuel
+      name: name,
+      score: parseInt(score),
+      coins: parseInt(coins),
+      kills: parseInt(kills),
+      entityType: entityType,
+      blocks: blocks,
+      achievements: parseInt(achievements),
+      itemName: itemName,
+      quantity: parseInt(quantity),
+      price: parseInt(price),
+      purchase_date: purchaseDate,
+      blockName: blockName,
+      position: parseInt(position),
+      nomItem: nomItem
+    };
+
+    // Envoie les données au serveur pour la création du joueur
+    fetch("/create", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(data)
+    })
+            .then(response => {
+              if (response.ok) {
+                console.log("Player created successfully");
+                fetch("/api", {
+                  method: "POST",
+                  headers: {
+                    "Content-Type": "application/json"
+                  },
+                  body: JSON.stringify(data)
+                })
+                        .then(response => {
+                          if (response.ok) {
+                            console.log("Player data sent to API successfully");
+                            // Ajoute ici toute autre action à effectuer après l'envoi des données à l'API
+                          } else {
+                            console.error("Failed to send player data to API:", response.status);
+                          }
+                        })
+                        .catch(error => console.error("Error sending player data to API:", error));
+              } else {
+                console.error("Failed to create player locally:", response.status);
+              }
+            })
+            .catch(error => console.error("Error creating player locally:", error));
+  }
+
+
+
+
+  document.getElementById("deletePlayerForm").addEventListener("submit", function (event) {
+    event.preventDefault();
+    const formData = new FormData(this);
+    fetch("/delete", {
+      method: "POST",
+      body: formData
+    })
+            .then(response => {
+              if (response.ok) {
+                fetchPlayers();
+                this.reset();
+              } else {
+                console.error('Delete player failed:', response.status);
+              }
+            })
+            .catch(error => console.error('Error deleting player:', error));
+  });
+
+  function updatePlayer() {
+    const updateId = document.getElementById("updateId").value;
+    const updateName = document.getElementById("updateName").value;
+    const updateScore = document.getElementById("updateScore").value;
+
+    const data = {
+      id: parseInt(updateId),
+      name: updateName,
+      score: parseInt(updateScore)
+    };
+
+    fetch("/update", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(data)
+    })
+            .then(response => {
+              if (response.ok) {
+                fetchPlayers();
+                document.getElementById("updatePlayerForm").reset();
+              } else {
+                console.error('Update player failed:', response.status);
+              }
+            })
+            .catch(error => console.error('Error updating player:', error));
+  }
+
+  document.addEventListener("DOMContentLoaded", fetchPlayers);
+</script>
+</body>
+</html>
