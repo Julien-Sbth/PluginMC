@@ -9,32 +9,33 @@
     <link rel="stylesheet" href="/templates/css/Connexion/register.css">
 </head>
 <body>
-<div class="inscription-content">
-    <form action="/admin" class="sign-in-form" method="post">
-        <h2 class="title">ForUs</h2>
-        <div class="i">
-            <i class="fas fa-user"></i>
-        </div>
-        <div class="button-group">
-            <label for="username"></label>
-            <input type="text" class="minecraft-input"  name="username" id="username" placeholder="Entrez votre Username ici">
-
-            {{ if .ExistingUsername }}
-            <p class="error-message">{{ .ErrorMessage }}</p>
-            {{ end }}
-            <label for="password"></label>
-            <input type="password" name="password" id="password" class="minecraft-input" placeholder="Entrez votre Mot De Passe ici">
-
-            <label for="email"></label>
-            <input type="text" id="email" name="email" class="minecraft-input" required placeholder="Entrer votre Adresse Email">
-        </div>
+<form action="/admin" class="sign-in-form" method="post">
+    <h2 class="title">ForUs</h2>
+    <div class="input-container">
+        <i class="fas fa-user"></i>
+        <input type="text" class="minecraft-input" name="username" id="username" placeholder="Entrez votre Username ici">
+        {{ if .ExistingUsername }}
+        <p class="error-message">{{ .ErrorMessage }}</p>
+        {{ end }}
+    </div>
+    {{ if .ExistingUsername }}
+    <p class="error-message">{{ .ErrorMessage }}</p>
+    {{ end }}
+    <div class="input-container">
+        <i class="fas fa-lock"></i>
+        <input type="password" name="password" id="password" class="minecraft-input" placeholder="Entrez votre Mot De Passe ici">
         {{ if .ExistingEmail }}
         <p class="error-email">{{ .ErrorEmail }}</p>
         {{ end }}
-        <div class="test">
-            <button id="log-in" class="minecraft-input" type="submit">S'inscrire</button>
-        </div>
-    </form>
+    </div>
+    <div class="input-container">
+        <i class="fas fa-envelope"></i>
+        <input type="text" id="email" name="email" class="minecraft-input" required placeholder="Entrer votre Adresse Email">
+    </div>
+    <div class="test">
+        <button id="log-in" class="minecraft-input center-button" type="submit">S'inscrire</button>
+    </div>
+</form>
 </div>
 </body>
 </html>

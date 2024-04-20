@@ -15,12 +15,13 @@
     align-items: center;
     text-align: center;
     height: 100vh;
-    background-image: url('../../img/steve-champs.jpg');
+    background-image: url('../../img/background.jpg');
     background-size: cover;
     background-position: center;
 }
 
 .title {
+    margin-bottom: 15px;
     font-family: SilkscreenNormal, serif;
 }
 .i {
@@ -70,12 +71,12 @@
 }
 
 .button-group {
-    display: flex;
+    display: block;
+    /* Ajoute une marge de 5px à droite du bouton */
+    margin: 0 auto 0 15px;
     flex-direction: column;
     align-items: center;
-    margin-top: auto;
 }
-
 
 .test {
     margin-top: 10px;
@@ -85,8 +86,8 @@ a {
     text-decoration: none;
 }
 .sign-in-form {
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Ajoute une ombre avec un flou de 10px */
-    border-radius: 10px; /* Ajoute des coins arrondis */
-    padding: 20px; /* Ajoute un peu d'espace à l'intérieur du formulaire pour laisser de la place à l'ombre */
-    background-color: rgba(255, 255, 255, 0.9); /* Ajoute un fond semi-transparent pour atténuer l'effet de l'ombre */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    border-radius: 10px;
+    padding: 20px;
+    background-color: rgba(255, 255, 255, 0.9);
 }

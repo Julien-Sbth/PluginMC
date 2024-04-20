@@ -21,6 +21,7 @@
 }
 
 .title {
+    margin-bottom: 15px;
     font-family: SilkscreenNormal, serif;
 }
 .i {
@@ -81,8 +82,14 @@
     align-self: flex-end;
 }
 .sign-in-form {
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Ajoute une ombre avec un flou de 10px */
-    border-radius: 10px; /* Ajoute des coins arrondis */
-    padding: 20px; /* Ajoute un peu d'espace à l'intérieur du formulaire pour laisser de la place à l'ombre */
-    background-color: rgba(255, 255, 255, 0.9); /* Ajoute un fond semi-transparent pour atténuer l'effet de l'ombre */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    border-radius: 10px;
+    padding: 20px;
+    background-color: rgba(255, 255, 255, 0.9);
+}
+
+.center-button {
+    display: block;
+    margin: 0 auto;
+    margin-right: 5px;
 }
