@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Paramètres</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -33,24 +33,47 @@
             font-size: 16px;
             margin-top: 20px;
             transition: background-color 0.3s ease;
+            outline: none; /* Supprime la bordure bleue lors du focus */
         }
 
         .connexion-button:hover {
             background-color: #2980b9;
         }
+
+        /* Style pour le formulaire */
+        form {
+            display: inline-block;
+        }
+
+        /* Style pour les titres */
+        h2 {
+            color: #444;
+            margin-top: 30px;
+        }
+
+        /* Style pour le lien de connexion */
+        .login-link {
+            color: #3498db;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .login-link:hover {
+            text-decoration: underline;
+        }
     </style>
 </head>
 <body>
-<h1>Profile</h1>
+<h1>Paramètres</h1>
 {{if .IsLoggedIn}}
-<h2>Username: {{.Username}}</h2>
+<h2>Nom d'utilisateur: {{.Username}}</h2>
 <h2>Email: {{.Email}}</h2>
 <h2>Date d'inscription: {{.DateInscription}}</h2>
 <form action="/delete-account" method="POST">
-    <button type="submit">Supprimer le compte</button>
+    <button type="submit" class="connexion-button">Supprimer le compte</button>
 </form>
 {{else}}
-<p>Veuillez vous connecter pour accéder à votre profil.</p>
+<p>Veuillez vous connecter pour accéder à vos paramètres. <a href="/login" class="login-link">Connexion</a></p>
 {{end}}
 </body>
 </html>
