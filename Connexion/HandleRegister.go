@@ -52,7 +52,11 @@ func HandleAdministrator(w http.ResponseWriter, r *http.Request) {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
-
+		_, err = db.Exec("UPDATE utilisateurs SET date_inscription = CURRENT_TIMESTAMP WHERE username = ?", adminUsername)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
 		// Redirection vers la page de connexion
 		http.Redirect(w, r, "/login", http.StatusFound)
 		return
