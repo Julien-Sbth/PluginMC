@@ -83,8 +83,6 @@ public class InventoryListener implements Listener {
         }
     }
 
-
-
     private void ajouterItem(UUID joueurUUID, String nomItem, int quantite, String imageBase64) {
         try {
             if (connection != null) {
@@ -99,7 +97,6 @@ public class InventoryListener implements Listener {
                     int itemId = itemResult.getInt("id");
                     int existingQuantity = itemResult.getInt("quantite");
 
-                    // Si la quantité existante + la quantité à ajouter dépasse 64, créer une nouvelle entrée
                     if (existingQuantity + quantite > 64) {
                         PreparedStatement selectEmptyStatement = connection.prepareStatement(
                                 "SELECT id FROM player_inventory WHERE nom_item = '' AND quantite = 0 AND position = 0 AND image_base64 = '' OR id = (SELECT MIN(id) FROM player_inventory WHERE id > (SELECT MAX(id) FROM player_inventory WHERE nom_item != '' AND quantite != 0 AND position != 0 AND image_base64 != '')) LIMIT 1"
@@ -125,7 +122,6 @@ public class InventoryListener implements Listener {
 
                         selectEmptyStatement.close();
                     } else {
-                        // La quantité totale est toujours inférieure ou égale à 64, mettre à jour la quantité existante
                         int updatedQuantity = existingQuantity + quantite;
                         PreparedStatement updateStatement = connection.prepareStatement(
                                 "UPDATE player_inventory SET quantite = ? WHERE id = ?"
@@ -136,7 +132,6 @@ public class InventoryListener implements Listener {
                         updateStatement.close();
                     }
                 } else {
-                    // L'élément n'existe pas encore, donc l'insérer dans la base de données
                     PreparedStatement selectEmptyStatement = connection.prepareStatement(
                             "SELECT id FROM player_inventory WHERE nom_item = '' AND quantite = 0 AND position = 0 AND image_base64 = '' OR id = (SELECT MIN(id) FROM player_inventory WHERE id > (SELECT MAX(id) FROM player_inventory WHERE nom_item != '' AND quantite != 0 AND position != 0 AND image_base64 != '')) LIMIT 1"
                     );
@@ -170,12 +165,6 @@ public class InventoryListener implements Listener {
             logger.severe("Erreur lors de l'ajout d'un nouvel élément à l'inventaire : " + e.getMessage());
         }
     }
-
-
-
-
-
-
 
     private int getNextAvailablePosition(UUID joueurUUID) {
         try {
@@ -235,8 +224,6 @@ public class InventoryListener implements Listener {
             logger.severe("Erreur lors de la mise à jour de la quantité de l'élément de l'inventaire : " + e.getMessage());
         }
     }
-
-
 
     private String getImageBase64(String nomItem) {
         String dossierImages = "images" + File.separator;
