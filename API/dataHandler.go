@@ -37,8 +37,27 @@ func displayAndEncode(playerData PlayerData) ([]byte, error) {
 
 		playerData.Kills[i].ImagePath = imagePath
 
-		// Stocker l'image décodée pour l'affichage dans le template HTML
 		playerData.Kills[i].ImageData = base64.StdEncoding.EncodeToString(imageData)
+	}
+
+	for i, itemShop := range playerData.ShopItem {
+		imageData, err := base64.StdEncoding.DecodeString(itemShop.ImagePath)
+		if err != nil {
+			fmt.Printf("Erreur lors du décodage de l'image base64 pour l'élément %s: %s\n", itemShop.ItemsName, err)
+			continue
+		}
+
+		imagePath := "monster/" + itemShop.ItemsName + ".png"
+		err = ioutil.WriteFile(imagePath, imageData, 0644)
+		if err != nil {
+			fmt.Printf("Erreur lors de l'enregistrement de l'image pour l'élément %s: %s\n", itemShop.ItemsName, err)
+			continue
+		}
+
+		playerData.ShopItem[i].ImagePath = imagePath
+
+		// Stocker l'image décodée pour l'affichage dans le template HTML
+		playerData.ShopItem[i].ImageData = base64.StdEncoding.EncodeToString(imageData)
 	}
 
 	fmt.Println("Blocks:")
@@ -105,6 +124,7 @@ func displayAndEncode(playerData PlayerData) ([]byte, error) {
 		Achievements:  playerData.Achievements,
 		BlocksDestroy: playerData.BlocksDestroy,
 		Inventory:     playerData.Inventory,
+		ShopItem:      playerData.ShopItem,
 	}
 
 	jsonResponse, err := json.Marshal(responseData)

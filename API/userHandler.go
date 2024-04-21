@@ -19,13 +19,21 @@ type PlayerData struct {
 	Inventory     []Inventory     `json:"nom_item"`
 	Shop          []Shop          `json:"shop"`
 	PlayerName    string          `json:"playerName"`
+	ShopItem      []ShopItem      `json:"shop_item"`
 }
 
 type Coin struct {
 	PlayerID string `json:"player_id"`
 	Coins    string `json:"coins"`
 }
-
+type ShopItem struct {
+	ID        string `json:"id"`
+	ItemsName string `json:"item_name"`
+	Quantity  string `json:"quantity"`
+	Price     string `json:"price"`
+	ImagePath string `json:"image_base64"`
+	ImageData string
+}
 type Item struct {
 	PlayerUUID string `json:"player_uuid"`
 	ItemData   string `json:"item_data"`
@@ -90,6 +98,7 @@ type ResponseData struct {
 	BlocksDestroy []BlocksDestroy `json:"block_name"`
 	Inventory     []Inventory     `json:"nom_item"`
 	Shop          []Shop          `json:"shop"`
+	ShopItem      []ShopItem      `json:"shop_item"`
 }
 
 func usernameExists(username string) bool {
@@ -148,7 +157,7 @@ func PlayerInfoHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Pseudo non trouvé", http.StatusNotFound)
 		return
 	}
-	tmpl, err := template.ParseFiles("templates/html/user.html")
+	tmpl, err := template.ParseFiles("templates/html/User/user.html")
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return

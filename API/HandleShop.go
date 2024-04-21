@@ -1,4 +1,4 @@
-package Menu
+package API
 
 import (
 	"html/template"
@@ -11,7 +11,10 @@ func HandleShop(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	if err := tmpl.Execute(w, nil); err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+
+	err = tmpl.Execute(w, playerData)
+	if err != nil {
+		http.Error(w, "Erreur lors de l'exécution de la template HTML: "+err.Error(), http.StatusInternalServerError)
+		return
 	}
 }
