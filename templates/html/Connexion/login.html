@@ -12,12 +12,12 @@
     <form action="/login" class="sign-in-form" method="post">
         <h2 class="title">ForUs</h2>
         <div class="input-container">
-            <i class="fas fa-user"></i>
             <input type="text" class="minecraft-input" name="username" id="username" placeholder="Entrez votre Username ici">
+            <i class="fas fa-user"></i>
         </div>
         <div class="input-container">
-            <i class="fas fa-lock"></i>
             <input type="password" name="password" id="password" class="minecraft-input" placeholder="Entrez votre Mot De Passe ici">
+            <i class="fas fa-lock"></i>
             {{ if .Password }}
             <p class="error-password">{{ .ErrorPassword }}</p>
             {{ end }}
