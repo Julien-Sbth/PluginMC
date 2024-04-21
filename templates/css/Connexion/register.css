@@ -4,11 +4,13 @@
     font-weight: 400;
     font-style: normal;
 }
+
 * {
     margin: 0;
-    top: 0;
-    left: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
+
 .inscription-content {
     display: flex;
     justify-content: center;
@@ -24,9 +26,19 @@
     margin-bottom: 15px;
     font-family: SilkscreenNormal, serif;
 }
-.i {
-    margin-bottom: 10px;
+
+.input-container {
+    position: relative;
+    margin-bottom: 20px;
 }
+
+.input-container label {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
 .minecraft-input {
     height: 40px;
     width: 405px;
@@ -39,57 +51,37 @@
     font-weight: bold;
     font-size: 16px;
     line-height: 40px;
-    margin-bottom: 10px;
+    padding-left: 30px;
 }
+
 .minecraft-input::placeholder {
     color: white;
     opacity: 0.7;
 }
+
 .minecraft-input:hover {
     background: url("../../img/btn2.png") no-repeat;
 }
-.div {
-    margin-bottom: 10px;
-}
-.error-password {
+
+.error-message {
     color: red;
+    margin-top: 5px;
 }
-#log-in {
-    margin-top: 10px;
+
+.button-group {
+    margin-top: 20px;
 }
+
 .btn {
     background-color: #4CAF50;
     color: white;
-    padding: 15px 20px;
+    padding: 10px 20px;
     border: none;
     cursor: pointer;
     border-radius: 5px;
     text-decoration: none;
 }
+
 .btn:hover {
     background-color: #45a049;
-}
-
-.button-group {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-top: auto;
-}
-
-.test {
-    margin-top: 10px;
-    align-self: flex-end;
-}
-.sign-in-form {
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-    border-radius: 10px;
-    padding: 20px;
-    background-color: rgba(255, 255, 255, 0.9);
-}
-
-.center-button {
-    display: block;
-    margin: 0 auto;
-    margin-right: 5px;
 }
