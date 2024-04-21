@@ -317,7 +317,7 @@ public class Menu implements Listener {
         return glassPane;
     }
 
-    static int getPrice(Material material) {
+    public static int getPrice(Material material) {
         return prices.getOrDefault(material, 0);
     }
 
