@@ -22,7 +22,7 @@ func main() {
 	http.HandleFunc("/delete-account", Connexion.HandleDeleteAccount)
 	http.HandleFunc("/logout", Connexion.HandleLogout)
 	http.HandleFunc("/settings", Connexion.HandleProfile)
-	http.HandleFunc("/shop", Menu.HandleShop)
+	http.HandleFunc("/shop", API.HandleShop)
 	http.HandleFunc("/panel", Menu.HandlePanel)
 	http.HandleFunc("/create", Menu.CreatePlayerHandler)
 	http.HandleFunc("/read", Menu.GetAllPlayersHandler)
