@@ -47,7 +47,7 @@ func displayAndEncode(playerData PlayerData) ([]byte, error) {
 			continue
 		}
 
-		imagePath := "monster/" + itemShop.ItemsName + ".png"
+		imagePath := "items_shop/" + itemShop.ItemsName + ".png"
 		err = ioutil.WriteFile(imagePath, imageData, 0644)
 		if err != nil {
 			fmt.Printf("Erreur lors de l'enregistrement de l'image pour l'élément %s: %s\n", itemShop.ItemsName, err)
