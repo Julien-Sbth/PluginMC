@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+{{ if .IsLoggedIn }}
+<h1>Bienvenue {{ .Username }} !</h1>
+{{ else }}
+{{ end }}
+
+{{ if .IsLoggedIn }}
+<a href="/settings" id="gearButton" class="expander"><span>Settings</span>
+    <i class="fas fa-cog"></i>
+</a>
+<a href="/logout" class="expander">Déconnexion</a>
+{{ else }}
+<a href="/register" class="expander" id="button1"><span>Register</span></a>
+<span class="button-space"></span>
+<a href="/login" class="expander" id="button2"><span>Login</span></a>
+<span class="button-space"></span>
+{{ end }}
+
+{{ if .IsAdmin }}
+<a href="/panel" class="expander" id=""><span>Panneau de Configuration</span></a>
+{{ else }}
+<p>Tes un user</p>
+{{ end }}
+</body>
+</html>

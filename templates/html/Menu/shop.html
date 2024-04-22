@@ -4,145 +4,119 @@
     <meta charset="UTF-8">
     <title>Shop</title>
     <link rel="stylesheet" type="text/css" href="/templates/css/Menu/shop.css">
-    <style>
-        /* Styles pour les onglets */
-        .inventory-tab {
-            cursor: pointer;
-            padding: 8px 16px;
-            border: none;
-            background-color: transparent;
-            outline: none;
-        }
-
-        .active-inventory {
-            background-color: lightblue; /* Couleur de fond pour l'onglet actif */
-        }
-
-        /* Styles pour les slots d'inventaire */
-        .inventory-slot {
-            margin-bottom: 10px;
-        }
-    </style>
 </head>
 <body>
-<h3>Monster Kills</h3>
+<h3>Shop</h3>
 <div class="stat-content">
     <div id="inventory_container">
         <div id="inventory_header">
             <div class="inventory-header-line"></div>
             <div class="inventory-tabs-container">
-                <!-- Onglets de navigation pour les types d'items -->
                 <button class="inventory-tab" data-inventory-type="sword" onclick="switchTab('sword')">Weapon</button>
                 <button class="inventory-tab" data-inventory-type="shield" onclick="switchTab('armor')">Shields</button>
                 <button class="inventory-tab" data-inventory-type="pickaxe" onclick="switchTab('pickaxe')">Pickaxe</button>
+                <button class="inventory-tab" data-inventory-type="fishing" onclick="switchTab('fishing')">Fishing</button>
+                <button class="inventory-tab" data-inventory-type="potion" onclick="switchTab('potion')">Potion</button>
             </div>
         </div>
-        <!-- Vue de l'inventaire -->
         <inventory-view inventory-type="inventory">
-            <!-- Slots d'inventaire -->
             {{ with index .ShopItem 17 }}
-            <div class="inventory-slot">
+            <div class="inventory-slot pickaxe">
                 <img src="data:image/png;base64,{{ .ImageData }}" alt="" onclick="switchTab('pickaxe')">
             </div>
             {{ end }}
-            {{ with index .ShopItem 0 }}
+            {{ with index .ShopItem 38 }}
             <div class="inventory-slot">
-                <img src="data:image/png;base64,{{ .ImageData }}" alt="" onclick="switchTab('sword')">
-            </div>
-            {{ end }}
-            {{ with index .ShopItem 0 }}
-            <div class="inventory-slot sword">
-                <img src="data:image/png;base64,{{ .ImageData }}" alt="" onclick="switchTab('sword')">
+                <img src="data:image/png;base64,{{ .ImageData }}" alt="">
             </div>
             {{ end }}
             {{ with index .ShopItem 2 }}
             <div class="inventory-slot sword">
                 <img src="data:image/png;base64,{{ .ImageData }}" alt="" onclick="switchTab('sword')">
+                <div class="description">{{ .Price }} Une pioche robuste en acier pour extraire des minerais.</div>
             </div>
             {{ end }}
             {{ with index .ShopItem 1 }}
             <div class="inventory-slot armor">
                 <img src="data:image/png;base64,{{ .ImageData }}" alt="" onclick="switchTab('sword')">
-            </div>
-            {{ end }}
-            {{ with index .ShopItem 39 }}
-            <div class="inventory-slot">
-                <img src="data:image/png;base64,{{ .ImageData }}" alt="">
+
             </div>
             {{ end }}
             {{ with index .ShopItem 3 }}
             <div class="inventory-slot armor">
                 <img src="data:image/png;base64,{{ .ImageData }}" alt="">
+
             </div>
             {{ end }}
             {{ with index .ShopItem 4 }}
             <div class="inventory-slot armor">
                 <img src="data:image/png;base64,{{ .ImageData }}" alt="">
+
             </div>
             {{ end }}
-            {{ with index .ShopItem 9 }}
+            {{ with index .ShopItem 16 }}
+            <div class="inventory-slot pickaxe">
+                <img src="data:image/png;base64,{{ .ImageData }}" alt="">
+
+            </div>
+            {{ end }}
+            {{ with index .ShopItem 31 }}
             <div class="inventory-slot armor">
                 <img src="data:image/png;base64,{{ .ImageData }}" alt="">
-            </div>
-            {{ end }}
-            {{ with index .ShopItem 3 }}
-            <div class="inventory-slot">
-                <img src="data:image/png;base64,{{ .ImageData }}" alt="">
-            </div>
-            {{ end }}
-            {{ with index .ShopItem 4 }}
-            <div class="inventory-slot">
-                <img src="data:image/png;base64,{{ .ImageData }}" alt="">
-            </div>
-            {{ end }}
-            {{ with index .ShopItem 5 }}
-            <div class="inventory-slot sword">
-                <img src="data:image/png;base64,{{ .ImageData }}" alt="" onclick="switchTab('sword')">
-            </div>
-            {{ end }}
-            {{ with index .ShopItem 6 }}
-            <div class="inventory-slot sword">
-                <img src="data:image/png;base64,{{ .ImageData }}" alt="" onclick="switchTab('sword')">
-            </div>
-            {{ end }}
-            {{ with index .ShopItem 7 }}
-            <div class="inventory-slot sword">
-                <img src="data:image/png;base64,{{ .ImageData }}" alt="" onclick="switchTab('sword')">
+
             </div>
             {{ end }}
             {{ with index .ShopItem 8 }}
             <div class="inventory-slot armor">
                 <img src="data:image/png;base64,{{ .ImageData }}" alt="">
+
             </div>
             {{ end }}
             {{ with index .ShopItem 0 }}
+            <div class="inventory-slot weapon" title="Mini description ici" onclick="switchTab('sword')">
+                <img src="data:image/png;base64,{{ .ImageData }}" alt="">
+
+            </div>
+            {{ end }}
+            {{ with index .ShopItem 38 }}
             <div class="inventory-slot">
                 <img src="data:image/png;base64,{{ .ImageData }}" alt="">
+            </div>
+            {{ end }}
+            {{ with index .ShopItem 6 }}
+            <div class="inventory-slot sword">
+                <img src="data:image/png;base64,{{ .ImageData }}" alt="" onclick="switchTab('sword')">
+
             </div>
             {{ end }}
             {{ with index .ShopItem 10 }}
             <div class="inventory-slot armor">
                 <img src="data:image/png;base64,{{ .ImageData }}" alt="">
+
             </div>
             {{ end }}
             {{ with index .ShopItem 11 }}
             <div class="inventory-slot armor">
                 <img src="data:image/png;base64,{{ .ImageData }}" alt="">
+
             </div>
             {{ end }}
             {{ with index .ShopItem 12 }}
             <div class="inventory-slot armor">
                 <img src="data:image/png;base64,{{ .ImageData }}" alt="">
+
             </div>
             {{ end }}
             {{ with index .ShopItem 13 }}
             <div class="inventory-slot armor">
                 <img src="data:image/png;base64,{{ .ImageData }}" alt="">
+
             </div>
             {{ end }}
             {{ with index .ShopItem 14 }}
             <div class="inventory-slot armor">
                 <img src="data:image/png;base64,{{ .ImageData }}" alt="">
+
             </div>
             {{ end }}
             {{ with index .ShopItem 15 }}
@@ -150,168 +124,560 @@
                 <img src="data:image/png;base64,{{ .ImageData }}" alt="">
             </div>
             {{ end }}
-            {{ with index .ShopItem 16 }}
-            <div class="inventory-slot pickaxe">
-                <img src="data:image/png;base64,{{ .ImageData }}" alt="">
-            </div>
-            {{ end }}
-            {{ with index .ShopItem 17 }}
-            <div class="inventory-slot pickaxe">
-                <img src="data:image/png;base64,{{ .ImageData }}" alt="">
-            </div>
-            {{ end }}
             {{ with index .ShopItem 39 }}
+            <div class="inventory-slot" onclick="switchTab('fishing')">
+                <img src="data:image/png;base64,{{ .ImageData }}" alt="">
+
+            </div>
+            {{ end }}
+            {{ with index .ShopItem 38 }}
             <div class="inventory-slot">
                 <img src="data:image/png;base64,{{ .ImageData }}" alt="">
+            </div>
+            {{ end }}
+            {{ with index .ShopItem 7 }}
+            <div class="inventory-slot sword">
+                <img src="data:image/png;base64,{{ .ImageData }}" alt="" onclick="switchTab('sword')">
+
             </div>
             {{ end }}
             {{ with index .ShopItem 18 }}
             <div class="inventory-slot sword">
                 <img src="data:image/png;base64,{{ .ImageData }}" alt="" onclick="switchTab('sword')">
+
             </div>
             {{ end }}
             {{ with index .ShopItem 19 }}
             <div class="inventory-slot sword">
                 <img src="data:image/png;base64,{{ .ImageData }}" alt="" onclick="switchTab('sword')">
+
             </div>
             {{ end }}
             {{ with index .ShopItem 20 }}
             <div class="inventory-slot sword">
                 <img src="data:image/png;base64,{{ .ImageData }}" alt="" onclick="switchTab('sword')">
+
             </div>
             {{ end }}
             {{ with index .ShopItem 21 }}
             <div class="inventory-slot sword">
                 <img src="data:image/png;base64,{{ .ImageData }}" alt="" onclick="switchTab('sword')">
+
             </div>
             {{ end }}
             {{ with index .ShopItem 22 }}
             <div class="inventory-slot sword">
                 <img src="data:image/png;base64,{{ .ImageData }}" alt="" onclick="switchTab('sword')">
+
             </div>
             {{ end }}
             {{ with index .ShopItem 23 }}
             <div class="inventory-slot sword">
                 <img src="data:image/png;base64,{{ .ImageData }}" alt="" onclick="switchTab('sword')">
+
             </div>
             {{ end }}
-            {{ with index .ShopItem 24 }}
+            {{ with index .ShopItem 9 }}
+            <div class="inventory-slot armor" onclick="switchTab('armor')">
+                <img src="data:image/png;base64,{{ .ImageData }}" alt="">
+
+            </div>
+            {{ end }}
+            {{ with index .ShopItem 38 }}
+            <div class="inventory-slot">
+                <img src="data:image/png;base64,{{ .ImageData }}" alt="">
+            </div>
+            {{ end }}
+            {{ with index .ShopItem 5 }}
             <div class="inventory-slot sword">
                 <img src="data:image/png;base64,{{ .ImageData }}" alt="">
+
             </div>
             {{ end }}
             {{ with index .ShopItem 25 }}
             <div class="inventory-slot armor">
                 <img src="data:image/png;base64,{{ .ImageData }}" alt="">
+
             </div>
             {{ end }}
             {{ with index .ShopItem 26 }}
             <div class="inventory-slot armor">
                 <img src="data:image/png;base64,{{ .ImageData }}" alt="">
+
             </div>
             {{ end }}
             {{ with index .ShopItem 27 }}
             <div class="inventory-slot armor">
                 <img src="data:image/png;base64,{{ .ImageData }}" alt="">
+
             </div>
             {{ end }}
             {{ with index .ShopItem 28 }}
             <div class="inventory-slot armor">
                 <img src="data:image/png;base64,{{ .ImageData }}" alt="">
+
             </div>
             {{ end }}
             {{ with index .ShopItem 29 }}
             <div class="inventory-slot armor">
                 <img src="data:image/png;base64,{{ .ImageData }}" alt="">
+
             </div>
             {{ end }}
             {{ with index .ShopItem 30 }}
             <div class="inventory-slot armor">
                 <img src="data:image/png;base64,{{ .ImageData }}" alt="">
+
             </div>
             {{ end }}
-            {{ with index .ShopItem 31 }}
-            <div class="inventory-slot armor">
+            {{ with index .ShopItem 40 }}
+            <div class="inventory-slot">
+                <img src="data:image/png;base64,{{ .ImageData }}" alt=""  onclick="switchTab('potion')">
+
+            </div>
+            {{ end }}
+            {{ with index .ShopItem 38 }}
+            <div class="inventory-slot">
                 <img src="data:image/png;base64,{{ .ImageData }}" alt="">
+            </div>
+            {{ end }}
+            {{ with index .ShopItem 24 }}
+            <div class="inventory-slot sword">
+                <img src="data:image/png;base64,{{ .ImageData }}" alt="" onclick="switchTab('sword')">
+
             </div>
             {{ end }}
             {{ with index .ShopItem 32 }}
             <div class="inventory-slot armor">
                 <img src="data:image/png;base64,{{ .ImageData }}" alt="">
+
             </div>
             {{ end }}
             {{ with index .ShopItem 33 }}
             <div class="inventory-slot armor">
                 <img src="data:image/png;base64,{{ .ImageData }}" alt="">
+
             </div>
             {{ end }}
             {{ with index .ShopItem 34 }}
             <div class="inventory-slot">
                 <img src="data:image/png;base64,{{ .ImageData }}" alt="">
+
             </div>
             {{ end }}
             {{ with index .ShopItem 35 }}
             <div class="inventory-slot pickaxe">
                 <img src="data:image/png;base64,{{ .ImageData }}" alt="">
+
             </div>
             {{ end }}
             {{ with index .ShopItem 36 }}
             <div class="inventory-slot pickaxe">
                 <img src="data:image/png;base64,{{ .ImageData }}" alt="">
+
             </div>
             {{ end }}
             {{ with index .ShopItem 37 }}
-            <div class="inventory-slot pickaxe">
-            <img src="data:image/png;base64,{{ .ImageData }}" alt="">
-            </div>
-            {{ end }}
-            {{ with index .ShopItem 38 }}
-            <div class="inventory-slot">
-            <img src="data:image/png;base64,{{ .ImageData }}" alt="">
-            </div>
-            {{ end }}
-            {{ with index .ShopItem 39 }}
-            <div class="inventory-slot">
+            <div class="inventory-slot pickaxe" title="Pioche">
                 <img src="data:image/png;base64,{{ .ImageData }}" alt="">
             </div>
             {{ end }}
-            {{ with index .ShopItem 40 }}
-            <div class="inventory-slot">
-                <img src="data:image/png;base64,{{ .ImageData }}" alt="">
-            </div>
-            {{ end }}
-            {{ with index .ShopItem 0 }}
-            <div class="inventory-slot sword">
-                <img src="data:image/png;base64,{{ .ImageData }}" alt="" onclick="switchTab('sword')">
-            </div>
-            {{ end }}
-            {{ with index .ShopItem 1 }}
-            <div class="inventory-slot shield">
-                <img src="data:image/png;base64,{{ .ImageData }}" alt="" onclick="switchTab('shield')">
-            </div>
-            <!-- Ajoute d'autres slots pour d'autres types d'items -->
-            {{ end }}
+
         </inventory-view>
     </div>
 </div>
+<p>Want To Buy A Items ?</p>
+<h3>Monster Kills</h3>
+<div class="blocks">
+    {{ with index .ShopItem 0 }}
+    <div class="blocks2">
+        {{ .ID }}
+        <img src="data:image/png;base64,{{ .ImageData }}">
+        {{ .ItemsName }}
+        {{ .Price }} Coins
+        <button onclick="addToCart('{{ .ID }}')">Acheter</button>
+    </div>
+
+    <script>
+        function addToCart(itemID) {
+            // Redirige vers la page du panier avec l'ID de l'item en tant que paramètre
+            window.location.href = "/panier?itemID=" + itemID;
+        }
+    </script>
+
+    {{ end }}
+
+    {{ with index .ShopItem 1 }}
+    <div class="blocks2">
+        {{ .ID }}
+        <img src="data:image/png;base64,{{ .ImageData }}">
+        {{ .ItemsName }}
+        {{ .Price }} Coins
+    </div>
+    {{ end }}
+
+    {{ with index .ShopItem 2 }}
+    <div class="blocks2">
+        {{ .ID }}
+        <img src="data:image/png;base64,{{ .ImageData }}">
+        {{ .ItemsName }}
+        {{ .Price }} Coins
+    </div>
+    {{ end }}
+
+    {{ with index .ShopItem 3 }}
+    <div class="blocks2">
+        {{ .ID }}
+        <img src="data:image/png;base64,{{ .ImageData }}">
+        {{ .ItemsName }}
+        {{ .Price }} Coins
+    </div>
+    {{ end }}
+
+    {{ with index .ShopItem 4 }}
+    <div class="blocks2">
+        {{ .ID }}
+        <img src="data:image/png;base64,{{ .ImageData }}">
+        {{ .ItemsName }}
+        {{ .Price }} Coins
+    </div>
+    {{ end }}
+
+    {{ with index .ShopItem 5 }}
+    <div class="blocks2">
+        {{ .ID }}
+        <img src="data:image/png;base64,{{ .ImageData }}">
+        {{ .ItemsName }}
+        {{ .Price }} Coins
+    </div>
+    {{ end }}
+
+    {{ with index .ShopItem 6 }}
+    <div class="blocks2">
+        {{ .ID }}
+        <img src="data:image/png;base64,{{ .ImageData }}">
+        {{ .ItemsName }}
+        {{ .Price }} Coins
+    </div>
+    {{ end }}
+
+    {{ with index .ShopItem 7 }}
+    <div class="blocks2">
+        {{ .ID }}
+        <img src="data:image/png;base64,{{ .ImageData }}">
+        {{ .ItemsName }}
+        {{ .Price }} Coins
+    </div>
+    {{ end }}
+
+    {{ with index .ShopItem 8 }}
+    <div class="blocks2">
+        {{ .ID }}
+        <img src="data:image/png;base64,{{ .ImageData }}">
+        {{ .ItemsName }}
+        {{ .Price }} Coins
+    </div>
+    {{ end }}
+
+    {{ with index .ShopItem 9 }}
+    <div class="blocks2">
+        {{ .ID }}
+        <img src="data:image/png;base64,{{ .ImageData }}">
+        {{ .ItemsName }}
+        {{ .Price }} Coins
+    </div>
+    {{ end }}
+
+    {{ with index .ShopItem 10 }}
+    <div class="blocks2">
+        {{ .ID }}
+        <img src="data:image/png;base64,{{ .ImageData }}">
+        {{ .ItemsName }}
+        {{ .Price }} Coins
+    </div>
+    {{ end }}
+
+    {{ with index .ShopItem 11 }}
+    <div class="blocks2">
+        {{ .ID }}
+        <img src="data:image/png;base64,{{ .ImageData }}">
+        {{ .ItemsName }}
+        {{ .Price }} Coins
+    </div>
+    {{ end }}
+
+    {{ with index .ShopItem 12 }}
+    <div class="blocks2">
+        {{ .ID }}
+        <img src="data:image/png;base64,{{ .ImageData }}">
+        {{ .ItemsName }}
+        {{ .Price }} Coins
+    </div>
+    {{ end }}
+
+    {{ with index .ShopItem 13 }}
+    <div class="blocks2">
+        {{ .ID }}
+        <img src="data:image/png;base64,{{ .ImageData }}">
+        {{ .ItemsName }}
+        {{ .Price }} Coins
+    </div>
+    {{ end }}
+
+    {{ with index .ShopItem 14 }}
+    <div class="blocks2">
+        {{ .ID }}
+        <img src="data:image/png;base64,{{ .ImageData }}">
+        {{ .ItemsName }}
+        {{ .Price }} Coins
+    </div>
+    {{ end }}
+
+    {{ with index .ShopItem 15 }}
+    <div class="blocks2">
+        {{ .ID }}
+        <img src="data:image/png;base64,{{ .ImageData }}">
+        {{ .ItemsName }}
+        {{ .Price }} Coins
+    </div>
+    {{ end }}
+
+    {{ with index .ShopItem 16 }}
+    <div class="blocks2">
+        {{ .ID }}
+        <img src="data:image/png;base64,{{ .ImageData }}">
+        {{ .ItemsName }}
+        {{ .Price }} Coins
+    </div>
+    {{ end }}
+
+    {{ with index .ShopItem 17 }}
+    <div class="blocks2">
+        {{ .ID }}
+        <img src="data:image/png;base64,{{ .ImageData }}">
+        {{ .ItemsName }}
+        {{ .Price }} Coins
+    </div>
+    {{ end }}
+
+    {{ with index .ShopItem 18 }}
+    <div class="blocks2">
+        {{ .ID }}
+        <img src="data:image/png;base64,{{ .ImageData }}">
+        {{ .ItemsName }}
+        {{ .Price }} Coins
+    </div>
+    {{ end }}
+
+    {{ with index .ShopItem 19 }}
+    <div class="blocks2">
+        {{ .ID }}
+        <img src="data:image/png;base64,{{ .ImageData }}">
+        {{ .ItemsName }}
+        {{ .Price }} Coins
+    </div>
+    {{ end }}
+
+    {{ with index .ShopItem 20 }}
+    <div class="blocks2">
+        {{ .ID }}
+        <img src="data:image/png;base64,{{ .ImageData }}">
+        {{ .ItemsName }}
+        {{ .Price }} Coins
+    </div>
+    {{ end }}
+
+    {{ with index .ShopItem 21 }}
+    <div class="blocks2">
+        {{ .ID }}
+        <img src="data:image/png;base64,{{ .ImageData }}">
+        {{ .ItemsName }}
+        {{ .Price }} Coins
+    </div>
+    {{ end }}
+
+    {{ with index .ShopItem 22 }}
+    <div class="blocks2">
+        {{ .ID }}
+        <img src="data:image/png;base64,{{ .ImageData }}">
+        {{ .ItemsName }}
+        {{ .Price }} Coins
+    </div>
+    {{ end }}
+
+    {{ with index .ShopItem 23 }}
+    <div class="blocks2">
+        {{ .ID }}
+        <img src="data:image/png;base64,{{ .ImageData }}">
+        {{ .ItemsName }}
+        {{ .Price }} Coins
+    </div>
+    {{ end }}
+
+    {{ with index .ShopItem 24 }}
+    <div class="blocks2">
+        {{ .ID }}
+        <img src="data:image/png;base64,{{ .ImageData }}">
+        {{ .ItemsName }}
+        {{ .Price }} Coins
+    </div>
+    {{ end }}
+
+    {{ with index .ShopItem 25 }}
+    <div class="blocks2">
+        {{ .ID }}
+        <img src="data:image/png;base64,{{ .ImageData }}">
+        {{ .ItemsName }}
+        {{ .Price }} Coins
+    </div>
+    {{ end }}
+
+    {{ with index .ShopItem 26 }}
+    <div class="blocks2">
+        {{ .ID }}
+        <img src="data:image/png;base64,{{ .ImageData }}">
+        {{ .ItemsName }}
+        {{ .Price }} Coins
+    </div>
+    {{ end }}
+
+    {{ with index .ShopItem 27 }}
+    <div class="blocks2">
+        {{ .ID }}
+        <img src="data:image/png;base64,{{ .ImageData }}">
+        {{ .ItemsName }}
+        {{ .Price }} Coins
+    </div>
+    {{ end }}
+
+    {{ with index .ShopItem 28 }}
+    <div class="blocks2">
+        {{ .ID }}
+        <img src="data:image/png;base64,{{ .ImageData }}">
+        {{ .ItemsName }}
+        {{ .Price }} Coins
+    </div>
+    {{ end }}
+
+    {{ with index .ShopItem 29 }}
+    <div class="blocks2">
+        {{ .ID }}
+        <img src="data:image/png;base64,{{ .ImageData }}">
+        {{ .ItemsName }}
+        {{ .Price }} Coins
+    </div>
+    {{ end }}
+
+    {{ with index .ShopItem 30 }}
+    <div class="blocks2">
+        {{ .ID }}
+        <img src="data:image/png;base64,{{ .ImageData }}">
+        {{ .ItemsName }}
+        {{ .Price }} Coins
+    </div>
+    {{ end }}
+
+    {{ with index .ShopItem 31 }}
+    <div class="blocks2">
+        {{ .ID }}
+        <img src="data:image/png;base64,{{ .ImageData }}">
+        {{ .ItemsName }}
+        {{ .Price }} Coins
+    </div>
+    {{ end }}
+
+    {{ with index .ShopItem 32 }}
+    <div class="blocks2">
+        {{ .ID }}
+        <img src="data:image/png;base64,{{ .ImageData }}">
+        {{ .ItemsName }}
+        {{ .Price }} Coins
+    </div>
+    {{ end }}
+
+    {{ with index .ShopItem 33 }}
+    <div class="blocks2">
+        {{ .ID }}
+        <img src="data:image/png;base64,{{ .ImageData }}">
+        {{ .ItemsName }}
+        {{ .Price }} Coins
+    </div>
+    {{ end }}
+
+    {{ with index .ShopItem 34 }}
+    <div class="blocks2">
+        {{ .ID }}
+        <img src="data:image/png;base64,{{ .ImageData }}">
+        {{ .ItemsName }}
+        {{ .Price }} Coins
+    </div>
+    {{ end }}
+
+    {{ with index .ShopItem 35 }}
+    <div class="blocks2">
+        {{ .ID }}
+        <img src="data:image/png;base64,{{ .ImageData }}">
+        {{ .ItemsName }}
+        {{ .Price }} Coins
+    </div>
+    {{ end }}
+
+    {{ with index .ShopItem 36 }}
+    <div class="blocks2">
+        {{ .ID }}
+        <img src="data:image/png;base64,{{ .ImageData }}">
+        {{ .ItemsName }}
+        {{ .Price }} Coins
+    </div>
+    {{ end }}
+
+    {{ with index .ShopItem 37 }}
+    <div class="blocks2">
+        {{ .ID }}
+        <img src="data:image/png;base64,{{ .ImageData }}">
+        {{ .ItemsName }}
+        {{ .Price }} Coins
+    </div>
+    {{ end }}
+    {{ with index .ShopItem 39 }}
+    <div class="blocks2">
+        {{ .ID }}
+        <img src="data:image/png;base64,{{ .ImageData }}">
+        {{ .ItemsName }}
+        {{ .Price }} Coins
+    </div>
+    {{ end }}
+
+    {{ with index .ShopItem 40 }}
+    <div class="blocks2">
+        {{ .ID }}
+        <img src="data:image/png;base64,{{ .ImageData }}">
+        {{ .ItemsName }}
+        {{ .Price }} Coins
+    </div>
+    {{ end }}
+</div>
 
 <script>
-    // Fonction pour basculer vers l'onglet correspondant au type d'item
     function switchTab(type) {
-        // Sélectionne tous les slots d'inventaire
         const inventorySlots = document.querySelectorAll('.inventory-slot');
 
-        // Parcours tous les slots d'inventaire
         inventorySlots.forEach(slot => {
-            // Si le slot d'inventaire appartient au type sélectionné ou si c'est l'onglet "all"
             if (slot.classList.contains(type) || type === 'all') {
-                slot.style.display = 'block'; // Affiche le slot d'inventaire
+                slot.style.display = 'block';
             } else {
-                slot.style.display = 'none'; // Masque le slot d'inventaire
+                slot.style.display = 'none';
             }
         });
     }
-</script>
+    const images = document.querySelectorAll('.grid-item img, .blocks2 img');
 
+    images.forEach(image => {
+        if (image.naturalWidth < image.parentNode.offsetWidth && image.naturalHeight < image.parentNode.offsetHeight) {
+            image.style.width = '100%';
+            image.style.height = '100%';
+        }
+    });
+</script>
 </body>
 </html>
