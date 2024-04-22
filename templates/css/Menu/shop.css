@@ -370,3 +370,37 @@ h2:nth-of-type(6) ~ .blocks {
 .grid-item:hover {
     opacity: 1;
 }
+
+.inventory-slot {
+    margin-bottom: 10px;
+}
+.inventory-slot {
+    position: relative;
+    display: inline-block;
+}.inventory-slot {
+     position: relative; /* Permet de positionner .description par rapport à ce div */
+     display: inline-block; /* Ajuste la largeur à son contenu */
+ }
+
+.description {
+    position: absolute; /* Position absolue par rapport à .inventory-slot parent */
+    bottom: -20px; /* Décalage vers le haut pour éviter le chevauchement */
+    left: 50%; /* Alignement au centre */
+    transform: translateX(-50%); /* Pour centrer horizontalement */
+    background-color: #333;
+    color: #fff;
+    padding: 5px;
+    border-radius: 5px;
+    font-size: 12px;
+    opacity: 0; /* Initialement invisible */
+    transition: opacity 0.3s ease; /* Animation de transition fluide */
+}
+
+.inventory-slot:hover .description {
+    opacity: 1; /* Faire apparaître la description au survol */
+    pointer-events: auto; /* Capturer les événements de la souris lorsque visible */
+}
+
+
+
+
