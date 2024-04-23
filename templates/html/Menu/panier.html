@@ -2,30 +2,46 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/templates/css/Menu/panier.css">
+    <title>Panier</title>
 </head>
 <body>
-{{ if .IsLoggedIn }}
-<h1>Bienvenue {{ .Username }} !</h1>
-{{ else }}
+<h1>Panier</h1>
+<p>Bienvenue, {{.Username}}!</p>
+
+{{if .IsAdmin}}
+<p>Vous êtes un administrateur !</p>
+{{else}}
+<p>Vous n'êtes pas un administrateur.</p>
+{{end}}
+{{ range .PanierItem }}
+<div class="blocks">
+    <div class="blocks2">
+        {{ .ID }}
+        <img src="data:image/png;base64,{{ .ImageData }}" alt="">
+        {{ .ItemsName }}
+        {{ .Price }} Coins
+        <button onclick="removeFromCart('{{ .ID }}')">Retirer</button>
+    </div>
+</div>
 {{ end }}
 
-{{ if .IsLoggedIn }}
-<a href="/settings" id="gearButton" class="expander"><span>Settings</span>
-    <i class="fas fa-cog"></i>
-</a>
-<a href="/logout" class="expander">Déconnexion</a>
-{{ else }}
-<a href="/register" class="expander" id="button1"><span>Register</span></a>
-<span class="button-space"></span>
-<a href="/login" class="expander" id="button2"><span>Login</span></a>
-<span class="button-space"></span>
-{{ end }}
+<script>
+    function removeFromCart(itemID) {
+        window.location.href = "/api/user/panier?removeItemID=" + itemID;
+    }
 
-{{ if .IsAdmin }}
-<a href="/panel" class="expander" id=""><span>Panneau de Configuration</span></a>
-{{ else }}
-<p>Tes un user</p>
-{{ end }}
+    const images = document.querySelectorAll('.grid-item img, .blocks2 img');
+
+    images.forEach(image => {
+        if (image.naturalWidth < image.parentNode.offsetWidth && image.naturalHeight < image.parentNode.offsetHeight) {
+            image.style.width = '100%';
+            image.style.height = '100%';
+        }
+    });
+</script>
+
 </body>
 </html>
