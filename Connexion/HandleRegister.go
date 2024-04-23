@@ -6,7 +6,6 @@ import (
 	"encoding/base64"
 	_ "fmt"
 	_ "github.com/mattn/go-sqlite3"
-	"golang.org/x/crypto/bcrypt"
 	_ "golang.org/x/crypto/bcrypt"
 	"html/template"
 	"net/http"
@@ -185,29 +184,4 @@ func HandleRegister(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-}
-func checkAdminCredentials(username, password string) bool {
-	db, err := sql.Open("sqlite3", "database.sqlite")
-	if err != nil {
-		// Gestion de l'erreur de connexion à la base de données
-		return false
-	}
-	defer db.Close()
-
-	var storedPassword string
-	err = db.QueryRow("SELECT password FROM admin_users WHERE username = ?", username).Scan(&storedPassword)
-	if err != nil {
-		// Gestion de l'erreur lors de la recherche de l'utilisateur dans la base de données
-		return false
-	}
-
-	// Comparaison du mot de passe fourni avec celui stocké en base de données
-	err = bcrypt.CompareHashAndPassword([]byte(storedPassword), []byte(password))
-	if err != nil {
-		// Le mot de passe ne correspond pas ou une erreur s'est produite lors de la comparaison
-		return false
-	}
-
-	// Les identifiants sont valides
-	return true
 }
