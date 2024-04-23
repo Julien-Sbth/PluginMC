@@ -4,7 +4,6 @@ import (
 	"APIMC/API"
 	"APIMC/Connexion"
 	"APIMC/Menu"
-	_ "APIMC/Menu"
 	"log"
 	"net/http"
 )
@@ -13,7 +12,6 @@ func main() {
 	http.Handle("/templates/", http.StripPrefix("/templates/", http.FileServer(http.Dir("templates/"))))
 
 	http.HandleFunc("/api", API.ApiHandler)
-	http.HandleFunc("/api/user", API.UserHandler)
 	http.HandleFunc("/data", API.DataHandlerAPI)
 	http.HandleFunc("/login", Connexion.HandleLogin)
 	http.HandleFunc("/register", Connexion.HandleRegister)
@@ -23,7 +21,8 @@ func main() {
 	http.HandleFunc("/logout", Connexion.HandleLogout)
 	http.HandleFunc("/settings", Connexion.HandleProfile)
 	http.HandleFunc("/shop", API.HandleShop)
-	http.HandleFunc("/panier", Menu.HandlePanier)
+	http.HandleFunc("/api/user/panier", API.HandlePanier)
+	http.HandleFunc("/api/user/addtocart", API.HandleAddToCart)
 	http.HandleFunc("/panel", Menu.HandlePanel)
 	http.HandleFunc("/create", Menu.CreatePlayerHandler)
 	http.HandleFunc("/read", Menu.GetAllPlayersHandler)
