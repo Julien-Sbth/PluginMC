@@ -9,6 +9,7 @@ var playerData PlayerData
 
 type PlayerData struct {
 	PlayerID      string          `json:"player_id"`
+	PlayerName    string          `json:"player_name"`
 	EntityType    string          `json:"entity_type"`
 	Coins         []Coin          `json:"coins"`
 	Items         []Item          `json:"items"`
@@ -18,10 +19,22 @@ type PlayerData struct {
 	BlocksDestroy []BlocksDestroy `json:"block_name"`
 	Inventory     []Inventory     `json:"nom_item"`
 	Shop          []Shop          `json:"shop"`
-	PlayerName    string          `json:"playerName"`
 	ShopItem      []ShopItem      `json:"shop_item"`
+	Panier        []PanierItem
+	Username      string
+	IsLoggedIn    bool
+	IsAdmin       bool
 }
 
+// Structure pour les éléments dans le panier
+type PanierItem struct {
+	ID        string `json:"id"`
+	ItemsName string `json:"item_name"`
+	Quantity  string `json:"quantity"`
+	Price     string `json:"price"`
+	ImagePath string `json:"image_base64"`
+	ImageData string
+}
 type Coin struct {
 	PlayerID string `json:"player_id"`
 	Coins    string `json:"coins"`
@@ -46,6 +59,7 @@ type Kill struct {
 	EntityType string `json:"entity_type"`
 	Kills      string `json:"kills"`
 	ImagePath  string `json:"kills_monster"`
+	PlayerName string `json:"player_name"`
 	ImageData  string
 }
 
