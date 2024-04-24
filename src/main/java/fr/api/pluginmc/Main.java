@@ -1,6 +1,7 @@
 package fr.api.pluginmc;
 
 import fr.api.Block.BlockDestroyListener;
+import fr.api.JoinLeave.JoinLeaveListener;
 import fr.api.menu.Menu;
 import fr.api.BlockMovementTracker.BlockMovementTracker;
 import fr.api.advancement.AchievementListener;
@@ -22,8 +23,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
 import java.util.logging.Logger;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import static fr.api.menu.Menu.getPrice;
 
@@ -41,10 +40,11 @@ public class Main extends JavaPlugin implements Listener {
         getCommand("money").setExecutor(new MoneyCommand(monsterDeathListener));
         getServer().getPluginManager().registerEvents(new ArtefactItemsListener(), this);
 
-        getCommand("test").setExecutor(new Commands());
-        getCommand("alert").setExecutor(new Commands());
-        getCommand("stats").setExecutor(new Commands());
-        getCommand("shop").setExecutor(new Commands());
+        getCommand("test").setExecutor(new Commands(monsterDeathListener));
+        getCommand("alert").setExecutor(new Commands(monsterDeathListener));
+        getCommand("stats").setExecutor(new Commands(monsterDeathListener));
+        getCommand("shop").setExecutor(new Commands(monsterDeathListener));
+        getCommand("sb").setExecutor(new Commands(monsterDeathListener));
 
         Logger logger = Logger.getLogger("MenuLogger");
 
@@ -55,6 +55,8 @@ public class Main extends JavaPlugin implements Listener {
             getLogger().warning("La connexion à la base de données a échoué !");
         }
         menu = new Menu(this, sqliteManager, logger);
+
+        getServer().getPluginManager().registerEvents(new JoinLeaveListener(), this);
 
         menu.registerEvents();
         Listener inventoryListener = new InventoryListener(sqliteManager, getLogger());
@@ -101,10 +103,8 @@ public class Main extends JavaPlugin implements Listener {
 
         BlockMovementTracker movementTracker = new BlockMovementTracker(sqliteManager, this);
         getServer().getPluginManager().registerEvents(movementTracker, this);
-        restaurerInventaire();
     }
 
-    // Fonction pour vérifier si un item est déjà présent dans la boutique
     private boolean isItemAlreadyInShop(Material material) {
         try {
             if (!sqliteManager.isConnected()) {
@@ -117,15 +117,14 @@ public class Main extends JavaPlugin implements Listener {
                 ResultSet resultSet = selectPs.executeQuery();
                 if (resultSet.next()) {
                     int count = resultSet.getInt("count");
-                    return count > 0; // Retourne true si l'item est déjà présent, sinon false
+                    return count > 0;
                 }
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return false; // En cas d'erreur, retourne false par défaut
+        return false;
     }
-
 
     @Override
     public void onDisable() {
@@ -133,9 +132,5 @@ public class Main extends JavaPlugin implements Listener {
             sqliteManager.closeConnection();
         }
         getLogger().info("Le Plugin MC vient de s'éteindre !");
-    }
-
-    private void restaurerInventaire() {
-        InventoryListener inventoryListener = new InventoryListener(sqliteManager, getLogger());
     }
 }
