@@ -5,23 +5,34 @@ main: fr.api.pluginmc.Main
 api-version: 1.20
 commands:
   money:
-    description: Money
+    description: Show your money
     permission: money.use
+    usage: </command>
   test:
     description: Ceci est une commande de test
     permission: test.use
+    usage: </command>
   alert:
     description: Ceci est un broadcast custom
     permission: bc.use
+    usage: </command>
   monster:
-    description: Monster
+    description: Show data
     permission: bc.use
-    usage: "/monster"
+    usage: </command>
   stats:
     description: stats
     permission: stats.use
-    usage: "/stats"
+    usage: </command>
   shop:
     description: shop
     permission: shop.use
-    usage: "/shop"
+    usage: </command>
+  addplayer:
+    description: player
+    permission: player
+    usage: </command>
+  sb:
+    description: player
+    permission: player
+    usage: </command>
