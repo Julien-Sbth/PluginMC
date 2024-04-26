@@ -36,3 +36,14 @@ commands:
     description: player
     permission: player
     usage: </command>
+  setspawn:
+    description: Set the server spawn point
+  bangui:
+    description: Opens the Ban Gui
+  packettitle:
+    description: Packet Title
+  vault:
+    description: vault
+  staffhome:
+    description: Go back to your temporary home
+

@@ -1,0 +1,12 @@
+#Plugin made by Illuminatiiiiii
+#https://youtube.com/c/IlluminatiProductions
+##############
+enable: true #Turn the plugin on and off
+##############
+savedlocations: #DONT TOUCH
+
+##MESSAGES##
+set-message: '&aSetting a temporary home at: &7' #end color code for coords color
+override-message: '&aOverriding current home @: &7'
+return-message: '&aReturned to former location.'
+reload-message: '&7StaffHomes configuration reloaded.'
