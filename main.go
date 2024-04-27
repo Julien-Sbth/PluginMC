@@ -22,6 +22,7 @@ func main() {
 	http.HandleFunc("/settings", Connexion.HandleProfile)
 	http.HandleFunc("/shop", API.HandleShop)
 	http.HandleFunc("/api/user/panier", API.HandlePanier)
+	http.HandleFunc("/api/user", API.UserHandler)
 	http.HandleFunc("/api/user/addtocart", API.HandleAddToCart)
 	http.HandleFunc("/panel", Menu.HandlePanel)
 	http.HandleFunc("/create", Menu.CreatePlayerHandler)
