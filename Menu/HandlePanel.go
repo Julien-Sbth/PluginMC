@@ -1,63 +1,124 @@
-package Menu
+package API
 
 import (
+	"database/sql"
 	"encoding/json"
 	"fmt"
+	_ "github.com/mattn/go-sqlite3"
 	"html/template"
 	"net/http"
 	"strconv"
 )
 
-type PlayerData struct {
-	PlayerID     string `json:"player_id"`
-	PlayerName   string `json:"player_name"`
-	ID           int    `json:"id"`
-	Name         string `json:"name"`
-	Score        int    `json:"score"`
-	Coins        int    `json:"coins"`
-	Kills        int    `json:"kills"`
-	EntityType   string `json:"entity_type"`
-	Blocks       string `json:"blocks"`
-	Achievements int    `json:"achievements"`
-	ItemName     string `json:"item_name"`
-	Amount       int    `json:"quantity"`
-	Price        int    `json:"price"`
-	PurchaseDate string `json:"purchase_date"`
-	BlockName    string `json:"block_name"`
-	NomBlocks    string `json:"nom_blocks"`
-	Position     int    `json:"position"`
-	NomItem      string `json:"nom_item"`
-}
-
 var players []PlayerData
 
-// CreatePlayerHandler crée un nouveau joueur
+var db *sql.DB
+
+func FetchPlayersFromDB() []PlayerData {
+	rows, err := db.Query("SELECT * FROM players")
+	if err != nil {
+		fmt.Println("Error fetching players from database:", err)
+		return nil
+	}
+	defer rows.Close()
+
+	var playersFromDB []PlayerData
+
+	for rows.Next() {
+		var player PlayerData
+		err := rows.Scan(
+			&player.PlayerID,
+			&player.PlayerName,
+			&player.ID,
+			&player.Name,
+			&player.Score,
+			&player.Coins,
+			&player.Kills,
+			&player.EntityType,
+			&player.Blocks,
+			&player.Achievements,
+			&player.ItemName,
+			&player.Amount,
+			&player.Price,
+			&player.PurchaseDate,
+			&player.BlockName,
+			&player.Position,
+			&player.NomItem,
+		)
+		if err != nil {
+			fmt.Println("Error scanning player row:", err)
+			continue
+		}
+		playersFromDB = append(playersFromDB, player)
+	}
+
+	// Vérifie s'il y a des erreurs pendant le parcours des lignes
+	if err := rows.Err(); err != nil {
+		fmt.Println("Error iterating over player rows:", err)
+		return nil
+	}
+
+	return playersFromDB
+}
+
+func init() {
+	var err error
+	db, err = sql.Open("sqlite3", "./players.db")
+	if err != nil {
+		panic(err)
+	}
+
+	createTableSQL := `
+	CREATE TABLE IF NOT EXISTS players (
+		id INTEGER PRIMARY KEY AUTOINCREMENT,
+		player_id TEXT,
+		player_name TEXT,
+		name TEXT,
+		score INTEGER,
+		coins INTEGER,
+		kills INTEGER,
+		entityType TEXT,
+		blocks TEXT,
+		achievements INTEGER,
+		itemName TEXT,
+		quantity INTEGER,
+		price INTEGER,
+		purchaseDate TEXT,
+		blockName TEXT,
+		position INTEGER,
+		nomItem TEXT
+	);
+	`
+	if _, err := db.Exec(createTableSQL); err != nil {
+		panic(err)
+	}
+}
+
 func CreatePlayerHandler(w http.ResponseWriter, r *http.Request) {
-	// Lecture des données du corps de la requête
 	var player PlayerData
 	err := json.NewDecoder(r.Body).Decode(&player)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
-
-	// Ajout du joueur à la liste
 	players = append(players, player)
 
-	// Réponse de succès
+	if err := insertPlayer(player); err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
 	w.WriteHeader(http.StatusCreated)
 }
-
-// GetAllPlayersHandler récupère tous les joueurs
 func GetAllPlayersHandler(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("Getting all players...")
+	fmt.Println("Getting all players from database...")
 
-	// Conversion de la slice de joueurs en JSON et envoi en réponse
+	FetchPlayersFromDB()
+
 	json.NewEncoder(w).Encode(players)
 	fmt.Println("Players sent successfully")
 }
 
-// UpdatePlayerHandler met à jour les données d'un joueur
 func UpdatePlayerHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("Updating a player...")
 
@@ -69,10 +130,8 @@ func UpdatePlayerHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Recherche du joueur par ID
 	for i, player := range players {
 		if player.ID == updatedPlayer.ID {
-			// Mise à jour des données du joueur
 			players[i] = updatedPlayer
 			w.WriteHeader(http.StatusOK)
 			fmt.Println("Player updated successfully:", updatedPlayer)
@@ -80,16 +139,13 @@ func UpdatePlayerHandler(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	// Si le joueur n'est pas trouvé
 	http.NotFound(w, r)
 	fmt.Println("Player not found for update:", updatedPlayer.ID)
 }
 
-// DeletePlayerHandler supprime un joueur de la liste
 func DeletePlayerHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("Deleting a player...")
 
-	// Lecture de l'ID du joueur à supprimer
 	idStr := r.FormValue("id")
 	id, err := strconv.Atoi(idStr)
 	if err != nil {
@@ -98,10 +154,8 @@ func DeletePlayerHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Recherche du joueur par ID
 	for i, player := range players {
 		if player.ID == id {
-			// Suppression du joueur de la liste
 			players = append(players[:i], players[i+1:]...)
 			w.WriteHeader(http.StatusOK)
 			fmt.Println("Player deleted successfully:", id)
@@ -109,12 +163,10 @@ func DeletePlayerHandler(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	// Si le joueur n'est pas trouvé
 	http.NotFound(w, r)
 	fmt.Println("Player not found for deletion:", id)
 }
 
-// HandlePanel affiche l'interface utilisateur du panneau d'administration
 func HandlePanel(w http.ResponseWriter, r *http.Request) {
 	tmpl, err := template.ParseFiles("templates/html/Menu/panel.html")
 	if err != nil {
@@ -124,4 +176,15 @@ func HandlePanel(w http.ResponseWriter, r *http.Request) {
 	if err := tmpl.Execute(w, players); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
+}
+func insertPlayer(player PlayerData) error {
+	insertSQL := `
+	INSERT INTO players (player_id, player_name, name, score, coins, kills, entityType, blocks, achievements, itemName, quantity, price, purchaseDate, blockName, position, nomItem)
+	VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+	`
+	_, err := db.Exec(insertSQL, player.PlayerID, player.PlayerName, player.Name, player.Score, player.Coins, player.Kills, player.EntityType, player.Blocks, player.Achievements, player.ItemName, player.Amount, player.Price, player.PurchaseDate, player.BlockName, player.Position, player.NomItem)
+	if err != nil {
+		return err
+	}
+	return nil
 }
