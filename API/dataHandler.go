@@ -56,7 +56,6 @@ func displayAndEncode(playerData PlayerData) ([]byte, error) {
 
 		playerData.ShopItem[i].ImagePath = imagePath
 
-		// Stocker l'image décodée pour l'affichage dans le template HTML
 		playerData.ShopItem[i].ImageData = base64.StdEncoding.EncodeToString(imageData)
 	}
 
@@ -110,7 +109,6 @@ func displayAndEncode(playerData PlayerData) ([]byte, error) {
 
 		playerData.Inventory[i].ImagePath = imagePath
 
-		// Stocker l'image décodée pour l'affichage dans le template HTML
 		playerData.Inventory[i].ImageData = base64.StdEncoding.EncodeToString(imageData)
 	}
 

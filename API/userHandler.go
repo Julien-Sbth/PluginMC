@@ -26,7 +26,6 @@ type PlayerData struct {
 	IsAdmin       bool
 }
 
-// Structure pour les éléments dans le panier
 type PanierItem struct {
 	ID        string `json:"id"`
 	ItemsName string `json:"item_name"`
