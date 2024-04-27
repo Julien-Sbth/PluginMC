@@ -30,7 +30,6 @@ func compareHash(password, hash string) bool {
 func HandleLogin(w http.ResponseWriter, r *http.Request) {
 	db, err := sql.Open("sqlite3", "database.sqlite")
 	if err != nil {
-		// Gérer l'erreur
 	}
 	defer db.Close()
 	if r.Method == "POST" {

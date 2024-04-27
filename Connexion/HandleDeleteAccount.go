@@ -26,7 +26,6 @@ func HandleDeleteAccount(w http.ResponseWriter, r *http.Request) {
 				http.Error(w, err.Error(), http.StatusInternalServerError)
 				return
 			}
-			// Supprimer la session après la suppression du compte
 			session.Options.MaxAge = -1
 			err = session.Save(r, w)
 			if err != nil {
@@ -37,7 +36,5 @@ func HandleDeleteAccount(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 	}
-
-	// Si la méthode n'est pas POST ou si l'utilisateur n'est pas connecté, rediriger vers la page de connexion
 	http.Redirect(w, r, "/", http.StatusSeeOther)
 }

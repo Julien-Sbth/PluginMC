@@ -33,19 +33,16 @@ func HandleAdministrator(w http.ResponseWriter, r *http.Request) {
 	defer db.Close()
 
 	if r.Method == "POST" {
-		// Récupération des données du formulaire
 		adminUsername := r.FormValue("username")
 		adminPassword := r.FormValue("password")
 		email := r.FormValue("email")
 
-		// Hashage du mot de passe
 		hashedPassword, err := hashPassword(adminPassword)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
 
-		// Insertion de l'utilisateur dans la base de données
 		_, err = db.Exec("INSERT INTO utilisateurs (username, password, email, est_admin) VALUES (?, ?, ?, 1)", adminUsername, hashedPassword, email)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -56,12 +53,10 @@ func HandleAdministrator(w http.ResponseWriter, r *http.Request) {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
-		// Redirection vers la page de connexion
 		http.Redirect(w, r, "/login", http.StatusFound)
 		return
 	}
 
-	// Affichage du formulaire pour l'ajout d'utilisateur
 	tmpl, err := template.ParseFiles("templates/html/Connexion/admin.html")
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
