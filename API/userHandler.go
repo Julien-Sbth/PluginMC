@@ -24,15 +24,20 @@ type PlayerData struct {
 	Username      string
 	IsLoggedIn    bool
 	IsAdmin       bool
+	ErrorMessage  string
 }
 
 type PanierItem struct {
-	ID        string `json:"id"`
-	ItemsName string `json:"item_name"`
-	Quantity  string `json:"quantity"`
-	Price     string `json:"price"`
-	ImagePath string `json:"image_base64"`
-	ImageData string
+	ID           string `json:"id"`
+	ItemsName    string `json:"item_name"`
+	Quantity     string `json:"quantity"`
+	Price        string `json:"price"`
+	ImagePath    string `json:"image_base64"`
+	ImageData    string
+	Username     string
+	IsLoggedIn   bool
+	IsAdmin      bool
+	ErrorMessage string
 }
 type Coin struct {
 	PlayerID string `json:"player_id"`

@@ -2,6 +2,7 @@ package API
 
 import (
 	"APIMC/Menu"
+	"database/sql"
 	"encoding/json"
 	"net/http"
 )
@@ -11,7 +12,15 @@ func ApiHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Méthode non autorisée", http.StatusMethodNotAllowed)
 		return
 	}
-	playersFromDB := Menu.FetchPlayersFromDB()
+
+	db, err := sql.Open("sqlite3", "players.db")
+	if err != nil {
+		http.Error(w, "Erreur lors de la connexion à la base de données: "+err.Error(), http.StatusInternalServerError)
+		return
+	}
+	defer db.Close()
+
+	playersFromDB := Menu.FetchPlayersFromDB(db)
 
 	if r.Method == "POST" {
 		var newData map[string]interface{}
