@@ -55,12 +55,7 @@ public class Main extends JavaPlugin implements Listener {
         getConfig().options().copyDefaults();
         saveDefaultConfig();
 
-        getConfig().options().copyDefaults();
-        saveDefaultConfig();
-
         getCommand("staffhome").setExecutor(new Commands(monsterDeathListener,this));
-
-
 
         plugin = this;
         getCommand("vault").setExecutor(new Commands(monsterDeathListener, this));
