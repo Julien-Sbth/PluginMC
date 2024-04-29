@@ -32,6 +32,7 @@ type PlayerInventory struct {
 	PlayerID string `json:"player_id"`
 	ItemName string `json:"item_name"`
 	Amount   int    `json:"quantity"`
+	Position int    `json:"position"`
 }
 
 type PlayerPurchase struct {
@@ -64,13 +65,18 @@ type Coins struct {
 }
 
 type PlayerData struct {
-	PlayerID     string               `json:"player_id"`
-	PlayerName   string               `json:"player_name"`
-	Kills        string               `json:"kills"`
-	EntityType   string               `json:"entity_type"`
-	BlockName    string               `json:"block_name"`
-	Position     string               `json:"position"`
-	NomBlocks    string               `json:"nom_blocks"`
+	PlayerID     string `json:"player_id"`
+	PlayerName   string `json:"player_name"`
+	Kills        string `json:"kills"`
+	EntityType   string `json:"entity_type"`
+	BlockName    string `json:"block_name"`
+	Position     int    `json:"position"`
+	NomBlocks    string `json:"nom_blocks"`
+	Price        int    `json:"price"`
+	PurchaseDate string `json:"purchase_date"`
+	ItemName     string `json:"item_name"`
+	Amount       int    `json:"quantity"`
+
 	Player       []Player             `json:"-"`
 	Stats        []PlayerStats        `json:"-"`
 	Inventory    []PlayerInventory    `json:"-"`
@@ -88,8 +94,8 @@ func insertPlayerData(player PlayerData) error {
 	}
 	defer db.Close()
 
-	_, err = db.Exec("INSERT INTO players (player_id, player_name, kills, entity_type) VALUES (?, ?, ?, ?)",
-		player.PlayerID, player.PlayerName, player.Kills, player.EntityType)
+	_, err = db.Exec("INSERT INTO players (player_id, player_name, kills, entity_type, name_block, block_name, item_name, purchase_date, price, position) VALUES (?, ?, ?, ?, ?, ?,?,?, ?, ?)",
+		player.PlayerID, player.PlayerName, player.Kills, player.EntityType, player.NomBlocks, player.BlockName, player.ItemName, player.PurchaseDate, player.Price, player.Position)
 
 	if err != nil {
 		return err
@@ -123,6 +129,8 @@ func FetchPlayersFromDB(db *sql.DB) []PlayerData {
 			&player.PlayerName,
 			&player.Kills,
 			&player.EntityType,
+			&player.ItemName,
+			&player.Position,
 			&p.PlayerID,
 			&p.PlayerName,
 			&k.ID,
@@ -134,6 +142,7 @@ func FetchPlayersFromDB(db *sql.DB) []PlayerData {
 			&inv.PlayerID,
 			&inv.ItemName,
 			&inv.Amount,
+			&inv.Position,
 			&purchase.PlayerID,
 			&purchase.ItemName,
 			&purchase.Price,
