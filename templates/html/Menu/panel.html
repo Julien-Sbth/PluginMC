@@ -46,7 +46,7 @@
   <input type="text" id="blockName" name="Block.block_name" required><br>
 
   <label for="position">Position:</label><br>
-  <input type="number" id="position" name="Block.position" required><br>
+  <input type="number" id="position" name="position" required><br>
 
   <label for="nomItem">Nom Item:</label><br>
   <input type="text" id="nomItem" name="Block.nom_blocks" required><br>
@@ -92,7 +92,7 @@
               if (data) {
                 data.forEach(player => {
                   const listItem = document.createElement("li");
-                  listItem.textContent = `ID: ${player.player_id[0]}, Name: ${player.player_name[0]}, BlockNames: ${player.Block.block_name}, Items_name ${player.Inventory.item_name} Coins: ${player.Coins.coins}, Kills: ${player.kills[0]}, EntityType: ${player.entity_type[0]}, Blocks: ${player.Blocks.blocks_moved}, Achievements: ${player.Achievements.achievements}, ItemName: ${player.Inventory.item_name}, Quantity: ${player.Purchase.quantity}, Price: ${player.Purchase.price}, PurchaseDate: ${player.Purchase.purchase_date}, BlockName: ${player.Block.block_name}, Position: ${player.Block.position}, NomBlocks: ${player.Block.nom_blocks}`;
+                  listItem.textContent = `ID: ${player.player_id[0]}, Name: ${player.player_name[0]}, BlockNames: ${player.Block.block_name}, Items_name ${player.Inventory.item_name} Coins: ${player.Coins.coins}, Kills: ${player.kills[0]}, EntityType: ${player.entity_type[0]}, Blocks: ${player.Blocks.blocks_moved}, Achievements: ${player.Achievements.achievements}, ItemName: ${player.Inventory.item_name}, Quantity: ${player.Purchase.quantity}, Price: ${player.Purchase.price}, PurchaseDate: ${player.purchase_date[0]}, BlockName: ${player.Block.block_name}, Position: ${player.Purchase.position[0]}, NomBlocks: ${player.Block.nom_blocks}`;
                   playerList.appendChild(listItem);
                 });
               } else {
@@ -132,6 +132,16 @@
       player_name: player_name,
       kills: kills,
       entity_type: entityType,
+      block_name: nameBlock,
+      item_name: item_name,
+      purchase_date: purchaseDate,
+      price: parseInt(price),
+      position: parseInt(position),
+
+
+
+
+
       Player: [{
 
       }],
@@ -148,14 +158,9 @@
         achievements: parseInt(achievements)
       },
       Purchase: {
-        item_name: item_name,
         quantity: parseInt(quantity),
-        price: parseInt(price),
-        purchase_date: purchaseDate
       },
       Block: {
-        block_name: nameBlock,
-        position: parseInt(position),
         nom_blocks: nomItem
       },
       Coins: {
