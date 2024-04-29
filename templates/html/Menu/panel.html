@@ -16,44 +16,43 @@
   <input type="text" id="player_name" name="player_name" required><br>
 
   <label for="coins">Coins:</label><br>
-  <input type="number" id="coins" name="coins" required><br>
+  <input type="number" id="coins" name="Coins.coins" required><br>
 
   <label for="kills">Kills:</label><br>
-  <input type="number" id="kills" name="kills" required><br>
+  <input type="number" id="kills" name="Stats.kills" required><br>
 
   <label for="entity_type">Entity Type:</label><br>
-  <input type="text" id="entity_type" name="stats.entity_type" required><br>
+  <input type="text" id="entity_type" name="Stats.entity_type" required><br>
 
   <label for="blocks">Blocks Moved:</label><br>
-  <input type="number" id="blocks" name="blocks.blocks_moved" required><br>
+  <input type="number" id="blocks" name="Blocks.blocks_moved" required><br>
 
   <label for="achievements">Achievements:</label><br>
-  <input type="number" id="achievements" name="achievements.achievements" required><br>
+  <input type="number" id="achievements" name="Achievements.achievements" required><br>
 
   <label for="item_name">Item Name:</label><br>
-  <input type="text" id="item_name" name="item_name" required><br>
+  <input type="text" id="item_name" name="Inventory.item_name" required><br>
 
   <label for="quantity">Quantity:</label><br>
-  <input type="number" id="quantity" name="purchase.quantity" required><br>
+  <input type="number" id="quantity" name="Purchase.quantity" required><br>
 
   <label for="price">Price:</label><br>
-  <input type="number" id="price" name="purchase.price" required><br>
+  <input type="number" id="price" name="Purchase.price" required><br>
 
   <label for="purchase_date">Purchase Date:</label><br>
-  <input type="text" id="purchase_date" name="purchase.purchase_date" required><br>
+  <input type="text" id="purchase_date" name="Purchase.purchase_date" required><br>
 
   <label for="blockName">Block Name:</label><br>
-  <input type="text" id="blockName" name="block.block_name" required><br>
+  <input type="text" id="blockName" name="Block.block_name" required><br>
 
   <label for="position">Position:</label><br>
-  <input type="number" id="position" name="block.position" required><br>
+  <input type="number" id="position" name="Block.position" required><br>
 
   <label for="nomItem">Nom Item:</label><br>
-  <input type="text" id="nomItem" name="block.nom_blocks" required><br>
+  <input type="text" id="nomItem" name="Block.nom_blocks" required><br>
 
   <label for="nameBlock">Name Block:</label><br>
   <input type="text" id="nameBlock" name="nameBlock" required><br>
-
   <br><br>
   <button type="button" onclick="createPlayer()">Create Player</button>
 </form>
@@ -65,18 +64,18 @@
 <h2>Update Player</h2>
 <form id="updatePlayerForm">
   <label for="updateId">Player ID to Update:</label><br>
-  <input type="number" id="updateId" name="player_id" required><br>
+  <input type="text" id="updateId" name="player_id" required><br>
   <label for="updateName">New Name:</label><br>
   <input type="text" id="updateName" name="player_name" required><br>
   <label for="updateScore">New Score:</label><br>
-  <input type="number" id="updateScore" name="stats.score" required><br><br>
+  <input type="number" id="updateScore" name="Stats.score" required><br><br>
   <button type="button" onclick="updatePlayer()">Update Player</button>
 </form>
 
 <h2>Delete Player</h2>
 <form id="deletePlayerForm">
   <label for="deleteId">Player ID to Delete:</label><br>
-  <input type="number" id="deleteId" name="player_id" required><br><br>
+  <input type="text" id="deleteId" name="player_id" required><br><br>
   <button type="submit">Delete Player</button>
 </form>
 
@@ -93,7 +92,7 @@
               if (data) {
                 data.forEach(player => {
                   const listItem = document.createElement("li");
-                  listItem.textContent = `ID: ${player.player_id}, Name: ${player.player_name}, BlockNames: ${player.blockName}, Items_name ${player.inventory.item_name} Coins: ${player.coins}, Kills: ${player.kills}, EntityType: ${player.entity_type}, Blocks: ${player.blocks.blocks_moved}, Achievements: ${player.achievements.achievements}, ItemName: ${player.item_name}, Quantity: ${player.quantity}, Price: ${player.price}, PurchaseDate: ${player.purchase_date}, BlockName: ${player.block.block_name}, Position: ${player.block.position}, NomBlocks: ${player.block.nom_blocks}`;
+                  listItem.textContent = `ID: ${player.player_id[0]}, Name: ${player.player_name[0]}, BlockNames: ${player.Block.block_name}, Items_name ${player.Inventory.item_name} Coins: ${player.Coins.coins}, Kills: ${player.kills[0]}, EntityType: ${player.entity_type[0]}, Blocks: ${player.Blocks.blocks_moved}, Achievements: ${player.Achievements.achievements}, ItemName: ${player.Inventory.item_name}, Quantity: ${player.Purchase.quantity}, Price: ${player.Purchase.price}, PurchaseDate: ${player.Purchase.purchase_date}, BlockName: ${player.Block.block_name}, Position: ${player.Block.position}, NomBlocks: ${player.Block.nom_blocks}`;
                   playerList.appendChild(listItem);
                 });
               } else {
@@ -129,36 +128,35 @@
       return; // Arrête la fonction si un champ requis est manquant
     }
     const data = {
-      player: {
-        player_id: player_id,
-        player_name: player_name,
-      },
-      inventory:{
+      player_id: player_id,
+      player_name: player_name,
+      kills: kills,
+      entity_type: entityType,
+      Player: [{
+
+      }],
+      Inventory:{
         item_name: item_name,
       },
-      stats: {
-        kills: kills,
-        entity_type: entityType
+      Stats: {
+
       },
-      blocks: {
+      Blocks: {
         blocks_moved: blocks
       },
-      achievements: {
+      Achievements: {
         achievements: parseInt(achievements)
       },
-      purchase: {
+      Purchase: {
         item_name: item_name,
         quantity: parseInt(quantity),
         price: parseInt(price),
         purchase_date: purchaseDate
       },
-      block: {
+      Block: {
         block_name: nameBlock,
         position: parseInt(position),
         nom_blocks: nomItem
-      },
-      nameBlock: {
-        block_name: nameBlock,
       },
       Coins: {
         coins: coins,
@@ -214,7 +212,7 @@
     const data = {
       player_id: updateId,
       player_name: updateName,
-      stats: {
+      Stats: {
         score: parseInt(updateScore)
       }
     };
