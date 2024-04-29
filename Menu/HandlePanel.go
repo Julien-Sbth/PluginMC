@@ -64,14 +64,21 @@ type Coins struct {
 }
 
 type PlayerData struct {
-	Player       Player
-	Stats        PlayerStats
-	Inventory    PlayerInventory
-	Purchase     PlayerPurchase
-	Block        PlayerBlock
-	Achievements PlayerAchievements
-	Blocks       PlayerMoved
-	Coins        Coins
+	PlayerID     string               `json:"player_id"`
+	PlayerName   string               `json:"player_name"`
+	Kills        string               `json:"kills"`
+	EntityType   string               `json:"entity_type"`
+	BlockName    string               `json:"block_name"`
+	Position     string               `json:"position"`
+	NomBlocks    string               `json:"nom_blocks"`
+	Player       []Player             `json:"-"`
+	Stats        []PlayerStats        `json:"-"`
+	Inventory    []PlayerInventory    `json:"-"`
+	Purchase     []PlayerPurchase     `json:"-"`
+	Block        []PlayerBlock        `json:"-"`
+	Achievements []PlayerAchievements `json:"-"`
+	Blocks       []PlayerMoved        `json:"-"`
+	Coins        []Coins              `json:"-"`
 }
 
 func insertPlayerData(player PlayerData) error {
@@ -81,8 +88,8 @@ func insertPlayerData(player PlayerData) error {
 	}
 	defer db.Close()
 
-	_, err = db.Exec("INSERT INTO players (player_id, player_name, kills, entity_type, coins, item_name, quantity, price, purchase_date, block_name, position, name_block) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
-		player.Player.PlayerID, player.Player.PlayerName, player.Stats.Kills, player.Stats.EntityType, player.Coins.Coins, player.Inventory.ItemName, player.Inventory.Amount, player.Purchase.Price, player.Purchase.PurchaseDate, player.Block.BlockName, player.Block.Position, player.Block.NomBlocks)
+	_, err = db.Exec("INSERT INTO players (player_id, player_name, kills, entity_type) VALUES (?, ?, ?, ?)",
+		player.PlayerID, player.PlayerName, player.Kills, player.EntityType)
 
 	if err != nil {
 		return err
@@ -103,25 +110,55 @@ func FetchPlayersFromDB(db *sql.DB) []PlayerData {
 
 	for rows.Next() {
 		var player PlayerData
+		var p Player
+		var k PlayerStats
+		var inv PlayerInventory
+		var purchase PlayerPurchase
+		var block PlayerBlock
+		var achievement PlayerAchievements
+		var coins Coins
+
 		err := rows.Scan(
-			&player.Player.PlayerID,
-			&player.Player.PlayerName,
-			&player.Stats.Kills,
-			&player.Stats.EntityType,
-			&player.Coins.Coins,
-			&player.Inventory.ItemName,
-			&player.Inventory.Amount,
-			&player.Purchase.Price,
-			&player.Purchase.PurchaseDate,
-			&player.Block.BlockName,
-			&player.Block.Position,
-			&player.Block.NomBlocks,
+			&player.PlayerID,
+			&player.PlayerName,
+			&player.Kills,
+			&player.EntityType,
+			&p.PlayerID,
+			&p.PlayerName,
+			&k.ID,
+			&k.Name,
+			&k.Score,
+			&k.Kills,
+			&k.EntityType,
+			&k.Coins,
+			&inv.PlayerID,
+			&inv.ItemName,
+			&inv.Amount,
+			&purchase.PlayerID,
+			&purchase.ItemName,
+			&purchase.Price,
+			&purchase.PurchaseDate,
+			&block.PlayerID,
+			&block.BlockName,
+			&block.Position,
+			&block.NomBlocks,
+			&achievement.PlayerID,
+			&achievement.Achievements,
+			&coins.PlayerID,
+			&coins.Coins,
 		)
 
 		if err != nil {
 			fmt.Println("Error scanning player row:", err)
 			continue
 		}
+		player.Player = append(player.Player, p)
+		player.Stats = append(player.Stats, k)
+		player.Inventory = append(player.Inventory, inv)
+		player.Purchase = append(player.Purchase, purchase)
+		player.Block = append(player.Block, block)
+		player.Achievements = append(player.Achievements, achievement)
+		player.Coins = append(player.Coins, coins)
 		playersFromDB = append(playersFromDB, player)
 	}
 
@@ -196,7 +233,7 @@ func UpdatePlayerHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	for i, player := range players {
-		if player.Player.PlayerID == updatedPlayer.Player.PlayerID {
+		if player.Player[0].PlayerID == updatedPlayer.Player[0].PlayerID {
 			players[i] = updatedPlayer
 			w.WriteHeader(http.StatusOK)
 			fmt.Println("Player updated successfully:", updatedPlayer)
@@ -205,7 +242,7 @@ func UpdatePlayerHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	http.NotFound(w, r)
-	fmt.Println("Player not found for update:", updatedPlayer.Player.PlayerID)
+	fmt.Println("Player not found for update:", updatedPlayer.Player[0].PlayerID)
 }
 
 func DeletePlayerHandler(w http.ResponseWriter, r *http.Request) {
@@ -214,7 +251,7 @@ func DeletePlayerHandler(w http.ResponseWriter, r *http.Request) {
 	id := r.FormValue("player_id")
 
 	for i, player := range players {
-		if player.Player.PlayerID == id {
+		if player.Player[0].PlayerID == id {
 			players = append(players[:i], players[i+1:]...)
 			w.WriteHeader(http.StatusOK)
 			fmt.Println("Player deleted successfully:", id)
