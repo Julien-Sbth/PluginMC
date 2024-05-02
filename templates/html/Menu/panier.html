@@ -1,47 +1,49 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/templates/css/Menu/panier.css">
     <title>Panier</title>
 </head>
 <body>
 <h1>Panier</h1>
 <p>Bienvenue, {{.Username}}!</p>
 
+<h2>Pièces:</h2>
+<ul>
+    {{range .Coins}}
+    <li>{{.Coins}} pièces</li>
+    {{end}}
+</ul>
+<p>Connect</p>
+{{range .Connected }}
+{{.UUID}}
+{{.Name}}
+{{.Connect}}
+{{end}}
+<h2>Articles dans le panier:</h2>
+<ul>
+    {{range .Panier}}
+    <li>
+        {{.ItemsName}} - Quantité: {{.Quantity}} - Prix: {{.Price}}
+    </li>
+    {{end}}
+</ul>
+
+{{if .IsLoggedIn}}
+<p>Connecté en tant que {{.Username}}.</p>
+{{else}}
+<p>Vous n'êtes pas connecté.</p>
+{{end}}
+
 {{if .IsAdmin}}
-<p>Vous êtes un administrateur !</p>
+<p>Vous êtes un administrateur.</p>
 {{else}}
 <p>Vous n'êtes pas un administrateur.</p>
 {{end}}
-{{ range .Panier }}
-<div class="blocks">
-    <div class="blocks2">
-        {{ .ID }}
-        <img src="data:image/png;base64,{{ .ImageData }}" alt="">
-        {{ .ItemsName }}
-        {{ .Price }} Coins
-        <button onclick="removeFromCart('{{ .ID }}')">Retirer</button>
-    </div>
-</div>
-{{ end }}
 
-<script>
-    function removeFromCart(itemID) {
-        window.location.href = "/api/user/panier?removeItemID=" + itemID;
-    }
+<p>{{.ErrorMessage}}</p>
 
-    const images = document.querySelectorAll('.grid-item img, .blocks2 img');
-
-    images.forEach(image => {
-        if (image.naturalWidth < image.parentNode.offsetWidth && image.naturalHeight < image.parentNode.offsetHeight) {
-            image.style.width = '100%';
-            image.style.height = '100%';
-        }
-    });
-</script>
-
+<a href="/api/user/logout">Déconnexion</a>
 </body>
 </html>
