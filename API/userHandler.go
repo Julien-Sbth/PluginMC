@@ -20,6 +20,7 @@ type PlayerData struct {
 	Inventory     []Inventory     `json:"nom_item"`
 	Shop          []Shop          `json:"shop"`
 	ShopItem      []ShopItem      `json:"shop_item"`
+	Connected     []Connected     `json:"connected"`
 	Panier        []PanierItem
 	Username      string
 	IsLoggedIn    bool
@@ -40,8 +41,10 @@ type PanierItem struct {
 	ErrorMessage string
 }
 type Coin struct {
-	PlayerID string `json:"player_id"`
-	Coins    string `json:"coins"`
+	PlayerID   string `json:"player_id"`
+	PlayerName string `json:"player_name"`
+
+	Coins string `json:"coins"`
 }
 type ShopItem struct {
 	ID        string `json:"id"`
@@ -50,6 +53,12 @@ type ShopItem struct {
 	Price     string `json:"price"`
 	ImagePath string `json:"image_base64"`
 	ImageData string
+}
+
+type Connected struct {
+	UUID    string `json:"uuid"`
+	Name    string `json:"name"`
+	Connect int    `json:"connected"`
 }
 type Item struct {
 	PlayerUUID string `json:"player_uuid"`
@@ -117,6 +126,7 @@ type ResponseData struct {
 	Inventory     []Inventory     `json:"nom_item"`
 	Shop          []Shop          `json:"shop"`
 	ShopItem      []ShopItem      `json:"shop_item"`
+	Connected     []Connected     `json:"connected"`
 }
 
 func usernameExists(username string) bool {

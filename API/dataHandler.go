@@ -74,6 +74,11 @@ func displayAndEncode(playerData PlayerData) ([]byte, error) {
 		fmt.Printf("Player ID: %s - Coins: %s\n", achievements.PlayerID, achievements.Achievements)
 	}
 
+	fmt.Println("Connected:")
+	for _, Connect := range playerData.Connected {
+		fmt.Printf("Player ID: %s - Player: %s - Connected: %d\n", Connect.UUID, Connect.Name, Connect.Connect)
+	}
+
 	for i, blocksDestroy := range playerData.BlocksDestroy {
 		imageData, err := base64.StdEncoding.DecodeString(blocksDestroy.ImagePath)
 		if err != nil {
