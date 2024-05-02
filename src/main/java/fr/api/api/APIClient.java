@@ -38,7 +38,7 @@ public class APIClient {
         return jsonArray;
     }
 
-    private void sendJsonToSite(JsonArray jsonArrayCoins, JsonArray jsonArrayKills, JsonArray jsonArrayBlock, JsonArray jsonArrayAchievements, JsonArray jsonArrayDestroyBlocks , JsonArray jsonArrayInventory, JsonArray jsonArrayShop, JsonArray jsonArrayShopItem ) {
+    private void sendJsonToSite(JsonArray jsonArrayCoins, JsonArray jsonArrayKills, JsonArray jsonArrayBlock, JsonArray jsonArrayAchievements, JsonArray jsonArrayDestroyBlocks , JsonArray jsonArrayInventory, JsonArray jsonArrayShop, JsonArray jsonArrayShopItem, JsonArray jsonArrayConnected ) {
         try {
             URL url = new URL(API_ENDPOINT);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -55,6 +55,7 @@ public class APIClient {
             jsonObject.add("nom_item", jsonArrayInventory);
             jsonObject.add("shop", jsonArrayShop);
             jsonObject.add("shop_item", jsonArrayShopItem);
+            jsonObject.add("connected", jsonArrayConnected);
 
             System.out.println("Données JSON envoyées au site : " + jsonObject.toString());
 
@@ -110,6 +111,9 @@ public class APIClient {
             ResultSet rsShopItem = stmt.executeQuery("SELECT * FROM Shop");
             JsonArray jsonArrayShopItem = convertResultSetToJson(rsShop);
 
+            ResultSet rsConnected = stmt.executeQuery("SELECT * FROM players");
+            JsonArray jsonArrayConnected = convertResultSetToJson(rsConnected);
+
             rsBlock.close();
             rsCoins.close();
             rsKills.close();
@@ -118,9 +122,10 @@ public class APIClient {
             rsInventory.close();
             rsDestroyBlocks.close();
             rsShopItem.close();
+            rsConnected.close();
             stmt.close();
 
-            sendJsonToSite(jsonArrayCoins, jsonArrayKills, jsonArrayBlock, jsonArrayAchievements, jsonArrayDestroyBlocks, jsonArrayInventory, jsonArrayShop, jsonArrayShopItem);
+            sendJsonToSite(jsonArrayCoins, jsonArrayKills, jsonArrayBlock, jsonArrayAchievements, jsonArrayDestroyBlocks, jsonArrayInventory, jsonArrayShop, jsonArrayShopItem, jsonArrayConnected);
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("Erreur lors de l'envoi des données au site : " + e.getMessage());
