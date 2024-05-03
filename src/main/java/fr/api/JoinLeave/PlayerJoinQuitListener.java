@@ -15,11 +15,11 @@ public class PlayerJoinQuitListener implements Listener {
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
-        PlayerManager.updatePlayerTable(sqliteManager, event.getPlayer(), Integer.parseInt("1"));
+        PlayerManager.updatePlayerTable(sqliteManager, event.getPlayer(), "connected");
     }
 
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent event) {
-        PlayerManager.updatePlayerTable(sqliteManager, event.getPlayer(), 0);
+        PlayerManager.updatePlayerTable(sqliteManager, event.getPlayer(), "disconnect");
     }
 }

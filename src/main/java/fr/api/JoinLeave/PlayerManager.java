@@ -16,14 +16,14 @@ public class PlayerManager {
         this.sqliteManager = sqliteManager;
     }
 
-    public static void updatePlayerTable(SQLiteManager sqliteManager, Player player, int online) {
+    public static void updatePlayerTable(SQLiteManager sqliteManager, Player player, String status) {
         Connection conn = sqliteManager.getConnection();
 
         PreparedStatement stmt = null;
         ResultSet rs = null;
 
         try {
-            stmt = conn.prepareStatement("CREATE TABLE IF NOT EXISTS players (uuid TEXT PRIMARY KEY, name TEXT, online INTEGER)");
+            stmt = conn.prepareStatement("CREATE TABLE IF NOT EXISTS players (uuid TEXT PRIMARY KEY, name TEXT, status TEXT)");
             stmt.executeUpdate();
 
             UUID uuid = player.getUniqueId();
@@ -34,16 +34,16 @@ public class PlayerManager {
             rs = stmt.executeQuery();
 
             if (rs.next()) {
-                stmt = conn.prepareStatement("UPDATE players SET name = ?, online = ? WHERE uuid = ?");
+                stmt = conn.prepareStatement("UPDATE players SET name = ?, status = ? WHERE uuid = ?");
                 stmt.setString(1, name);
-                stmt.setInt(2, online);
+                stmt.setString(2, status);
                 stmt.setString(3, uuid.toString());
                 stmt.executeUpdate();
             } else {
-                stmt = conn.prepareStatement("INSERT INTO players (uuid, name, online) VALUES (?, ?, ?)");
+                stmt = conn.prepareStatement("INSERT INTO players (uuid, name, status) VALUES (?, ?, ?)");
                 stmt.setString(1, uuid.toString());
                 stmt.setString(2, name);
-                stmt.setInt(3, online);
+                stmt.setString(3, status);
                 stmt.executeUpdate();
             }
 
@@ -61,13 +61,11 @@ public class PlayerManager {
     }
 
     public void playerJoined(Player player) {
-        updatePlayerTable(sqliteManager, player, 1);
+        updatePlayerTable(sqliteManager, player, "online");
     }
 
     // Appelé lors de la déconnexion d'un joueur
     public void playerLeft(Player player) {
-        updatePlayerTable(sqliteManager, player, 0);
+        updatePlayerTable(sqliteManager, player, "disconnect");
     }
-
-
 }
