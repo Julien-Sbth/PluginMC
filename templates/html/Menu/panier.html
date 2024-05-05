@@ -1,49 +1,110 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/templates/css/Menu/panier.css">
     <title>Panier</title>
 </head>
 <body>
 <h1>Panier</h1>
-<p>Bienvenue, {{.Username}}!</p>
-
-<h2>Pièces:</h2>
+<p>Bienvenue, {{ .Username }}!</p>
 <ul>
-    {{range .Coins}}
-    <li>{{.Coins}} pièces</li>
-    {{end}}
+    {{ range .Coins }}
+    <li>{{ .Coins }} pièces</li>
+    {{ end }}
 </ul>
-<p>Connect</p>
-{{range .Connected }}
-{{.UUID}}
-{{.Name}}
-{{.Connect}}
-{{end}}
-<h2>Articles dans le panier:</h2>
-<ul>
-    {{range .Panier}}
-    <li>
-        {{.ItemsName}} - Quantité: {{.Quantity}} - Prix: {{.Price}}
-    </li>
-    {{end}}
-</ul>
-
-{{if .IsLoggedIn}}
-<p>Connecté en tant que {{.Username}}.</p>
-{{else}}
-<p>Vous n'êtes pas connecté.</p>
-{{end}}
-
-{{if .IsAdmin}}
-<p>Vous êtes un administrateur.</p>
-{{else}}
+{{ range .Connected }}
+{{ .UUID }}
+{{ .Name }}
+{{ .Connect }}
+{{ end }}
+{{ if .IsAdmin }}
+<p>Vous êtes un administrateur !</p>
+{{ else }}
 <p>Vous n'êtes pas un administrateur.</p>
-{{end}}
+{{ end }}
+{{ range .Panier }}
+<div class="blocks" id="{{ .ID }}">
+    <div class="blocks2">
+        {{ .ID }}
+        <img src="data:image/png;base64,{{ .ImageData }}" alt="">
+        {{ .ItemsName }}
+        {{ .Price }} Coins
+        {{ .ID }} ID
+        <button onclick="buyItem('{{ .ID }}', {{ .Price }}, this)">Acheter</button>
+    </div>
+</div>
+{{ end }}
 
-<p>{{.ErrorMessage}}</p>
+<script>
+    function buyItem(itemID, itemPrice, buttonElement) {
+        console.log("ID de l'item:", itemID); // Ajout de log pour déboguer
+        console.log("Prix de l'item:", itemPrice);
 
-<a href="/api/user/logout">Déconnexion</a>
+        fetch("/api/user/panier/canbuy?buyItemID=" + itemID + "&itemPrice=" + itemPrice, {
+            credentials: 'same-origin' // Inclure les cookies de session dans la requête
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error("Erreur lors de la vérification de l'achat: " + response.statusText);
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.canBuy) {
+                    console.log("L'achat est possible.");
+                    confirmPurchase(itemID, buttonElement);
+                } else {
+                    console.log("Solde de coins insuffisant pour acheter l'item.");
+                    alert("Solde de coins insuffisant pour acheter l'item.");
+                }
+            })
+            .catch(error => {
+                console.error("Erreur: ", error);
+                alert("Une erreur s'est produite lors de la vérification de l'achat.");
+            });
+    }
+
+
+    function confirmPurchase(itemID, buttonElement) {
+        fetch("/api/user/panier/buy", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                buyItemID: itemID
+            })
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error("Erreur lors de l'achat de l'item: " + response.statusText);
+                } else {
+                    console.log("Achat réussi pour l'item avec l'ID:", itemID);
+                    // Supprimer l'élément du panier de l'interface utilisateur
+                    buttonElement.closest('.blocks').remove();
+                    alert("Achat réussi pour l'item avec l'ID: " + itemID);
+                }
+            })
+            .catch(error => {
+                console.error("Erreur: ", error);
+                alert("Une erreur s'est produite lors de l'achat de l'item.");
+            });
+    }
+
+
+    window.onload = function () {
+        const images = document.querySelectorAll('.blocks2 img');
+        images.forEach(image => {
+            image.onload = function () {
+                if (image.naturalWidth < image.parentNode.offsetWidth && image.naturalHeight < image.parentNode.offsetHeight) {
+                    image.style.width = '100%';
+                    image.style.height = '100%';
+                }
+            };
+        });
+    };
+</script>
 </body>
 </html>
