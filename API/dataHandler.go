@@ -76,7 +76,7 @@ func displayAndEncode(playerData PlayerData) ([]byte, error) {
 
 	fmt.Println("Connected:")
 	for _, Connect := range playerData.Connected {
-		fmt.Printf("Player ID: %s - Player: %s - Connected: %d\n", Connect.UUID, Connect.Name, Connect.Connect)
+		fmt.Printf("Player ID: %s - Player: %s - Connected: %s\n", Connect.UUID, Connect.Name, Connect.Connect)
 	}
 
 	for i, blocksDestroy := range playerData.BlocksDestroy {
