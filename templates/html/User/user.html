@@ -7,11 +7,6 @@
 <body>
 <h1>User Data</h1>
 <h2>Coins</h2>
-<ul>
-    {{ range .Coins }}
-    <li>Player ID: {{ .PlayerID }} - Coins: {{ .Coins }}</li>
-    {{ end }}
-</ul>
 <hr>
 <h3>Monster Kills</h3>
 <div class="blocks">
@@ -101,5 +96,8 @@
             image.style.height = '100%';
         }
     });
+    /*
+    Quand le joueur achete un item, il faut que ça fasse /give Pseudo minecraft:items
+     */
 </script>
 </html>
