@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>Shop</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <link rel="stylesheet" type="text/css" href="/templates/css/Menu/shop.css">
 </head>
 <body>
@@ -33,7 +35,6 @@
             {{ with index .ShopItem 2 }}
             <div class="inventory-slot sword">
                 <img src="data:image/png;base64,{{ .ImageData }}" alt="" onclick="switchTab('sword')">
-                <div class="description">{{ .Price }} Une pioche robuste en acier pour extraire des minerais.</div>
             </div>
             {{ end }}
             {{ with index .ShopItem 1 }}
@@ -287,7 +288,7 @@
     </div>
 </div>
 <p>Want To Buy A Items ?</p>
-<h3>Monster Kills</h3>
+<h3>Shop</h3>
 <div class="blocks">
     {{ with index .ShopItem 0 }}
     <div class="blocks2">
