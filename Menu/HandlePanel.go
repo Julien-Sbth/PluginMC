@@ -188,7 +188,6 @@ func usernameExists(username string) bool {
 	}
 	defer db.Close()
 
-	// Exécute une requête pour vérifier si le pseudo existe dans la base de données
 	var playerID string
 	err = db.QueryRow("SELECT player_id FROM players WHERE player_name = ?", username).Scan(&playerID)
 	if err != nil {
@@ -200,7 +199,6 @@ func usernameExists(username string) bool {
 		return false
 	}
 
-	// Le pseudo existe dans la base de données
 	return true
 }
 
