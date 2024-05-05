@@ -3,6 +3,7 @@ package API
 import (
 	"APIMC/Connexion"
 	"database/sql"
+	"fmt"
 	"html/template"
 	"log"
 	"net/http"
@@ -15,7 +16,6 @@ func HandleAddToCart(w http.ResponseWriter, r *http.Request) {
 	}
 
 	itemID := r.URL.Query().Get("itemID")
-	addToCart(itemID)
 
 	session, err := Connexion.Store.Get(r, Connexion.SessionName)
 	if err != nil {
@@ -23,10 +23,15 @@ func HandleAddToCart(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	var username string
 	if session.Values["username"] == nil {
 		http.Redirect(w, r, "/api/user/login", http.StatusSeeOther)
 		return
+	} else {
+		username = session.Values["username"].(string)
 	}
+
+	addToCart(itemID, username)
 
 	http.Redirect(w, r, "/api/user/panier", http.StatusSeeOther)
 }
@@ -129,7 +134,13 @@ func HandlePanier(w http.ResponseWriter, r *http.Request) {
 	http.Redirect(w, r, "/api/user/login", http.StatusSeeOther)
 }
 
-func addToCart(itemID string) {
+func addToCart(itemID string, username string) {
+	db, err := sql.Open("sqlite3", "database.sqlite")
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer db.Close()
+
 	var itemToAdd ShopItem
 	for _, item := range playerData.ShopItem {
 		if item.ID == itemID {
@@ -137,6 +148,7 @@ func addToCart(itemID string) {
 			break
 		}
 	}
+
 	playerData.Panier = append(playerData.Panier, PanierItem{
 		ID:        itemToAdd.ID,
 		ItemsName: itemToAdd.ItemsName,
@@ -145,4 +157,18 @@ func addToCart(itemID string) {
 		ImagePath: itemToAdd.ImagePath,
 		ImageData: itemToAdd.ImageData,
 	})
+
+	_, err = db.Exec("INSERT INTO panier (item_name, quantity, price, image_path) VALUES (?, ?, ?, ?)",
+		itemToAdd.ItemsName, itemToAdd.Quantity, itemToAdd.Price, itemToAdd.ImagePath)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	var userCoins int
+	err = db.QueryRow("SELECT coins FROM utilisateurs WHERE username = ?", username).Scan(&userCoins)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	fmt.Printf("Coins de l'utilisateur %s : %d\n", username, userCoins)
 }
