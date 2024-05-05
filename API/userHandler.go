@@ -23,6 +23,7 @@ type PlayerData struct {
 	Connected     []Connected     `json:"connected"`
 	Panier        []PanierItem
 	Username      string
+	Connect       string
 	IsLoggedIn    bool
 	IsAdmin       bool
 	ErrorMessage  string
@@ -43,8 +44,7 @@ type PanierItem struct {
 type Coin struct {
 	PlayerID   string `json:"player_id"`
 	PlayerName string `json:"player_name"`
-
-	Coins string `json:"coins"`
+	Coins      string `json:"coins"`
 }
 type ShopItem struct {
 	ID        string `json:"id"`
@@ -58,7 +58,7 @@ type ShopItem struct {
 type Connected struct {
 	UUID    string `json:"uuid"`
 	Name    string `json:"name"`
-	Connect int    `json:"connected"`
+	Connect string `json:"status"`
 }
 type Item struct {
 	PlayerUUID string `json:"player_uuid"`
