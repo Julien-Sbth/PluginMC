@@ -56,7 +56,8 @@ type PlayerBlock struct {
 
 type PlayerAchievements struct {
 	PlayerID     string `json:"player_id"`
-	Achievements int    `json:"achievements"`
+	Achievements string `json:"achievements"`
+	Position     int    `json:"position"`
 }
 
 type Coins struct {
@@ -65,12 +66,15 @@ type Coins struct {
 }
 
 type PlayerData struct {
-	PlayerID     string `json:"player_id"`
-	PlayerName   string `json:"player_name"`
-	Kills        string `json:"kills"`
-	EntityType   string `json:"entity_type"`
-	BlockName    string `json:"block_name"`
-	Position     int    `json:"position"`
+	PlayerID   string `json:"player_id"`
+	PlayerName string `json:"player_name"`
+	Kills      string `json:"kills"`
+	EntityType string `json:"entity_type"`
+	BlockName  string `json:"block_name"`
+	Position   int    `json:"position"` // Modifiez le type de int à *int64
+	Position2  int    `json:"position2"`
+	Position3  int    `json:"position3"`
+
 	NomBlocks    string `json:"nom_blocks"`
 	Price        int    `json:"price"`
 	PurchaseDate string `json:"purchase_date"`
@@ -84,18 +88,17 @@ type PlayerData struct {
 	Block        []PlayerBlock        `json:"-"`
 	Achievements []PlayerAchievements `json:"-"`
 	Blocks       []PlayerMoved        `json:"-"`
-	Coins        []Coins              `json:"-"`
 }
 
 func insertPlayerData(player PlayerData) error {
-	db, err := sql.Open("sqlite3", "players.db")
+	db, err := sql.Open("sqlite3", "database.sqlite")
 	if err != nil {
 		return err
 	}
 	defer db.Close()
 
-	_, err = db.Exec("INSERT INTO players (player_id, player_name, kills, entity_type, name_block, block_name, item_name, purchase_date, price, position) VALUES (?, ?, ?, ?, ?, ?,?,?, ?, ?)",
-		player.PlayerID, player.PlayerName, player.Kills, player.EntityType, player.NomBlocks, player.BlockName, player.ItemName, player.PurchaseDate, player.Price, player.Position)
+	_, err = db.Exec("INSERT INTO players (player_id, player_name, kills, entity_type, block_name, item_name, purchase_date, price, position) VALUES (?, ?, ?, ?, ?, ?,?,?, ?)",
+		player.PlayerID, player.PlayerName, player.Kills, player.EntityType, player.BlockName, player.ItemName, player.PurchaseDate, player.Price, player.Position)
 
 	if err != nil {
 		return err
@@ -116,13 +119,6 @@ func FetchPlayersFromDB(db *sql.DB) []PlayerData {
 
 	for rows.Next() {
 		var player PlayerData
-		var p Player
-		var k PlayerStats
-		var inv PlayerInventory
-		var purchase PlayerPurchase
-		var block PlayerBlock
-		var achievement PlayerAchievements
-		var coins Coins
 
 		err := rows.Scan(
 			&player.PlayerID,
@@ -130,44 +126,21 @@ func FetchPlayersFromDB(db *sql.DB) []PlayerData {
 			&player.Kills,
 			&player.EntityType,
 			&player.ItemName,
-			&player.Position,
-			&p.PlayerID,
-			&p.PlayerName,
-			&k.ID,
-			&k.Name,
-			&k.Score,
-			&k.Kills,
-			&k.EntityType,
-			&k.Coins,
-			&inv.PlayerID,
-			&inv.ItemName,
-			&inv.Amount,
-			&inv.Position,
-			&purchase.PlayerID,
-			&purchase.ItemName,
-			&purchase.Price,
-			&purchase.PurchaseDate,
-			&block.PlayerID,
-			&block.BlockName,
-			&block.Position,
-			&block.NomBlocks,
-			&achievement.PlayerID,
-			&achievement.Achievements,
-			&coins.PlayerID,
-			&coins.Coins,
+			&player.Position, // Changez ce type à *int64
+			&player.Position2,
+			&player.Position3,
+			&player.Position3,
+
+			&player.Price,
+			&player.PurchaseDate,
+			&player.BlockName,
+			&player.Amount,
 		)
 
 		if err != nil {
 			fmt.Println("Error scanning player row:", err)
 			continue
 		}
-		player.Player = append(player.Player, p)
-		player.Stats = append(player.Stats, k)
-		player.Inventory = append(player.Inventory, inv)
-		player.Purchase = append(player.Purchase, purchase)
-		player.Block = append(player.Block, block)
-		player.Achievements = append(player.Achievements, achievement)
-		player.Coins = append(player.Coins, coins)
 		playersFromDB = append(playersFromDB, player)
 	}
 
@@ -181,7 +154,7 @@ func FetchPlayersFromDB(db *sql.DB) []PlayerData {
 
 func usernameExists(username string) bool {
 	// Ouvre la connexion à la base de données
-	db, err := sql.Open("sqlite3", "players.db")
+	db, err := sql.Open("sqlite3", "database.sqlite")
 	if err != nil {
 		fmt.Println("Erreur lors de la connexion à la base de données:", err)
 		return false
