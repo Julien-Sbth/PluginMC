@@ -1,33 +1,54 @@
 package fr.api.pluginmc;
 
+import com.google.gson.JsonObject;
 import fr.api.Block.BlockDestroyListener;
+import fr.api.BlockMovementTracker.BlockMovementTracker;
+import fr.api.InventoryManager.InventoryListener;
 import fr.api.JoinLeave.JoinLeaveListener;
 import fr.api.JoinLeave.PlayerJoinQuitListener;
 import fr.api.JoinLeave.PlayerManager;
 import fr.api.Listener.ListenerVaultPlayer;
 import fr.api.menu.Menu;
-import fr.api.BlockMovementTracker.BlockMovementTracker;
 import fr.api.advancement.AchievementListener;
 import fr.api.api.APIClient;
+import fr.api.commands.Commands;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import fr.api.BlockMovementTracker.BlockMovementTracker;
+import fr.api.JoinLeave.PlayerJoinQuitListener;
+import fr.api.JoinLeave.PlayerManager;
 import fr.api.menu.PlayerCoinsManager;
 import fr.api.InventoryManager.InventoryListener;
+import fr.api.advancement.AchievementListener;
+import fr.api.api.APIClient;
 import fr.api.artefact.ArtefactItemsListener;
 import fr.api.basededonnees.SQLiteManager;
-import fr.api.commands.Commands;
+import fr.api.menu.Menu;
+import fr.api.menu.PlayerCoinsManager;
 import fr.api.menu.ShopManager;
 import fr.api.moneycommands.MoneyCommand;
 import fr.api.monster.MonsterDeathListener;
 import fr.api.shop.ShopADDItem;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.List;
 import java.util.logging.Logger;
 
-public class Main extends JavaPlugin implements Listener {
+public class Main extends JavaPlugin {
     private PlayerManager playerManager;
 
     private SQLiteManager sqliteManager;
@@ -46,7 +67,6 @@ public class Main extends JavaPlugin implements Listener {
 
     @Override
     public void onEnable() {
-        getServer().getPluginManager().registerEvents(this, this);
         getCommand("money").setExecutor(new MoneyCommand(monsterDeathListener));
         getServer().getPluginManager().registerEvents(new ArtefactItemsListener(), this);
 
@@ -96,9 +116,8 @@ public class Main extends JavaPlugin implements Listener {
         getServer().getPluginManager().registerEvents(movementTracker, this);
         playerManager = new PlayerManager(sqliteManager);
         getServer().getPluginManager().registerEvents(new PlayerJoinQuitListener(sqliteManager), this);
+        makeHTTPRequest();
     }
-
-
     @Override
     public void onDisable() {
         if (sqliteManager != null) {
@@ -116,4 +135,48 @@ public class Main extends JavaPlugin implements Listener {
     public void onPlayerQuit(PlayerQuitEvent event) {
         playerManager.playerLeft(event.getPlayer());
     }
+    private void makeHTTPRequest() {
+        try {
+            URL url = new URL("http://localhost:8080/items");
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("GET");
+
+            BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+            StringBuilder response = new StringBuilder();
+            String line;
+
+            while ((line = reader.readLine()) != null) {
+                response.append(line);
+            }
+            reader.close();
+
+            getLogger().info("Réponse du serveur Go : " + response.toString());
+
+            JsonArray jsonArray = JsonParser.parseString(response.toString()).getAsJsonArray();
+
+            for (int i = 0; i < jsonArray.size(); i++) {
+                JsonObject jsonObject = jsonArray.get(i).getAsJsonObject();
+
+                String itemID = jsonObject.get("itemID").getAsString();
+                String playerName = jsonObject.get("playerName").getAsString();
+                String ItemsName = jsonObject.get("ItemsName").getAsString();
+                if (itemID != null && playerName != null && ItemsName != null) {
+                    Player player = getServer().getPlayerExact(playerName);
+                    if (player != null && player.isOnline()) {
+                        String giveCommand = "/give " + playerName + " minecraft:" + ItemsName;
+                        player.performCommand(giveCommand);
+                        getLogger().info("Commande /give exécutée avec succès pour " + playerName + " avec l'item " + ItemsName);
+                        getLogger().info("Commande exécutée : " + giveCommand); // Ajout du log pour afficher la commande exécutée
+                    } else {
+                        getLogger().warning("Le joueur " + playerName + " n'est pas en ligne !");
+                    }
+                }
+            }
+
+            conn.disconnect();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 }

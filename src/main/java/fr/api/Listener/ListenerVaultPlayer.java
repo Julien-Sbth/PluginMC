@@ -1,51 +1,61 @@
-package fr.api.Listener;
+import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
-import fr.api.pluginmc.Main;
-import fr.api.utils.VaultUtils;
-import org.bukkit.NamespacedKey;
-import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
-import org.bukkit.event.inventory.InventoryCloseEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.persistence.PersistentDataContainer;
-import org.bukkit.persistence.PersistentDataType;
-
-import javax.persistence.Persistence;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
-
-public class ListenerVaultPlayer implements Listener {
-
-    @EventHandler
-    public void onPlayerJoin(PlayerJoinEvent e) {
-        Player p = e.getPlayer();
-
-        PersistentDataContainer data = p.getPersistentDataContainer();
-
-        if(!data.has(new NamespacedKey(Main.getPlugin(), "vault"), PersistentDataType.STRING)) {
-            data.set(new NamespacedKey(Main.getPlugin(), "vault"), PersistentDataType.STRING, "");
-        }
+public class Main extends JavaPlugin {
+    @Override
+    public void onEnable() {
+        getLogger().info("Plugin activé !");
     }
 
-    @EventHandler
-    public void onInventoryClose(InventoryCloseEvent e) {
-        Player p = (Player) e.getPlayer();
+    @Override
+    public void onDisable() {
+        getLogger().info("Plugin désactivé !");
+    }
 
-        if(e.getView().getTitle().equalsIgnoreCase("Your Personal Vault")) {
+    @Override
+    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+        if (command.getName().equalsIgnoreCase("executego")) {
+            if (args.length == 1) {
+                String codeGo = args[0]; // Le code Go envoyé en argument
+                executeGoCode(codeGo);
+                return true;
+            } else {
+                sender.sendMessage("Usage: /executego <code Go>");
+                return false;
+            }
+        }
+        return false;
+    }
 
-            ArrayList<ItemStack> prunedItems = new ArrayList<>();
-            Arrays.stream(e.getInventory().getContents())
-                            .filter(itemStack -> {
-                                if (itemStack == null) {
-                                    return false;
-                                }
-                                return true;
-                            })
-                                    .forEach(itemStack -> prunedItems.add(itemStack));
-            VaultUtils.storeItems(prunedItems, p);
+    public void executeGoCode(String codeGo) {
+        try {
+            // URL de votre serveur Go
+            URL url = new URL("http://localhost:8080/executego?code=" + codeGo); // Modifiez l'URL en fonction de votre serveur Go
+
+            // Créez une connexion HTTP
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("GET");
+
+            // Lisez la réponse
+            BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            String inputLine;
+            StringBuffer response = new StringBuffer();
+
+            while ((inputLine = in.readLine()) != null) {
+                response.append(inputLine);
+            }
+            in.close();
+
+            // Affichez la réponse
+            getLogger().info("Réponse du serveur Go : " + response.toString());
+
+        } catch (Exception e) {
+            getLogger().warning("Erreur lors de l'exécution du code Go : " + e.getMessage());
         }
     }
 }
