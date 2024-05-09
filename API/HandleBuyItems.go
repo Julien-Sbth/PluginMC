@@ -2,13 +2,23 @@ package API
 
 import (
 	"APIMC/Connexion"
+	"bytes"
 	"database/sql"
 	"encoding/json"
 	"errors"
+	"fmt"
 	"log"
 	"net/http"
 	"strconv"
 )
+
+type Items struct {
+	ItemID     string `json:"itemID"`
+	PlayerName string `json:"playerName"`
+	ItemPrice  int    `json:"itemPrice"`
+	ItemsName  any
+	Send       bool
+}
 
 func HandleBuyItem(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodPost {
@@ -55,13 +65,22 @@ func HandleBuyItem(w http.ResponseWriter, r *http.Request) {
 			break
 		}
 	}
-
 	if shopItem == nil {
 		http.Error(w, "Item non trouvé dans la boutique", http.StatusInternalServerError)
 		return
 	}
 
-	err = buyItem(itemID, &playerData)
+	username := session.Values["username"].(string)
+
+	price, err := strconv.Atoi(shopItem.Price)
+	if err != nil {
+		http.Error(w, "Erreur de conversion du prix: "+err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	sendHTTPRequest(itemID, username, price)
+
+	err = buyItem(itemID, username, &playerData)
 	if err != nil {
 		http.Error(w, "Erreur lors de l'achat de l'item: "+err.Error(), http.StatusInternalServerError)
 		return
@@ -73,7 +92,7 @@ func HandleBuyItem(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err = recordPurchase(itemID, shopItem, playerData.Username, playerData.Connected)
+	err = recordPurchase(itemID, shopItem, username, playerData.Connected)
 	if err != nil {
 		http.Error(w, "Erreur lors de l'enregistrement de l'achat: "+err.Error(), http.StatusInternalServerError)
 		return
@@ -140,7 +159,22 @@ func CanBuyItem(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Item non trouvé dans la boutique", http.StatusNotFound)
 		return
 	}
+	price, err := strconv.Atoi(shopItem.Price)
+	if err != nil {
+		http.Error(w, "Erreur de conversion du prix: "+err.Error(), http.StatusInternalServerError)
+		return
+	}
 
+	fmt.Println("Price:", price)
+
+	err = sendHTTPRequest(itemID, username, price)
+	if err != nil {
+		fmt.Println("Erreur lors de l'appel à SendRequest:", err)
+		http.Error(w, "Erreur lors de l'appel à SendRequest: "+err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	fmt.Println("SendRequest appelé avec succès")
 	err = recordPurchase(itemID, shopItem, username, playerData.Connected)
 	if err != nil {
 		http.Error(w, "Erreur lors de l'enregistrement de l'achat: "+err.Error(), http.StatusInternalServerError)
@@ -182,10 +216,13 @@ func recordPurchase(itemID string, shopItem *ShopItem, username string, connecte
 	if err != nil {
 		return err
 	}
+
+	log.Println("Achat de l'itemID:", itemID)
+
 	return nil
 }
 
-func buyItem(itemID string, playerData *PlayerData) error {
+func buyItem(itemID string, playerName string, playerData *PlayerData) error {
 	var shopItem *ShopItem
 	var tempShopItem ShopItem
 	for _, item := range playerData.ShopItem {
@@ -213,12 +250,12 @@ func buyItem(itemID string, playerData *PlayerData) error {
 	if playerCoins < itemPrice {
 		return errors.New("solde de coins insuffisant pour acheter l'item")
 	}
-
 	if playerCoins-itemPrice < 0 {
 		return errors.New("achat impossible, le solde sera négatif")
 	}
 
 	addToCartBuy(shopItem, playerData)
+	sendHTTPRequest(itemID, playerName, itemPrice)
 
 	err = decreasePlayerCoins(itemPrice, playerData)
 	if err != nil {
@@ -283,6 +320,121 @@ func decreasePlayerCoins(amount int, playerData *PlayerData) error {
 	}
 
 	playerData.Coins[0].Coins = strconv.Itoa(newCoins)
+
+	return nil
+}
+
+func SendRequest(w http.ResponseWriter, r *http.Request) {
+	if r.URL.Path != "/items" {
+		http.Error(w, "Route non autorisée", http.StatusNotFound)
+		return
+	}
+
+	switch r.Method {
+	case "GET":
+		achats, err := retrieveAchatsFromDB()
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+
+		responseJSON, err := json.Marshal(achats)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(http.StatusOK)
+		w.Write(responseJSON)
+
+	case "POST":
+		var item Item
+		err := json.NewDecoder(r.Body).Decode(&item)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusBadRequest)
+			return
+		}
+
+		fmt.Printf("Nouvel élément reçu : %+v\n", item)
+
+		w.WriteHeader(http.StatusOK)
+		fmt.Fprintf(w, "Réception réussie de l'élément\n")
+
+	default:
+		http.Error(w, "Méthode non autorisée", http.StatusMethodNotAllowed)
+	}
+}
+
+func retrieveAchatsFromDB() ([]Items, error) {
+	db, err := sql.Open("sqlite3", "database.sqlite")
+	if err != nil {
+		return nil, err
+	}
+	defer db.Close()
+
+	rows, err := db.Query("SELECT item_id, player_name, item_name, price, send FROM achats WHERE send = false")
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var achats []Items
+	for rows.Next() {
+		var achat Items
+		err := rows.Scan(&achat.ItemID, &achat.PlayerName, &achat.ItemsName, &achat.ItemPrice, &achat.Send)
+		if err != nil {
+			return nil, err
+		}
+		achats = append(achats, achat)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+
+	return achats, nil
+}
+
+func sendHTTPRequest(itemID string, playerName string, itemPrice int) error {
+	url := "http://localhost:8080/items"
+	requestBody, err := json.Marshal(map[string]interface{}{
+		"itemID":     itemID,
+		"playerName": playerName,
+		"itemPrice":  itemPrice,
+	})
+	if err != nil {
+		return err
+	}
+
+	resp, err := http.Post(url, "application/json", bytes.NewBuffer(requestBody))
+	if err != nil {
+		return err
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusOK {
+		return fmt.Errorf("Statut de la réponse non valide: %d", resp.StatusCode)
+	}
+
+	err = markItemAsSent(itemID)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func markItemAsSent(itemID string) error {
+	db, err := sql.Open("sqlite3", "database.sqlite")
+	if err != nil {
+		return err
+	}
+	defer db.Close()
+
+	_, err = db.Exec("UPDATE achats SET send = true WHERE item_id = ?", itemID)
+	if err != nil {
+		return err
+	}
 
 	return nil
 }
