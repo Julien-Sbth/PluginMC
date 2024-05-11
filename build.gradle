@@ -16,12 +16,10 @@ dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter'
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.12.5'
     implementation 'com.googlecode.json-simple:json-simple:1.1.1'
-    implementation 'org.json:json:20210307'
-    implementation 'org.springframework:spring-context:5.3.10' // Version de Spring Framework
-    implementation 'org.springframework.boot:spring-boot-starter-web:2.5.4' // Starter pour Spring Web
-    implementation 'org.springframework.boot:spring-boot-starter-data-jpa:2.5.4' // Starter pour Spring Data JPA
-    implementation 'commons-codec:commons-codec:1.15'
+    implementation 'org.json:json:20231013'
+    implementation 'com.google.code.gson:gson:2.8.9'
 
+    implementation 'commons-codec:commons-codec:1.15'
     compileOnly 'org.spigotmc:spigot-api:1.20-R0.1-SNAPSHOT'
 
 }
