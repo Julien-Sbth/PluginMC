@@ -46,3 +46,8 @@ commands:
     description: vault
   staffhome:
     description: Go back to your temporary home
+  envoyeritem:
+    description: Envoie une épée en diamant à un joueur
+  permissions:
+    default:
+      - http://localhost:8080/items
