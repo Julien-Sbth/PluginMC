@@ -3,8 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <title>Inscription</title>
-    <script src="https://kit.fontawesome.com/a81368914c.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.3/howler.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="/templates/css/Connexion/register.css">
 </head>
@@ -13,30 +11,29 @@
     <form action="/admin" class="sign-in-form" method="post">
         <h2 class="title">ForUs</h2>
         <div class="input-container">
-            <i class="fas fa-user"></i>
-            <input type="text" class="minecraft-input" name="username" id="username" placeholder="Entrez votre Username ici">
+            <label for="username"><i class="fas fa-user"></i></label>
+            <input type="text" class="minecraft-input" name="username" id="username" placeholder="Entrez votre Username ici" required>
             {{ if .ExistingUsername }}
             <p class="error-message">{{ .ErrorMessage }}</p>
             {{ end }}
         </div>
-        {{ if .ExistingUsername }}
-        <p class="error-message">{{ .ErrorMessage }}</p>
-        {{ end }}
         <div class="input-container">
-            <i class="fas fa-lock"></i>
-            <input type="password" name="password" id="password" class="minecraft-input" placeholder="Entrez votre Mot De Passe ici">
+            <label for="password"><i class="fas fa-lock"></i></label>
+            <input type="password" name="password" id="password" class="minecraft-input" placeholder="Entrez votre Mot De Passe ici" required>
+        </div>
+        <div class="input-container">
+            <label for="email"><i class="fas fa-envelope"></i></label>
+            <input type="email" id="email" name="email" class="minecraft-input" placeholder="Entrer votre Adresse Email" required>
             {{ if .ExistingEmail }}
-            <p class="error-email">{{ .ErrorEmail }}</p>
+            <p class="error-message">{{ .ErrorMessage }}</p>
             {{ end }}
         </div>
-        <div class="input-container">
-            <i class="fas fa-envelope"></i>
-            <input type="text" id="email" name="email" class="minecraft-input" required placeholder="Entrer votre Adresse Email">
-        </div>
-        <div class="test">
-            <button id="log-in" class="minecraft-input center-button" type="submit">S'inscrire</button>
+        <div class="button-group">
+            <button id="log-in" class="btn" type="submit">S'inscrire</button>
         </div>
     </form>
 </div>
+<script src="https://kit.fontawesome.com/a81368914c.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.3/howler.min.js"></script>
 </body>
 </html>
