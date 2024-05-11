@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <script src="https://kit.fontawesome.com/c3e7b9f4c8.js" crossorigin="anonymous"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="/templates/css/Menu/menu.css">
+    <link rel="stylesheet" type="text/css" href="/templates/css/Menu/index.css">
     <title>Home</title>
 </head>
 <body>
@@ -16,7 +16,6 @@
         <a href="/about" class="expander" id="info-button" aria-expanded="false"><span>About</span></a>
         <span class="button-space"></span>
         <a href="/shop" class="expander" id="shop" aria-expanded="false"><span>Shop</span></a>
-
         <span class="spacer"></span>
     </div>
     <div class="right-buttons">
@@ -24,7 +23,7 @@
         <a href="/settings" id="gearButton" class="expander"><span>Settings</span>
             <i class="fas fa-cog"></i>
         </a>
-        <a href="/logout" class="expander">Déconnexion</a>
+        <a href="/logout" class="expander"><span>Déconnexion</span></a>
         {{ else }}
         <a href="/register" class="expander" id="button1"><span>Register</span></a>
         <span class="button-space"></span>
@@ -33,9 +32,7 @@
         {{ end }}
 
         {{ if .IsAdmin }}
-        <a href="/panel" class="expander" id=""><span>Panneau de Configuration</span></a>
-        {{ else }}
-        <p>Tes un user</p>
+        <a href="/panel" class="expander"><span>Panneau de Configuration</span></a>
         {{ end }}
     </div>
 </header>
@@ -44,17 +41,11 @@
         <label for="username">
             <h1>Show Player Stats</h1>
         </label>
-        <input type="text" id="username" name="username" required placeholder="test">
+        <input type="text" id="username" name="username" required placeholder="Enter a username">
         <button id="log-in" class="minecraft-input" type="submit">Show me</button>
     </form>
-    <!--
-    {{if ne .ErrorMessage ""}}
-    <p style="color: red;">{{.ErrorMessage}}</p>
-    {{end}}
-    -->
     {{ if .IsLoggedIn }}
     <h1>Bienvenue {{ .Username }} !</h1>
-    {{ else }}
     {{ end }}
 </main>
 </body>
