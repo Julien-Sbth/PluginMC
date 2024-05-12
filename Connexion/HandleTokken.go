@@ -33,7 +33,7 @@ func HandleProfile(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		nextResetToken, err := generateToken()
+		nextResetToken, err := GenerateToken()
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
