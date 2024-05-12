@@ -103,95 +103,6 @@ func HandleBuyItem(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte(`{"message": "Achat réussi."}`))
 }
 
-func CanBuyItem(w http.ResponseWriter, r *http.Request) {
-	if r.Method != http.MethodGet {
-		http.Error(w, "Méthode non autorisée", http.StatusMethodNotAllowed)
-		return
-	}
-
-	itemID := r.URL.Query().Get("buyItemID")
-	if itemID == "" {
-		http.Error(w, "ID de l'item manquant", http.StatusBadRequest)
-		return
-	}
-
-	itemPriceStr := r.URL.Query().Get("itemPrice")
-	if itemPriceStr == "" {
-		http.Error(w, "Prix de l'item manquant", http.StatusBadRequest)
-		return
-	}
-
-	itemPrice, err := strconv.Atoi(itemPriceStr)
-	if err != nil {
-		http.Error(w, "Prix de l'item invalide", http.StatusBadRequest)
-		return
-	}
-
-	session, err := Connexion.Store.Get(r, Connexion.SessionName)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
-
-	var username string
-	if session.Values["username"] == nil {
-		http.Redirect(w, r, "/api/user/login", http.StatusSeeOther)
-		return
-	} else {
-		username = session.Values["username"].(string)
-	}
-
-	playerCoins, err := getPlayerCoins(username)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
-
-	var shopItem *ShopItem
-	for _, item := range playerData.ShopItem {
-		if item.ID == itemID {
-			shopItem = &item
-			break
-		}
-	}
-
-	if shopItem == nil {
-		http.Error(w, "Item non trouvé dans la boutique", http.StatusNotFound)
-		return
-	}
-	price, err := strconv.Atoi(shopItem.Price)
-	if err != nil {
-		http.Error(w, "Erreur de conversion du prix: "+err.Error(), http.StatusInternalServerError)
-		return
-	}
-
-	fmt.Println("Price:", price)
-
-	err = sendHTTPRequest(itemID, username, price)
-	if err != nil {
-		fmt.Println("Erreur lors de l'appel à SendRequest:", err)
-		http.Error(w, "Erreur lors de l'appel à SendRequest: "+err.Error(), http.StatusInternalServerError)
-		return
-	}
-
-	fmt.Println("SendRequest appelé avec succès")
-	err = recordPurchase(itemID, shopItem, username, playerData.Connected)
-	if err != nil {
-		http.Error(w, "Erreur lors de l'enregistrement de l'achat: "+err.Error(), http.StatusInternalServerError)
-		return
-	}
-
-	canBuy := playerCoins >= itemPrice
-
-	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(http.StatusOK)
-	if canBuy {
-		w.Write([]byte(`{"canBuy": true}`))
-	} else {
-		w.Write([]byte(`{"canBuy": false}`))
-	}
-}
-
 func recordPurchase(itemID string, shopItem *ShopItem, username string, connected []Connected) error {
 	db, err := sql.Open("sqlite3", "database.sqlite")
 	if err != nil {
@@ -324,48 +235,6 @@ func decreasePlayerCoins(amount int, playerData *PlayerData) error {
 	return nil
 }
 
-func SendRequest(w http.ResponseWriter, r *http.Request) {
-	if r.URL.Path != "/items" {
-		http.Error(w, "Route non autorisée", http.StatusNotFound)
-		return
-	}
-
-	switch r.Method {
-	case "GET":
-		achats, err := retrieveAchatsFromDB()
-		if err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
-			return
-		}
-
-		responseJSON, err := json.Marshal(achats)
-		if err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
-			return
-		}
-
-		w.Header().Set("Content-Type", "application/json")
-		w.WriteHeader(http.StatusOK)
-		w.Write(responseJSON)
-
-	case "POST":
-		var item Item
-		err := json.NewDecoder(r.Body).Decode(&item)
-		if err != nil {
-			http.Error(w, err.Error(), http.StatusBadRequest)
-			return
-		}
-
-		fmt.Printf("Nouvel élément reçu : %+v\n", item)
-
-		w.WriteHeader(http.StatusOK)
-		fmt.Fprintf(w, "Réception réussie de l'élément\n")
-
-	default:
-		http.Error(w, "Méthode non autorisée", http.StatusMethodNotAllowed)
-	}
-}
-
 func retrieveAchatsFromDB() ([]Items, error) {
 	db, err := sql.Open("sqlite3", "database.sqlite")
 	if err != nil {
@@ -414,47 +283,6 @@ func sendHTTPRequest(itemID string, playerName string, itemPrice int) error {
 
 	if resp.StatusCode != http.StatusOK {
 		return fmt.Errorf("Statut de la réponse non valide: %d", resp.StatusCode)
-	}
-
-	return nil
-}
-
-func HandleItemReceived(w http.ResponseWriter, r *http.Request) {
-	if r.Method != http.MethodPost {
-		http.Error(w, "Méthode non autorisée", http.StatusMethodNotAllowed)
-		return
-	}
-
-	var requestData struct {
-		ItemID string `json:"itemID"`
-	}
-	err := json.NewDecoder(r.Body).Decode(&requestData)
-	if err != nil {
-		http.Error(w, "Erreur lors de la lecture des données de la requête: "+err.Error(), http.StatusBadRequest)
-		return
-	}
-
-	err = markItemAsReceived(requestData.ItemID)
-	if err != nil {
-		http.Error(w, "Erreur lors de la mise à jour de l'item: "+err.Error(), http.StatusInternalServerError)
-		return
-	}
-
-	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(http.StatusOK)
-	w.Write([]byte(`{"message": "Confirmation de l'item reçue."}`))
-}
-
-func markItemAsReceived(itemID string) error {
-	db, err := sql.Open("sqlite3", "database.sqlite")
-	if err != nil {
-		return err
-	}
-	defer db.Close()
-
-	_, err = db.Exec("UPDATE achats SET send = true WHERE item_id = ?", itemID)
-	if err != nil {
-		return err
 	}
 
 	return nil
