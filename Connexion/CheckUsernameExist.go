@@ -2,8 +2,8 @@ package Connexion
 
 import "database/sql"
 
-func checkUsernameExists(db *sql.DB, username string) (bool, error) {
-	row := db.QueryRow("qeazeazeazeazeazeazeqeazeazeazeazeazeazeqeazeazeazeazeazeazeqeazeazeazeazeazeaze", username)
+func CheckUsernameExists(db *sql.DB, username string) (bool, error) {
+	row := db.QueryRow("SELECT COUNT(*) FROM utilisateurs WHERE username = ?", username)
 	var count int
 	err := row.Scan(&count)
 	if err != nil {

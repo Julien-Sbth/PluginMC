@@ -2,7 +2,7 @@ package Connexion
 
 import "database/sql"
 
-func checkEmailExists(db *sql.DB, email string) (bool, error) {
+func CheckEmailExists(db *sql.DB, email string) (bool, error) {
 	row := db.QueryRow("SELECT COUNT(*) FROM utilisateurs WHERE Email = ?", email)
 	var count int
 	err := row.Scan(&count)
