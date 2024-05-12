@@ -15,11 +15,12 @@
 <h2>Nom d'utilisateur: {{.Username}}</h2>
 <h2>Email: {{.Email}}</h2>
 <h2>Date d'inscription: {{.DateInscription}}</h2>
-<form action="/delete-account" method="POST">
-    <button type="submit" class="connexion-button">Supprimer le compte</button>
+<form action="/delete-account" method="POST" id="deleteForm">
+    <button type="submit" class="connexion-button" onclick="deleteAnimation()">Supprimer le compte</button>
 </form>
 {{else}}
 <p>Veuillez vous connecter pour accéder à vos paramètres. <a href="/login" class="login-link">Connexion</a></p>
 {{end}}
+<script src="/templates/js/profile.js"></script>
 </body>
 </html>
