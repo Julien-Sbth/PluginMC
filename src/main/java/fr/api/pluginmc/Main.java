@@ -12,6 +12,7 @@ import fr.api.menu.Menu;
 import fr.api.advancement.AchievementListener;
 import fr.api.api.APIClient;
 import fr.api.commands.Commands;
+import fr.api.HTTPRequest.HTTPRequest;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonParser;
 import fr.api.menu.PlayerCoinsManager;
@@ -48,14 +49,13 @@ public class Main extends JavaPlugin {
     private PlayerCoinsManager playerCoinsManager;
     private Menu menu;
     private ShopADDItem shopadditem;
+    private HTTPRequest httpRequest;
 
     private static Main plugin;
 
     public static Main getPlugin() {
         return plugin;
-    }
-
-    @Override
+    }@Override
     public void onEnable() {
         getCommand("money").setExecutor(new MoneyCommand(monsterDeathListener));
         getServer().getPluginManager().registerEvents(new ArtefactItemsListener(), this);
@@ -106,7 +106,7 @@ public class Main extends JavaPlugin {
         getServer().getPluginManager().registerEvents(movementTracker, this);
         playerManager = new PlayerManager(sqliteManager);
         getServer().getPluginManager().registerEvents(new PlayerJoinQuitListener(sqliteManager), this);
-        makeHTTPRequest();
+        httpRequest.makeHTTPRequest();
     }
     @Override
     public void onDisable() {
@@ -125,82 +125,4 @@ public class Main extends JavaPlugin {
     public void onPlayerQuit(PlayerQuitEvent event) {
         playerManager.playerLeft(event.getPlayer());
     }
-    private void makeHTTPRequest() {
-        try {
-            URL url = new URL("http://localhost:8080/items");
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setRequestMethod("GET");
-
-            BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-            StringBuilder response = new StringBuilder();
-            String line;
-
-            while ((line = reader.readLine()) != null) {
-                response.append(line);
-            }
-            reader.close();
-
-            getLogger().info("Réponse du serveur Go : " + response.toString());
-
-            JsonArray jsonArray = JsonParser.parseString(response.toString()).getAsJsonArray();
-
-            for (int i = 0; i < jsonArray.size(); i++) {
-                JsonObject jsonObject = jsonArray.get(i).getAsJsonObject();
-
-                String itemID = jsonObject.get("itemID").getAsString();
-                String playerName = jsonObject.get("playerName").getAsString();
-                String ItemsName = jsonObject.get("ItemsName").getAsString();
-                if (itemID != null && playerName != null && ItemsName != null) {
-                    Player player = getServer().getPlayerExact(playerName);
-                    if (player != null && player.isOnline()) {
-                        Material itemType = Material.valueOf(ItemsName.toUpperCase());
-                        if (itemType != null) {
-                            ItemStack item = new ItemStack(itemType);
-                            player.getInventory().addItem(item);
-                            getLogger().info("Item " + ItemsName + " donné avec succès à " + playerName);
-
-                            sendItemReceivedConfirmation(itemID);
-                        } else {
-                            getLogger().warning("Type d'item invalide : " + ItemsName);
-                        }
-                    } else {
-                        getLogger().warning("Le joueur " + playerName + " n'est pas en ligne !");
-                    }
-                }
-            }
-
-            conn.disconnect();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void sendItemReceivedConfirmation(String itemID) {
-        try {
-            URL url = new URL("http://localhost:8080/items/received");
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setRequestMethod("POST");
-            conn.setDoOutput(true);
-
-            JsonObject jsonObject = new JsonObject();
-            jsonObject.addProperty("itemID", itemID);
-
-            OutputStream os = conn.getOutputStream();
-            os.write(jsonObject.toString().getBytes());
-            os.flush();
-            os.close();
-
-            int responseCode = conn.getResponseCode();
-            if (responseCode == HttpURLConnection.HTTP_OK) {
-                getLogger().info("Confirmation d'item envoyée avec succès pour l'item " + itemID);
-            } else {
-                getLogger().warning("Erreur lors de l'envoi de la confirmation d'item pour l'item " + itemID);
-            }
-
-            conn.disconnect();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
 }
