@@ -19,11 +19,6 @@
 {{ .Name }}
 {{ .Connect }}
 {{ end }}
-{{ if .IsAdmin }}
-<p>Vous êtes un administrateur !</p>
-{{ else }}
-<p>Vous n'êtes pas un administrateur.</p>
-{{ end }}
 {{ range .Panier }}
 <div class="blocks" id="{{ .ID }}">
     <div class="blocks2">
@@ -32,7 +27,7 @@
         {{ .ItemsName }}
         {{ .Price }} Coins
         {{ .ID }} ID
-        <button onclick="buyItem('{{ .ID }}', {{ .Price }}, this)">Acheter</button>
+        <button onclick="buyItem('{{ .ID }}', {{ .Price }}, this)" class="minecraft-input">Acheter</button>
     </div>
 </div>
 {{ end }}
