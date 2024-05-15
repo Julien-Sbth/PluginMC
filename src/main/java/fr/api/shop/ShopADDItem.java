@@ -14,7 +14,7 @@ import static fr.api.menu.Menu.getPrice;
 
 public class ShopADDItem {
     private final SQLiteManager sqliteManager;
-    private final ShopManager shopManager; // ShopManager doit être final car il est initialisé dans le constructeur
+    private final ShopManager shopManager;
 
     public ShopADDItem(SQLiteManager sqliteManager, ShopManager shopManager) {
         this.sqliteManager = sqliteManager;
@@ -39,7 +39,9 @@ public class ShopADDItem {
             Material.DIAMOND_PICKAXE,
             Material.NETHERITE_SWORD,
             Material.FISHING_ROD,
-            Material.POTION
+            Material.POTION,
+            Material.DIRT,
+            Material.STONE_SWORD
     );
 
     public void addToShop() {
