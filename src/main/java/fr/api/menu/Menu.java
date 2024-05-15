@@ -74,48 +74,88 @@ public class Menu implements Listener {
         ItemStack customPickaxeWooden = customPickaxeWooden();
         ItemStack customPickaxeDiamond = customPickaxeDiamond();
         ItemStack customSwordNetherite = customSwordNetherite();
+        ItemStack customElytra = customElytra();
+        ItemStack customStonePickaxe= customStonePickaxe();
+        ItemStack customPotion= customPotion();
+        ItemStack customDirt= customDirt();
+        ItemStack customStoneSword= customStoneSword();
+        ItemStack customFishingRog= customFishingRog();
 
-        prices.put(customPickaxeDiamond.getType(), 15);
-        prices.put(customPickaxeGolden.getType(), 15);
-        prices.put(customPickaxeWooden.getType(), 15);
-        prices.put(customHelmet.getType(), 15);
-        prices.put(customBootsIron.getType(), 15);
-        prices.put(customPickaxe.getType(), 15);
-        prices.put(customLeggingsIron.getType(), 15);
-        prices.put(customAxeNetherite.getType(), 15);
-        prices.put(customAxeDiamond.getType(), 15);
-        prices.put(customAxeIron.getType(), 15);
-        prices.put(customAxeGolden.getType(), 15);
-        prices.put(customAxeWood.getType(), 15);
-        prices.put(customBow.getType(), 15);
-        prices.put(customSwordDiamond.getType(), 15);
-        prices.put(customSwordGolden.getType(), 15);
-        prices.put(customSwordIron.getType(), 15);
-        prices.put(customSword.getType(), 15);
-        prices.put(customSwordWood.getType(), 15);
-        prices.put(customBootsDiamond.getType(), 20);
-        prices.put(customBootsGold.getType(), 20);
-        prices.put(customBootsCopper.getType(), 20);
-        prices.put(customChestplateDiamond.getType(), 25);
-        prices.put(customChestplateGold.getType(), 25);
-        prices.put(customChestplateCopper.getType(), 25);
-        prices.put(customChestplateIron.getType(), 25);
-        prices.put(customLeggingsDiamond.getType(), 30);
-        prices.put(customLeggingsGold.getType(), 30);
-        prices.put(customLeggingsCopper.getType(), 30);
-        prices.put(customHelmetDiamond.getType(), 15);
-        prices.put(customHelmetGold.getType(), 15);
-        prices.put(customHelmetCopper.getType(), 15);
-        prices.put(customSwordDiamond.getType(), 15);
-        prices.put(customBoots.getType(), 20);
-        prices.put(customChestplate.getType(), 25);
-        prices.put(customLeggings.getType(), 30);
-        prices.put(customHelmetIron.getType(), 30);
-        prices.put(customshield.getType(), 30);
-        prices.put(customPickaxeIron.getType(), 30);
-        prices.put(customSwordNetherite.getType(), 30);
+
+
+        prices.put(customDirt.getType(), 1);
+        prices.put(customStonePickaxe.getType(), 2500);
+        prices.put(customStoneSword.getType(), 1);
+        prices.put(customFishingRog.getType(), 600);
+        prices.put(customElytra.getType(), 2500);
+        prices.put(customPotion.getType(), 150);
+        prices.put(customPickaxeDiamond.getType(), 500);
+        prices.put(customPickaxeGolden.getType(), 250);
+        prices.put(customPickaxeWooden.getType(), 50);
+        prices.put(customHelmet.getType(), 250);
+        prices.put(customBootsIron.getType(), 150);
+        prices.put(customPickaxe.getType(), 1000);
+        prices.put(customLeggingsIron.getType(), 350);
+        prices.put(customAxeNetherite.getType(), 1000);
+        prices.put(customAxeDiamond.getType(), 500);
+        prices.put(customAxeIron.getType(), 350);
+        prices.put(customAxeGolden.getType(), 350);
+        prices.put(customAxeWood.getType(), 150);
+        prices.put(customBow.getType(), 375);
+        prices.put(customSwordDiamond.getType(), 750);
+        prices.put(customSwordGolden.getType(), 375);
+        prices.put(customSwordIron.getType(), 500);
+        prices.put(customSword.getType(), 150);
+        prices.put(customSwordWood.getType(), 150);
+        prices.put(customBootsDiamond.getType(), 750);
+        prices.put(customBootsGold.getType(), 300);
+        prices.put(customBootsCopper.getType(), 150);
+        prices.put(customChestplateDiamond.getType(), 750);
+        prices.put(customChestplateGold.getType(), 400);
+        prices.put(customChestplateCopper.getType(), 150);
+        prices.put(customChestplateIron.getType(), 500);
+        prices.put(customLeggingsDiamond.getType(), 500);
+        prices.put(customLeggingsGold.getType(), 250);
+        prices.put(customLeggingsCopper.getType(), 150);
+        prices.put(customHelmetDiamond.getType(), 350);
+        prices.put(customHelmetGold.getType(), 150);
+        prices.put(customHelmetCopper.getType(), 150);
+        prices.put(customSwordDiamond.getType(), 750);
+        prices.put(customBoots.getType(), 150);
+        prices.put(customChestplate.getType(), 1500);
+        prices.put(customLeggings.getType(), 350);
+        prices.put(customHelmetIron.getType(), 250);
+        prices.put(customshield.getType(), 500);
+        prices.put(customPickaxeIron.getType(), 400);
+        prices.put(customSwordNetherite.getType(), 1000);
 
         artefactListener = new ArtefactItemsListener();
+    }
+
+    private ItemStack customFishingRog() {
+        return createArmorItem(Material.FISHING_ROD, "§6Tank", "§7Des jambières très confortables", "§7et ultra résistantes !");
+    }
+
+    private ItemStack customStoneSword() {
+        return createArmorItem(Material.STONE_SWORD, "§6Tank", "§7Des jambières très confortables", "§7et ultra résistantes !");
+    }
+
+    private ItemStack customDirt() {
+        return createArmorItem(Material.DIRT, "§6Tank", "§7Des jambières très confortables", "§7et ultra résistantes !");
+    }
+
+    private ItemStack customPotion() {
+        return createArmorItem(Material.POTION, "§6Tank", "§7Des jambières très confortables", "§7et ultra résistantes !");
+
+    }
+
+    private ItemStack customStonePickaxe() {
+        return createArmorItem(Material.STONE_PICKAXE, "§6Tank", "§7Des jambières très confortables", "§7et ultra résistantes !");
+
+    }
+
+    private ItemStack customElytra() {
+        return createArmorItem(Material.ELYTRA, "§6Tank", "§7Des jambières très confortables", "§7et ultra résistantes !");
     }
 
     private ItemStack customPickaxeDiamond() {
