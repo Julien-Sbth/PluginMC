@@ -27,7 +27,7 @@
                 <img src="data:image/png;base64,{{ .ImageData }}" alt="" onclick="switchTab('pickaxe')">
             </div>
             {{ end }}
-            {{ with index .ShopItem 38 }}
+            {{ with index .ShopItem 37 }}
             <div class="inventory-slot">
                 <img src="data:image/png;base64,{{ .ImageData }}" alt="">
             </div>
@@ -79,7 +79,7 @@
 
             </div>
             {{ end }}
-            {{ with index .ShopItem 38 }}
+            {{ with index .ShopItem 37 }}
             <div class="inventory-slot">
                 <img src="data:image/png;base64,{{ .ImageData }}" alt="">
             </div>
@@ -131,7 +131,7 @@
 
             </div>
             {{ end }}
-            {{ with index .ShopItem 38 }}
+            {{ with index .ShopItem 37 }}
             <div class="inventory-slot">
                 <img src="data:image/png;base64,{{ .ImageData }}" alt="">
             </div>
@@ -184,7 +184,7 @@
 
             </div>
             {{ end }}
-            {{ with index .ShopItem 38 }}
+            {{ with index .ShopItem 37 }}
             <div class="inventory-slot">
                 <img src="data:image/png;base64,{{ .ImageData }}" alt="">
             </div>
@@ -210,19 +210,16 @@
             {{ with index .ShopItem 27 }}
             <div class="inventory-slot armor">
                 <img src="data:image/png;base64,{{ .ImageData }}" alt="">
-
             </div>
             {{ end }}
             {{ with index .ShopItem 28 }}
             <div class="inventory-slot armor">
                 <img src="data:image/png;base64,{{ .ImageData }}" alt="">
-
             </div>
             {{ end }}
             {{ with index .ShopItem 29 }}
             <div class="inventory-slot armor">
                 <img src="data:image/png;base64,{{ .ImageData }}" alt="">
-
             </div>
             {{ end }}
             {{ with index .ShopItem 30 }}
@@ -231,13 +228,12 @@
 
             </div>
             {{ end }}
-            {{ with index .ShopItem 40 }}
+            {{ with index .ShopItem 38 }}
             <div class="inventory-slot">
                 <img src="data:image/png;base64,{{ .ImageData }}" alt=""  onclick="switchTab('potion')">
-
             </div>
             {{ end }}
-            {{ with index .ShopItem 38 }}
+            {{ with index .ShopItem 37 }}
             <div class="inventory-slot">
                 <img src="data:image/png;base64,{{ .ImageData }}" alt="">
             </div>
@@ -260,10 +256,9 @@
 
             </div>
             {{ end }}
-            {{ with index .ShopItem 34 }}
-            <div class="inventory-slot">
+            {{ with index .ShopItem 42 }}
+            <div class="inventory-slot pickaxe">
                 <img src="data:image/png;base64,{{ .ImageData }}" alt="">
-
             </div>
             {{ end }}
             {{ with index .ShopItem 35 }}
@@ -278,7 +273,7 @@
 
             </div>
             {{ end }}
-            {{ with index .ShopItem 37 }}
+            {{ with index .ShopItem 36 }}
             <div class="inventory-slot pickaxe">
                 <img src="data:image/png;base64,{{ .ImageData }}" alt="">
             </div>
@@ -396,7 +391,7 @@
         <button onclick="addToCart('{{ .ID }}')" class="minecraft-input">Acheter</button>
     </div>
     {{ end }}
-    {{ with index .ShopItem 42 }}
+    {{ with index .ShopItem 41 }}
     <div class="blocks2">
         <img src="data:image/png;base64,{{ .ImageData }}" alt="">
         {{ .ItemsName }}
@@ -535,7 +530,6 @@
     {{ end }}
     {{ with index .ShopItem 29 }}
     <div class="blocks2">
-        {{ .ID }}
         <img src="data:image/png;base64,{{ .ImageData }}" alt="">
         {{ .ItemsName }}
         {{ .Price }} Coins
@@ -579,6 +573,15 @@
     </div>
     {{ end }}
 
+    {{ with index .ShopItem 42 }}
+    <div class="blocks2">
+        <img src="data:image/png;base64,{{ .ImageData }}" alt="">
+        {{ .ItemsName }}
+        {{ .Price }} Coins
+        <button onclick="addToCart('{{ .ID }}')" class="minecraft-input">Acheter</button>
+    </div>
+    {{ end }}
+
     {{ with index .ShopItem 34 }}
     <div class="blocks2">
         <img src="data:image/png;base64,{{ .ImageData }}" alt="">
@@ -598,15 +601,6 @@
     {{ end }}
 
     {{ with index .ShopItem 36 }}
-    <div class="blocks2">
-        <img src="data:image/png;base64,{{ .ImageData }}" alt="">
-        {{ .ItemsName }}
-        {{ .Price }} Coins
-        <button onclick="addToCart('{{ .ID }}')" class="minecraft-input">Acheter</button>
-    </div>
-    {{ end }}
-
-    {{ with index .ShopItem 37 }}
     <div class="blocks2">
         <img src="data:image/png;base64,{{ .ImageData }}" alt="">
         {{ .ItemsName }}
