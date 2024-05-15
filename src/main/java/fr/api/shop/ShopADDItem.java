@@ -34,14 +34,15 @@ public class ShopADDItem {
             Material.WOODEN_AXE, Material.STONE_AXE, Material.BOW,
             Material.IRON_BOOTS, Material.DIAMOND_BOOTS, Material.DIAMOND_CHESTPLATE,
             Material.GOLDEN_CHESTPLATE, Material.LEATHER_CHESTPLATE, Material.IRON_CHESTPLATE,
-            Material.DIAMOND_LEGGINGS, Material.IRON_LEGGINGS, Material.GOLDEN_LEGGINGS, Material.SHIELD,
+            Material.DIAMOND_LEGGINGS, Material.IRON_LEGGINGS, Material.GOLDEN_LEGGINGS,
             Material.IRON_PICKAXE, Material.WOODEN_PICKAXE, Material.STONE_PICKAXE, Material.RED_STAINED_GLASS,
             Material.DIAMOND_PICKAXE,
             Material.NETHERITE_SWORD,
             Material.FISHING_ROD,
             Material.POTION,
             Material.DIRT,
-            Material.STONE_SWORD
+            Material.STONE_SWORD,
+            Material.ELYTRA
     );
 
     public void addToShop() {
