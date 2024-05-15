@@ -209,7 +209,10 @@ main {
     color: #0bca51;
     text-decoration: none;
 }
-
+#DiscussionButton {
+    margin-right: 10px;
+    text-decoration: none;
+}
 #gearButton:hover {
     color: #09ef70;
 }
