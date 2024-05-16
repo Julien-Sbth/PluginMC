@@ -28,7 +28,7 @@ func displayAndEncode(playerData PlayerData) ([]byte, error) {
 			continue
 		}
 
-		imagePath := "monster/" + kills.EntityType + ".png"
+		imagePath := "images/monster/" + kills.EntityType + ".png"
 		err = ioutil.WriteFile(imagePath, imageData, 0644)
 		if err != nil {
 			fmt.Printf("Erreur lors de l'enregistrement de l'image pour l'élément %s: %s\n", kills.Kills, err)
@@ -47,7 +47,7 @@ func displayAndEncode(playerData PlayerData) ([]byte, error) {
 			continue
 		}
 
-		imagePath := "items_shop/" + itemShop.ItemsName + ".png"
+		imagePath := "images/items_shop/" + itemShop.ItemsName + ".png"
 		err = ioutil.WriteFile(imagePath, imageData, 0644)
 		if err != nil {
 			fmt.Printf("Erreur lors de l'enregistrement de l'image pour l'élément %s: %s\n", itemShop.ItemsName, err)
@@ -86,7 +86,7 @@ func displayAndEncode(playerData PlayerData) ([]byte, error) {
 			continue
 		}
 
-		imagePath := "blocks_destroy/" + blocksDestroy.BlockName + ".png"
+		imagePath := "images/blocks_destroy/" + blocksDestroy.BlockName + ".png"
 		err = ioutil.WriteFile(imagePath, imageData, 0644)
 		if err != nil {
 			fmt.Printf("Erreur lors de l'enregistrement de l'image pour l'élément %s: %s\n", blocksDestroy.BlockName, err)
@@ -105,7 +105,7 @@ func displayAndEncode(playerData PlayerData) ([]byte, error) {
 			continue
 		}
 
-		imagePath := "images/" + inventory.NomItem + ".png"
+		imagePath := "images/NomItem/" + inventory.NomItem + ".png"
 		err = ioutil.WriteFile(imagePath, imageData, 0644)
 		if err != nil {
 			fmt.Printf("Erreur lors de l'enregistrement de l'image pour l'élément %s: %s\n", inventory.NomItem, err)
