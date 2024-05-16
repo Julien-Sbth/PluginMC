@@ -41,11 +41,13 @@ type PanierItem struct {
 	IsAdmin      bool
 	ErrorMessage string
 }
+
 type Coin struct {
 	PlayerID   string `json:"player_id"`
 	PlayerName string `json:"player_name"`
 	Coins      string `json:"coins"`
 }
+
 type ShopItem struct {
 	ID        string `json:"id"`
 	ItemsName string `json:"item_name"`
@@ -60,6 +62,7 @@ type Connected struct {
 	Name    string `json:"name"`
 	Connect string `json:"status"`
 }
+
 type Item struct {
 	PlayerUUID string `json:"player_uuid"`
 	ItemData   string `json:"item_data"`
@@ -77,8 +80,9 @@ type Kill struct {
 }
 
 type Block struct {
-	PlayerID string `json:"player_id"`
-	Blocks   string `json:"blocks_moved"`
+	PlayerName string `json:"player_name"`
+	PlayerID   string `json:"player_id"`
+	Blocks     string `json:"blocks_moved"`
 }
 
 type Achievements struct {
@@ -89,6 +93,7 @@ type Achievements struct {
 type Shop struct {
 	ID           string `json:"id"`
 	PlayerID     string `json:"player_id"`
+	PlayerName   string `json:"player_name"`
 	ItemName     string `json:"item_name"`
 	Amount       string `json:"quantity"`
 	Price        string `json:"price"`
@@ -96,7 +101,8 @@ type Shop struct {
 }
 
 type BlocksDestroy struct {
-	PlayerID  string `json:"player_name"`
+	PlayerName string `json:"player_name"`
+
 	BlockName string `json:"block_name"`
 	NomBlocks string `json:"nom_block"`
 	Amount    string `json:"amount"`
@@ -105,13 +111,15 @@ type BlocksDestroy struct {
 }
 
 type Inventory struct {
-	ID        string `json:"id"`
-	PlayerID  string `json:"player_id"`
-	NomItem   string `json:"nom_item"`
-	Amount    string `json:"quantite"`
-	Position  string `json:"position"`
-	ImagePath string `json:"image_base64"`
-	ImageData string
+	ID         string `json:"id"`
+	PlayerID   string `json:"player_id"`
+	PlayerName string `json:"player_name"`
+	NomItem    string `json:"nom_item"`
+	Amount     string `json:"quantite"`
+	Position   string `json:"position"`
+	ImagePath  string `json:"image_base64"`
+	ImageData  string
+	PlayerUUID string
 }
 
 type ResponseData struct {
@@ -130,12 +138,8 @@ type ResponseData struct {
 }
 
 func usernameExists(username string) bool {
-	if playerData.PlayerName == username {
-		return true
-	}
-
 	for _, coin := range playerData.Coins {
-		if coin.PlayerID == username {
+		if coin.PlayerID == username || coin.PlayerName == username {
 			return true
 		}
 	}
@@ -160,7 +164,7 @@ func usernameExists(username string) bool {
 		}
 	}
 	for _, blocksDestroy := range playerData.BlocksDestroy {
-		if blocksDestroy.PlayerID == username {
+		if blocksDestroy.PlayerName == username {
 			return true
 		}
 	}
@@ -178,25 +182,81 @@ func usernameExists(username string) bool {
 	return false
 }
 
+func findPlayerDataByUsername(username string) *ResponseData {
+	var responseData ResponseData
+
+	for _, coins := range playerData.Coins {
+		if coins.PlayerName == username {
+			responseData.Coins = append(responseData.Coins, coins)
+		}
+	}
+	for _, item := range playerData.Items {
+		if item.PlayerUUID == username {
+			responseData.Items = append(responseData.Items, item)
+		}
+	}
+
+	for _, kill := range playerData.Kills {
+		if kill.PlayerName == username {
+			responseData.Kills = append(responseData.Kills, kill)
+		}
+	}
+	for _, block := range playerData.Blocks {
+		if block.PlayerID == username {
+			responseData.Blocks = append(responseData.Blocks, block)
+		}
+	}
+	for _, achievement := range playerData.Achievements {
+		if achievement.PlayerID == username {
+			responseData.Achievements = append(responseData.Achievements, achievement)
+		}
+	}
+	for _, blocksDestroy := range playerData.BlocksDestroy {
+		if blocksDestroy.PlayerName == username {
+			responseData.BlocksDestroy = append(responseData.BlocksDestroy, blocksDestroy)
+		}
+	}
+	for _, inventory := range playerData.Inventory {
+		if inventory.PlayerName == username {
+			responseData.Inventory = append(responseData.Inventory, inventory)
+		}
+	}
+	for _, movement := range playerData.Blocks {
+		if movement.PlayerName == username {
+			responseData.Blocks = append(responseData.Blocks, movement)
+		}
+	}
+	for _, shop := range playerData.Shop {
+		if shop.PlayerName == username {
+			responseData.Shop = append(responseData.Shop, shop)
+		}
+	}
+
+	return &responseData
+}
+
 func PlayerInfoHandler(w http.ResponseWriter, r *http.Request) {
 	username := r.FormValue("username")
 
-	if !usernameExists(username) {
+	responseData := findPlayerDataByUsername(username)
+	if responseData == nil {
 		http.Error(w, "Pseudo non trouvé", http.StatusNotFound)
 		return
 	}
+
 	tmpl, err := template.ParseFiles("templates/html/User/user.html")
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
-	err = tmpl.Execute(w, playerData)
+	err = tmpl.Execute(w, responseData)
 	if err != nil {
 		http.Error(w, "Erreur lors de l'exécution de la template HTML: "+err.Error(), http.StatusInternalServerError)
 		return
 	}
 }
+
 func UserHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method != "GET" {
 		http.Error(w, "Méthode non autorisée", http.StatusMethodNotAllowed)
