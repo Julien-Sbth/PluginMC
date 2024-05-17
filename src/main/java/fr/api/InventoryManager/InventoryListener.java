@@ -48,9 +48,11 @@ public class InventoryListener implements Listener {
         int quantite = event.getItem().getItemStack().getAmount();
         UUID joueurUUID = event.getPlayer().getUniqueId(); // Utiliser getUniqueId() pour récupérer l'UUID du joueur
 
+        String player_name = event.getPlayer().getName(); // Récupérer le nom du joueur
+
         // Obtention de l'image Base64 correspondante
         String imageBase64 = getImageBase64(nomItem);
-        ajouterItem(joueurUUID, nomItem, quantite, imageBase64);
+        ajouterItem(joueurUUID, nomItem, quantite, imageBase64, player_name);
     }
     public void verifierDonneesExistantes() {
         try {
@@ -83,7 +85,7 @@ public class InventoryListener implements Listener {
         }
     }
 
-    private void ajouterItem(UUID joueurUUID, String nomItem, int quantite, String imageBase64) {
+    private void ajouterItem(UUID joueurUUID, String nomItem, int quantite, String imageBase64, String player_name) {
         try {
             if (connection != null) {
                 PreparedStatement selectItemStatement = connection.prepareStatement(
@@ -106,14 +108,15 @@ public class InventoryListener implements Listener {
                         if (emptyResult.next()) {
                             int idVide = emptyResult.getInt("id");
                             PreparedStatement updateStatement = connection.prepareStatement(
-                                    "UPDATE player_inventory SET player_uuid = ?, nom_item = ?, quantite = ?, position = ?, image_base64 = ? WHERE id = ?"
+                                    "UPDATE player_inventory SET player_uuid = ?, WHERE player_name = ?, nom_item = ?, quantite = ?, position = ?, image_base64 = ? WHERE id = ?"
                             );
                             updateStatement.setString(1, joueurUUID.toString());
-                            updateStatement.setString(2, nomItem);
-                            updateStatement.setInt(3, quantite);
-                            updateStatement.setInt(4, getNextAvailablePosition(joueurUUID));
-                            updateStatement.setString(5, imageBase64);
-                            updateStatement.setInt(6, idVide);
+                            updateStatement.setString(2, player_name);
+                            updateStatement.setString(3, nomItem);
+                            updateStatement.setInt(4, quantite);
+                            updateStatement.setInt(5, getNextAvailablePosition(joueurUUID));
+                            updateStatement.setString(6, imageBase64);
+                            updateStatement.setInt(7, idVide);
                             updateStatement.executeUpdate();
                             updateStatement.close();
                         } else {
@@ -140,14 +143,15 @@ public class InventoryListener implements Listener {
                     if (emptyResult.next()) {
                         int idVide = emptyResult.getInt("id");
                         PreparedStatement updateStatement = connection.prepareStatement(
-                                "UPDATE player_inventory SET player_uuid = ?, nom_item = ?, quantite = ?, position = ?, image_base64 = ? WHERE id = ?"
+                                "UPDATE player_inventory SET player_uuid = ?, player_name = ?, nom_item = ?, quantite = ?, position = ?, image_base64 = ? WHERE id = ?"
                         );
                         updateStatement.setString(1, joueurUUID.toString());
-                        updateStatement.setString(2, nomItem);
-                        updateStatement.setInt(3, quantite);
-                        updateStatement.setInt(4, getNextAvailablePosition(joueurUUID));
-                        updateStatement.setString(5, imageBase64);
-                        updateStatement.setInt(6, idVide);
+                        updateStatement.setString(2, player_name);
+                        updateStatement.setString(3, nomItem);
+                        updateStatement.setInt(4, quantite);
+                        updateStatement.setInt(5, getNextAvailablePosition(joueurUUID));
+                        updateStatement.setString(6, imageBase64);
+                        updateStatement.setInt(7, idVide);
                         updateStatement.executeUpdate();
                         updateStatement.close();
                     } else {
