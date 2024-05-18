@@ -9,6 +9,10 @@
     <title>Home</title>
 </head>
 <body>
+<div id="logo-container">
+    <h1 id="animated-logo">PluginMC</h1>
+</div>
+
 <header>
     <div class="site-info">
         <a href="/" id="site_name">PluginMC</a>
@@ -48,5 +52,43 @@
     <h1>Bienvenue {{ .Username }} !</h1>
     {{ end }}
 </main>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const logo = document.getElementById('animated-logo');
+        const logoContainer = document.getElementById('logo-container');
+        const target = document.getElementById('site_name');
+
+        setTimeout(function() {
+            // Calculate the target position
+            const logoRect = logo.getBoundingClientRect();
+            const targetRect = target.getBoundingClientRect();
+
+            const targetX = targetRect.left - logoRect.left + (targetRect.width - logoRect.width) / 2;
+            const targetY = targetRect.top - logoRect.top + (targetRect.height - logoRect.height) / 2;
+
+            // Set CSS variables for the target position
+            logo.style.setProperty('--target-x', `${targetX}px`);
+            logo.style.setProperty('--target-y', `${targetY}px`);
+
+            // Start the move animation
+            logo.style.animation = 'moveToHeader 1s forwards';
+        }, 3000); // Delay matches the initial animation duration
+
+        // Remove the logo container and show the main content after the animation is complete
+        logo.addEventListener('animationend', function() {
+            if (logo.style.animation.includes('moveToHeader')) {
+                logoContainer.style.opacity = '0';
+                setTimeout(function() {
+                    logoContainer.remove();
+                    document.body.classList.remove('hidden'); // Show the main content
+                }, 1000); // Delay matches the fade-out duration
+            }
+        });
+    });
+
+    // Hide the main content initially
+    document.body.classList.add('hidden');
+</script>
+
 </body>
 </html>
