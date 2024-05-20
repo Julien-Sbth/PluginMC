@@ -243,7 +243,10 @@ func PlayerInfoHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Pseudo non trouvé", http.StatusNotFound)
 		return
 	}
-
+	if !usernameExists(username) {
+		http.Error(w, "Pseudo non trouvé", http.StatusNotFound)
+		return
+	}
 	tmpl, err := template.ParseFiles("templates/html/User/user.html")
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
