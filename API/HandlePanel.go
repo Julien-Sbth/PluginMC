@@ -1,4 +1,4 @@
-package Menu
+package API
 
 import (
 	"database/sql"
@@ -10,7 +10,7 @@ import (
 	_ "github.com/mattn/go-sqlite3"
 )
 
-var players []PlayerData
+var players []Crud
 var db *sql.DB
 
 type Player struct {
@@ -65,7 +65,7 @@ type Coins struct {
 	Coins    string `json:"coins"`
 }
 
-type PlayerData struct {
+type Crud struct {
 	PlayerID   string `json:"player_id"`
 	PlayerName string `json:"player_name"`
 	Kills      string `json:"kills"`
@@ -81,16 +81,16 @@ type PlayerData struct {
 	ItemName     string `json:"item_name"`
 	Amount       int    `json:"quantity"`
 
-	Player       []Player             `json:"-"`
-	Stats        []PlayerStats        `json:"-"`
-	Inventory    []PlayerInventory    `json:"-"`
-	Purchase     []PlayerPurchase     `json:"-"`
-	Block        []PlayerBlock        `json:"-"`
-	Achievements []PlayerAchievements `json:"-"`
-	Blocks       []PlayerMoved        `json:"-"`
+	Player         []Player             `json:"player,omitempty"`
+	Stats          []PlayerStats        `json:"-"`
+	Inventory      []PlayerInventory    `json:"-"`
+	PlayerPurchase []PlayerPurchase     `json:"-"`
+	Block          []PlayerBlock        `json:"-"`
+	Achievements   []PlayerAchievements `json:"-"`
+	Blocks         []PlayerMoved        `json:"-"`
 }
 
-func insertPlayerData(player PlayerData) error {
+func insertPlayerData(player Crud) error {
 	db, err := sql.Open("sqlite3", "database.sqlite")
 	if err != nil {
 		return err
@@ -107,7 +107,7 @@ func insertPlayerData(player PlayerData) error {
 	return nil
 }
 
-func FetchPlayersFromDB(db *sql.DB) []PlayerData {
+func FetchPlayersFromDB(db *sql.DB) []Crud {
 	rows, err := db.Query("SELECT * FROM players")
 	if err != nil {
 		fmt.Println("Error fetching players from database:", err)
@@ -115,10 +115,10 @@ func FetchPlayersFromDB(db *sql.DB) []PlayerData {
 	}
 	defer rows.Close()
 
-	var playersFromDB []PlayerData
+	var playersFromDB []Crud
 
 	for rows.Next() {
-		var player PlayerData
+		var player Crud
 
 		err := rows.Scan(
 			&player.PlayerID,
@@ -152,7 +152,7 @@ func FetchPlayersFromDB(db *sql.DB) []PlayerData {
 	return playersFromDB
 }
 
-func usernameExists(username string) bool {
+func usernameExists1(username string) bool {
 	// Ouvre la connexion à la base de données
 	db, err := sql.Open("sqlite3", "database.sqlite")
 	if err != nil {
@@ -177,7 +177,7 @@ func usernameExists(username string) bool {
 
 // CreatePlayerHandler crée un nouveau joueur
 func CreatePlayerHandler(w http.ResponseWriter, r *http.Request) {
-	var player PlayerData
+	var player Crud
 	err := json.NewDecoder(r.Body).Decode(&player)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
@@ -204,7 +204,7 @@ func GetAllPlayersHandler(w http.ResponseWriter, r *http.Request) {
 func UpdatePlayerHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("Updating a player...")
 
-	var updatedPlayer PlayerData
+	var updatedPlayer Crud
 	err := json.NewDecoder(r.Body).Decode(&updatedPlayer)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
@@ -213,7 +213,7 @@ func UpdatePlayerHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	for i, player := range players {
-		if player.Player[0].PlayerID == updatedPlayer.Player[0].PlayerID {
+		if player.PlayerID == updatedPlayer.PlayerID {
 			players[i] = updatedPlayer
 			w.WriteHeader(http.StatusOK)
 			fmt.Println("Player updated successfully:", updatedPlayer)
@@ -222,7 +222,7 @@ func UpdatePlayerHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	http.NotFound(w, r)
-	fmt.Println("Player not found for update:", updatedPlayer.Player[0].PlayerID)
+	fmt.Println("Player not found for update:", updatedPlayer.PlayerID)
 }
 
 func DeletePlayerHandler(w http.ResponseWriter, r *http.Request) {
@@ -231,7 +231,7 @@ func DeletePlayerHandler(w http.ResponseWriter, r *http.Request) {
 	id := r.FormValue("player_id")
 
 	for i, player := range players {
-		if player.Player[0].PlayerID == id {
+		if player.PlayerID == id {
 			players = append(players[:i], players[i+1:]...)
 			w.WriteHeader(http.StatusOK)
 			fmt.Println("Player deleted successfully:", id)
@@ -265,7 +265,7 @@ func HandlePanel(w http.ResponseWriter, r *http.Request) {
 func PlayerStatsHandler(w http.ResponseWriter, r *http.Request) {
 	username := r.FormValue("username")
 
-	if !usernameExists(username) {
+	if !usernameExists1(username) {
 		http.Error(w, "Pseudo non trouvé", http.StatusNotFound)
 		return
 	}
@@ -282,7 +282,7 @@ func PlayerStatsHandler(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func UserHandler(w http.ResponseWriter, r *http.Request) {
+func UserHandler1(w http.ResponseWriter, r *http.Request) {
 	if r.Method != "GET" {
 		http.Error(w, "Méthode non autorisée", http.StatusMethodNotAllowed)
 		return

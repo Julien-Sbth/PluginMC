@@ -25,7 +25,7 @@ func HandleAddToCart(w http.ResponseWriter, r *http.Request) {
 
 	var username string
 	if session.Values["username"] == nil {
-		http.Redirect(w, r, "/api/user/login", http.StatusSeeOther)
+		http.Redirect(w, r, "/login", http.StatusSeeOther)
 		return
 	} else {
 		username = session.Values["username"].(string)
@@ -33,7 +33,7 @@ func HandleAddToCart(w http.ResponseWriter, r *http.Request) {
 
 	addToCart(itemID, username)
 
-	http.Redirect(w, r, "/api/user/panier", http.StatusSeeOther)
+	http.Redirect(w, r, "/panier", http.StatusSeeOther)
 }
 
 func HandlePanier(w http.ResponseWriter, r *http.Request) {
@@ -131,7 +131,7 @@ func HandlePanier(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	http.Redirect(w, r, "/api/user/login", http.StatusSeeOther)
+	http.Redirect(w, r, "/login", http.StatusSeeOther)
 }
 
 func addToCart(itemID string, username string) {

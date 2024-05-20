@@ -39,7 +39,7 @@ func CanBuyItem(w http.ResponseWriter, r *http.Request) {
 
 	var username string
 	if session.Values["username"] == nil {
-		http.Redirect(w, r, "/api/user/login", http.StatusSeeOther)
+		http.Redirect(w, r, "/login", http.StatusSeeOther)
 		return
 	} else {
 		username = session.Values["username"].(string)
