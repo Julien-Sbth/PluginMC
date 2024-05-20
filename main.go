@@ -22,7 +22,7 @@ func main() {
 	http.HandleFunc("/settings", Connexion.HandleProfile)
 	http.HandleFunc("/shop", API.HandleShop)
 	http.HandleFunc("/api/user/panier", API.HandlePanier)
-	http.HandleFunc("/api/user", API.UserHandler1)
+	http.HandleFunc("/api/user", API.UserHandler)
 	http.HandleFunc("/api/user/addtocart", API.HandleAddToCart)
 	http.HandleFunc("/api/user/panier/buy", API.HandleBuyItem)
 	http.HandleFunc("/api/user/panier/canbuy", API.CanBuyItem)
@@ -34,7 +34,7 @@ func main() {
 	http.HandleFunc("/panel", API.HandlePanel)
 	http.HandleFunc("/create", API.CreatePlayerHandler)
 	http.HandleFunc("/read", API.GetAllPlayersHandler)
-	http.HandleFunc("/api/player/search", API.PlayerStatsHandler)
+	http.HandleFunc("/api/player/search", API.PlayerInfoHandler)
 	http.HandleFunc("/", Menu.HandleMenu)
 
 	log.Println("Serveur Go démarré sur le port 8080")
